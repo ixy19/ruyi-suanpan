@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保庇宮 - Q版線上抽籤問保障</title>
+    <style>
+        :root {
+            --primary-color: #d9381e;
+            --secondary-color: #f7d154;
+            --bg-color: #fdf8ef;
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: center;
+            border: 3px solid var(--secondary-color);
+        }
+
+        /* Q版佛祖 SVG */
+        .buddha-img-box {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 5px;
+        }
+        .buddha-img-box svg { width: 100%; height: 100%; }
+
+        h1 { color: var(--primary-color); font-size: 22px; margin: 0 0 4px; }
+        .subtitle { font-size: 13px; color: #666; margin-bottom: 16px; }
+
+        .step { display: none; }
+        .step.active { display: block; }
+
+        /* 按鈕樣式 */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            width: 100%;
+            margin-top: 12px;
+            box-shadow: 0 4px 10px rgba(217, 56, 30, 0.25);
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        /* 動畫 */
+        .shake { animation: shake 0.5s infinite; }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, 0px) rotate(3deg); }
+            40% { transform: translate(1px, -1px) rotate(-3deg); }
+            60% { transform: translate(-2px, 1px) rotate(2deg); }
+            80% { transform: translate(2px, 1px) rotate(-1deg); }
+            100% { transform: translate(1px, -2px) rotate(0deg); }
+        }
+
+        /* 籤詩卡片 */
+        .poem-card {
+            background-color: #fff9f0;
+            border: 2px dashed var(--primary-color);
+            border-radius: 16px;
+            padding: 18px;
+            margin: 14px 0;
+            text-align: center;
+        }
+        .poem-title { font-size: 18px; font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+        .poem-lines { font-size: 15px; line-height: 1.7; color: #444; font-family: serif; margin: 10px 0; font-weight: 600; }
+
+        /* 屬性數據條 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border: 1px solid #ffe8d6;
+        }
+        .stat-item { text-align: left; font-size: 12px; font-weight: bold; color: #555; }
+        .stat-bar-bg { background-color: #eee; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 3px; }
+        .stat-bar-fill { background-color: var(--primary-color); height: 100%; width: 0%; transition: width 0.6s ease; }
+
+        .biao-box { font-size: 44px; margin: 10px 0; }
+        select, input {
+            width: 100%; padding: 11px; margin: 6px 0;
+            border: 1.5px solid #e0e0e0; border-radius: 10px;
+            box-sizing: border-box; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <!-- Q版佛祖插圖 -->
+    <div class="buddha-img-box">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="90" r="70" fill="#FFE58F" opacity="0.8"/>
+            <circle cx="100" cy="65" r="38" fill="#6B4B3E"/>
+            <circle cx="85" cy="45" r="8" fill="#6B4B3E"/>
+            <circle cx="100" cy="40" r="8" fill="#6B4B3E"/>
+            <circle cx="115" cy="45" r="8" fill="#6B4B3E"/>
+            <circle cx="100" cy="30" r="10" fill="#6B4B3E"/>
+            <ellipse cx="100" cy="78" rx="32" ry="26" fill="#FFF0E6"/>
+            <ellipse cx="66" cy="78" rx="5" ry="12" fill="#FFF0E6"/>
+            <ellipse cx="134" cy="78" rx="5" ry="12" fill="#FFF0E6"/>
+            <ellipse cx="88" cy="76" rx="3" ry="4" fill="#3D2B1F"/>
+            <ellipse cx="112" cy="76" rx="3" ry="4" fill="#3D2B1F"/>
+            <path d="M93 84 Q100 89 107 84" stroke="#3D2B1F" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <circle cx="80" cy="83" r="5" fill="#FF9C9E" opacity="0.6"/>
+            <circle cx="120" cy="83" r="5" fill="#FF9C9E" opacity="0.6"/>
+            <circle cx="100" cy="68" r="2" fill="#D9381E"/>
+            <path d="M72 98 C72 98 85 92 100 92 C115 92 128 98 128 98 L138 125 L62 125 Z" fill="#FF9C6E"/>
+            <ellipse cx="100" cy="108" rx="8" ry="10" fill="#FFF0E6"/>
+            <path d="M50 135 Q100 115 150 135 C160 150 140 160 100 160 C60 160 40 150 50 135 Z" fill="#FFADD2"/>
+            <path d="M40 130 Q65 110 85 130 C70 145 50 145 40 130 Z" fill="#FF85C0"/>
+            <path d="M160 130 Q135 110 115 130 C130 145 150 145 160 130 Z" fill="#FF85C0"/>
+        </svg>
+    </div>
+
+    <h1>保庇宮 · 線上求籤</h1>
+    <div class="subtitle">「Don't Keep Up with the Joneses. Keep Up with Your Insurance.」</div>
+
+    <!-- 步驟 1：選擇迷津與搖籤 -->
+    <div id="step-1" class="step active">
+        <p style="font-size: 14px; color: #555;">誠心合十，選擇你最近常思考的隱憂：</p>
+        <select id="topic-select">
+            <option value="joneses">🧧 隔壁老王籤｜愛跟別人比較豪宅名車</option>
+            <option value="retirement">🧧 第42籤｜年輕不問退休事，老來方知錢難存</option>
+            <option value="passive_income">🧧 躺平夢想籤｜想要被動收入，但存款總是主動流失</option>
+            <option value="ltc">🧧 歲月不饒人籤｜長照與防護，不累子孫的終極秘密</option>
+            <option value="disability">🧧 隱形 Boss 籤｜人生突然斷電，你的護盾夠堅固嗎？</option>
+        </select>
+        <div id="stick-box" style="font-size: 55px; margin: 15px 0;">🎋</div>
+        <button class="btn" onclick="startShake()">🎋 搖晃籤筒 · 求一支籤</button>
+    </div>
+
+    <!-- 步驟 2：擲筊機制 -->
+    <div id="step-2" class="step">
+        <p style="font-size: 14px; color: #555; font-weight: bold;">「佛祖是否為此籤？」</p>
+        <div id="biao-icon" class="biao-box">🌙 🌙</div>
+        <div id="biao-result" style="font-weight: bold; color: var(--primary-color); min-height: 48px; font-size: 14px; line-height: 1.5;"></div>
+        <button class="btn" onclick="tossBiao()">🪙 點擊擲筊</button>
+    </div>
+
+    <!-- 步驟 3：抽到「人生保障籤」與屬性面板 -->
+    <div id="step-3" class="step">
+        <div class="poem-card">
+            <div id="poem-title" class="poem-title">【籤詩標題】</div>
+            <div id="poem-content" class="poem-lines">籤詩內容</div>
+
+            <!-- RPG 屬性數值面板 -->
+            <div class="stats-grid">
+                <div class="stat-item">💰 財富: <span id="stat-gold">0</span>
+                    <div class="stat-bar-bg"><div id="bar-gold" class="stat-bar-fill"></div></div>
+                </div>
+                <div class="stat-item">❤️ 健康: <span id="stat-hp">0</span>
+                    <div class="stat-bar-bg"><div id="bar-hp" class="stat-bar-fill"></div></div>
+                </div>
+                <div class="stat-item">🛡️ 保障: <span id="stat-armor">0</span>
+                    <div class="stat-bar-bg"><div id="bar-armor" class="stat-bar-fill"></div></div>
+                </div>
+                <div class="stat-item">👴 退休: <span id="stat-retire">0</span>
+                    <div class="stat-bar-bg"><div id="bar-retire" class="stat-bar-fill"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background-color: #f9f2e8; padding: 12px; border-radius: 10px; font-size: 13px; text-align: left; margin-bottom: 12px; border-left: 4px solid var(--primary-color);">
+            🔮 <strong>佛祖指點：</strong> <span id="poem-advice">指點內容</span>
+        </div>
+
+        <button class="btn btn-outline" onclick="copyPoem()">🔗 分享這張籤詩給朋友</button>
+        
+        <!-- 引導至 Lead Generation 的入口 -->
+        <div style="margin-top: 18px; border-top: 1px dashed #ccc; padding-top: 14px;">
+            <p style="font-size: 14px; font-weight: bold; color: var(--primary-color); margin: 0 0 6px;">
+                🧧 想知道你目前的「人生保障體質」嗎？
+            </p>
+            <button class="btn" onclick="toggleLeadForm()">免費測一測 → [開始體質分析]</button>
+        </div>
+
+        <!-- 預設隱藏的表單區塊 -->
+        <div id="lead-form-box" style="display: none; margin-top: 12px; text-align: left; background: #fafafa; padding: 12px; border-radius: 10px;">
+            <p style="font-size: 12px; color: #666; margin: 0 0 8px;">預約保庇大使免費為你做一對一線上解析：</p>
+            <input type="text" id="user-name" placeholder="您的稱呼 (例: 張先生/小姐)">
+            <input type="tel" id="user-phone" placeholder="您的聯絡電話 / Line ID">
+            <button class="btn" style="margin-top: 6px;" onclick="submitConsultation()">送出分析預約</button>
+        </div>
+    </div>
+
+    <!-- 步驟 4：完成提示 -->
+    <div id="step-4" class="step">
+        <div style="font-size: 50px; margin-bottom: 10px;">🙏</div>
+        <h2 style="color: var(--primary-color); margin-bottom: 8px;">預約成功！</h2>
+        <p style="font-size: 14px; color: #555; line-height: 1.6;">
+            佛祖已收到你的心聲。<br>專屬「保庇大使」將於近期聯繫你，遞送完整的保障體質解析！
+        </p>
+        <button class="btn btn-outline" onclick="resetGame()">再抽一次</button>
+    </div>
+</div>
+
+<script>
+    // 籤詩資料庫 (包含屬性與金句)
+    const poems = {
+        joneses: {
+            title: "🧧 第 88 籤｜Joneses 比較籤",
+            content: "「人比人，氣死人；屋比屋，錢不夠。」<br><br><b>佛祖曰：</b><br>施主莫再追趕隔壁老王的新車與豪宅。<br><i>Don't Keep Up with the Joneses.<br>Keep Up with Your Insurance. 🛡️</i>",
+            gold: 65, hp: 75, armor: 30, retire: 40,
+            advice: "盲目跟風消費只會拉低你的防禦值！先補齊保障護盾，才能笑到最後。"
+        },
+        retirement: {
+            title: "🧧 第 42 籤｜退休警世籤",
+            content: "「年輕不問退休事，老來方知錢難存。」<br><br><b>佛祖曰：</b><br>歲月如梭，提早準備現金流，晚年才能優雅喝茶做自己。",
+            gold: 72, hp: 80, armor: 45, retire: 60,
+            advice: "施主目前退休準備尚可，但「未來醫療費用」可能是隱藏 Boss。建議先存好 Emergency Fund！"
+        },
+        passive_income: {
+            title: "🧧 第 18 籤｜被動收入籤",
+            content: "「夢裡隨心賺大錢，醒來依舊打工人。」<br><br><b>佛祖曰：</b><br>想要躺平，先讓資金為你自動打工。穩定流水的防護網比爆發力更重要。",
+            gold: 50, hp: 85, armor: 55, retire: 50,
+            advice: "被動收入的基石是「不侵蝕本金」。建構好風險屏障，資產累積才不會一夕歸零。"
+        },
+        ltc: {
+            title: "🧧 第 99 籤｜尊嚴長照籤",
+            content: "「久病床前無孝子，提早規劃有尊嚴。」<br><br><b>佛祖曰：</b><br>真正的慈悲，是晚年不給身邊愛你的人增加沉重負擔。",
+            gold: 60, hp: 65, armor: 40, retire: 70,
+            advice: "長期照顧往往是家庭財務的大考驗，提早鎖定長照防護，尊嚴指數高達 100 分！"
+        },
+        disability: {
+            title: "🧧 第 07 籤｜隱形 Boss 籤",
+            content: "「晴天常備雨傘用，風雨來時不心慌。」<br><br><b>佛祖曰：</b><br>人生不怕大風大浪，就怕突然被拔掉電源掉線。",
+            gold: 55, hp: 70, armor: 35, retire: 45,
+            advice: "失能保障是防護罩底層的核心。當機器暫停運作時，保障能幫你持續輸出現金流。"
+        }
+    };
+
+    function showStep(stepNumber) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById(`step-${stepNumber}`).classList.add('active');
+    }
+
+    function startShake() {
+        const stickBox = document.getElementById('stick-box');
+        stickBox.classList.add('shake');
+        
+        setTimeout(() => {
+            stickBox.classList.remove('shake');
+            document.getElementById('biao-result').innerText = '';
+            document.getElementById('biao-icon').innerText = '🌙 🌙';
+            showStep(2);
+        }, 1000);
+    }
+
+    function tossBiao() {
+        const biaoIcon = document.getElementById('biao-icon');
+        const biaoResult = document.getElementById('biao-result');
+        const rand = Math.floor(Math.random() * 3);
+        
+        if (rand === 0) {
+            biaoIcon.innerText = "🌙 🌙";
+            biaoResult.innerText = "😂「佛祖笑而不語，再問一次吧！」";
+        } else if (rand === 1) {
+            biaoIcon.innerText = "🌰 🌰";
+            biaoResult.innerText = "😅「佛祖表示：施主，你可能還沒準備好面對真相……再試一次！」";
+        } else {
+            biaoIcon.innerText = "🌙 🌰";
+            biaoResult.innerText = "✅「佛祖說：就是這支籤！」";
+            
+            setTimeout(() => {
+                const topic = document.getElementById('topic-select').value;
+                const p = poems[topic];
+                
+                document.getElementById('poem-title').innerText = p.title;
+                document.getElementById('poem-content').innerHTML = p.content;
+                document.getElementById('poem-advice').innerText = p.advice;
+
+                // 更新 RPG 數值與動態進度條
+                document.getElementById('stat-gold').innerText = p.gold;
+                document.getElementById('stat-hp').innerText = p.hp;
+                document.getElementById('stat-armor').innerText = p.armor;
+                document.getElementById('stat-retire').innerText = p.retire;
+
+                showStep(3);
+
+                setTimeout(() => {
+                    document.getElementById('bar-gold').style.width = p.gold + '%';
+                    document.getElementById('bar-hp').style.width = p.hp + '%';
+                    document.getElementById('bar-armor').style.width = p.armor + '%';
+                    document.getElementById('bar-retire').style.width = p.retire + '%';
+                }, 100);
+            }, 1000);
+        }
+    }
+
+    function toggleLeadForm() {
+        const formBox = document.getElementById('lead-form-box');
+        formBox.style.display = formBox.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function copyPoem() {
+        const title = document.getElementById('poem-title').innerText;
+        alert(`已複製籤詩名稱：【${title}】\n快去分享給朋友吧！\nDon't Keep Up with the Joneses. Keep Up with Your Insurance!`);
+    }
+
+    function submitConsultation() {
+        const name = document.getElementById('user-name').value;
+        const phone = document.getElementById('user-phone').value;
+
+        if (!name || !phone) {
+            alert('請填寫稱呼與聯絡方式，保庇大使才能為您服務喔！');
+            return;
+        }
+        showStep(4);
+    }
+
+    function resetGame() {
+        document.getElementById('user-name').value = '';
+        document.getElementById('user-phone').value = '';
+        document.getElementById('lead-form-box').style.display = 'none';
+        showStep(1);
+    }
+</script>
+
+</body>
+</html>

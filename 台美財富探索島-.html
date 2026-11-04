@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台美財富探索島 ｜ Stay Ahead. Stay Protected.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        
+        @keyframes floatIsland {
+            0% { transform: translateY(0px) rotateX(2deg) rotateY(0deg); }
+            50% { transform: translateY(-6px) rotateX(2deg) rotateY(1deg); }
+            100% { transform: translateY(0px) rotateX(2deg) rotateY(0deg); }
+        }
+        
+        @keyframes bridgePulse {
+            0% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(20, 184, 166, 0.5)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(20, 184, 166, 0.9)); }
+            100% { opacity: 0.4; filter: drop-shadow(0 0 2px rgba(20, 184, 166, 0.5)); }
+        }
+
+        .floating-island {
+            animation: floatIsland 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .bridge-glow {
+            animation: bridgePulse 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-sky-50 via-teal-50/30 to-indigo-50/50 text-slate-800 min-h-screen">
+
+    <!-- Header 頂部橫幅：專屬卡通 Logo 與 Stay Ahead. Stay Protected. -->
+    <header class="bg-gradient-to-r from-teal-900 via-teal-800 to-indigo-950 text-white py-8 px-6 shadow-xl relative overflow-hidden border-b border-teal-700/50">
+        <div class="absolute right-6 -bottom-12 opacity-10 text-9xl select-none">🛡️</div>
+        
+        <div class="max-w-4xl mx-auto relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div class="flex items-center space-x-4">
+                <!-- 您的卡通肖像 Logo 放置處 (請將圖檔命名為 avatar.png 放在同資料夾) -->
+                <div class="w-14 h-14 rounded-2xl bg-teal-700 border-2 border-amber-400 overflow-hidden shadow-md flex items-center justify-center shrink-0">
+                    <img src="avatar.png" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="text-xs text-amber-300 font-bold hidden text-center">Logo</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
+                        台美財富探索島 <span class="text-teal-300 font-light text-base md:text-lg">| Wealth Exploration Island</span>
+                    </h1>
+                    <p class="text-teal-100 text-xs md:text-sm font-medium mt-1">
+                        探索真實財務情境，釐清決策偏好，陪伴您穩健規劃跨境資產。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 核心品牌精神口號區塊 -->
+            <div class="bg-teal-950/65 backdrop-blur-md border border-teal-600/40 px-5 py-3 rounded-2xl shadow-lg shrink-0">
+                <p class="text-[10px] text-teal-300 uppercase tracking-widest font-bold mb-0.5">Core Philosophy</p>
+                <p class="text-lg md:text-xl font-black tracking-wide">
+                    <span class="text-amber-400">Stay Ahead.</span> <span class="text-white">Stay Protected.</span>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 md:px-6 py-8">
+
+        <!-- 🗺️ 3D 浮島互動視覺地圖 (兼具導覽選單功能) -->
+        <section class="bg-slate-900 border border-teal-500/30 rounded-3xl p-6 md:p-8 shadow-2xl mb-8 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(#14b8a6_1px,transparent_1px)] [background-size:24px_24px] opacity-15"></div>
+
+            <div class="flex items-center justify-between mb-6 relative z-10">
+                <div>
+                    <h2 class="text-lg md:text-xl font-bold text-teal-100">🧭 3D 互動島嶼導覽地圖</h2>
+                    <p class="text-teal-300/80 text-xs mt-1">點擊下方島嶼節點，直接切換情境模擬與對應計算器。</p>
+                </div>
+                <span class="bg-teal-500/20 text-teal-300 border border-teal-500/40 text-xs font-bold px-3 py-1 rounded-full">動態連動中</span>
+            </div>
+
+            <!-- 模擬雙子島視覺區 -->
+            <div class="floating-island relative z-10 bg-gradient-to-r from-teal-800/85 to-indigo-900/85 border border-teal-400/40 rounded-2xl p-5 shadow-2xl text-center mb-6">
+                <span class="bg-amber-400 text-slate-950 text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                    跨太平洋財富與合規航線
+                </span>
+                <p class="text-xs text-teal-200 mt-2">Taiwan-US Wealth Exploration Network</p>
+                <div class="w-36 h-1 bg-gradient-to-r from-teal-400 via-amber-300 to-indigo-400 mx-auto my-3 bridge-glow rounded-full"></div>
+            </div>
+
+            <!-- 6大島嶼節點按鈕列 (Master Navigation) -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 relative z-10">
+                <button onclick="switchStation(1)" id="card-1" class="p-3 rounded-2xl border transition text-center shadow-md">
+                    <span class="text-xl block mb-1">⚓</span>
+                    <span class="text-xs font-bold block">職涯啟航港</span>
+                </button>
+                <button onclick="switchStation(2)" id="card-2" class="p-3 rounded-2xl border transition text-center shadow-md">
+                    <span class="text-xl block mb-1">🏠</span>
+                    <span class="text-xs font-bold block">安居生活城</span>
+                </button>
+                <button onclick="switchStation(3)" id="card-3" class="p-3 rounded-2xl border transition text-center shadow-md">
+                    <span class="text-xl block mb-1">🎓</span>
+                    <span class="text-xs font-bold block">下一代學院</span>
+                </button>
+                <button onclick="switchStation(4)" id="card-4" class="p-3 rounded-2xl border transition text-center shadow-md">
+                    <span class="text-xl block mb-1">🏖️</span>
+                    <span class="text-xs font-bold block">退休自由灣</span>
+                </button>
+                <button onclick="switchStation(5)" id="card-5" class="p-3 rounded-2xl border transition text-center shadow-md">
+                    <span class="text-xl block mb-1">📜</span>
+                    <span class="text-xs font-bold block">財富傳承島</span>
+                </button>
+                <button onclick="switchStation(6)" id="card-6" class="p-3 rounded-2xl border transition text-center shadow-md">
+                    <span class="text-xl block mb-1">✈️</span>
+                    <span class="text-xs font-bold block">跨境航道</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 📖 動態情境與專欄文章區 -->
+        <section id="scenario-box" class="bg-white rounded-3xl p-6 md:p-8 shadow-xl mb-8 border border-slate-100">
+            <!-- 內容由 JavaScript 動態渲染 -->
+        </section>
+
+        <!-- 🧮 動態計算器區 -->
+        <section id="calculator-box" class="bg-white rounded-3xl p-6 md:p-8 shadow-xl mb-8 border border-slate-100">
+            <!-- 計算器由 JavaScript 動態切換 -->
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-slate-400 text-xs">
+        <p>台美財富探索島 ｜ Stay Ahead. Stay Protected. 獨立理財教育與知識參考平台</p>
+    </footer>
+
+    <!-- JavaScript 核心邏輯 -->
+    <script>
+        let currentStation = 1;
+
+        function switchStation(stationNum) {
+            currentStation = stationNum;
+            
+            // 更新 3D 地圖節點的選中外觀
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`card-${i}`);
+                btn.className = stationNum === i 
+                    ? "p-3 rounded-2xl border-2 border-teal-400 bg-teal-700 text-white transition text-center shadow-lg scale-105" 
+                    : "p-3 rounded-2xl border border-slate-700 bg-slate-800 text-slate-300 hover:border-teal-400 hover:bg-slate-700 transition text-center shadow-md";
+            }
+            const btn6 = document.getElementById('card-6');
+            btn6.className = stationNum === 6 
+                ? "p-3 rounded-2xl border-2 border-amber-400 bg-amber-700 text-white transition text-center shadow-lg scale-105" 
+                : "p-3 rounded-2xl border border-amber-500/60 bg-amber-950 text-amber-200 hover:bg-amber-900 transition text-center shadow-md";
+
+            renderStationContent();
+        }
+
+        function renderStationContent() {
+            const scenarioBox = document.getElementById('scenario-box');
+            const calcBox = document.getElementById('calculator-box');
+
+            if (currentStation === 1) {
+                scenarioBox.innerHTML = `
+                    <div class="flex items-center space-x-2"><span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">第一站 ｜ 職涯啟航港</span><span class="text-slate-400 text-xs">｜ 決策偏好剖析</span></div>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4">換工作時，你最優先考慮什麼？</h3>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">你收到一份年薪更高的新工作 offer，但新公司的退休金配對與福利還不清楚。您的決策偏好傾向於哪一個方向？</p>
+                    
+                    <div class="mt-6 space-y-3">
+                        <button onclick="chooseOption1('A')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">A. 薪資增加多少，直接決定我的選擇（聚焦現金流擴張）</button>
+                        <button onclick="chooseOption1('B')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">B. 退休金配對、保險及總報酬優先（重視長遠福利與保障）</button>
+                        <button onclick="chooseOption1('C')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">C. 工作穩定性、家庭時間及職涯發展優先（重視生活平衡與彈性）</button>
+                    </div>
+
+                    <div id="result-box-1" class="hidden mt-6 pt-6 border-t border-slate-100">
+                        <h4 id="res-title-1" class="font-bold text-teal-900 text-lg"></h4>
+                        <p id="res-desc-1" class="text-slate-600 text-sm mt-2"></p>
+                        <div class="mt-4 bg-teal-50 p-4 rounded-2xl border border-teal-100">
+                            <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">📖 決策維度解析</span>
+                            <p id="res-knowledge-1" class="text-xs text-teal-950 mt-1 font-medium leading-relaxed"></p>
+                        </div>
+                    </div>
+                `;
+                calcBox.innerHTML = `
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">🧮 總報酬與 401(k) 貢獻試算器</h3>
+                    <p class="text-slate-500 text-xs mb-4">依據 IRS 規定，401(k) 員工貢獻上限隨年齡調整（未滿 50 歲 $24,500；50+ 歲 $32,500；60–63 歲最高 $35,750）。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl"><label class="block text-xs font-medium text-slate-600 mb-1">現職年薪 ($):</label><input type="number" id="curr-salary" value="90000" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-slate-600 mt-2 mb-1">公司 Match (%):</label><input type="number" id="curr-match" value="5" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl"><label class="block text-xs font-medium text-teal-800 mb-1">新 Offer 年薪 ($):</label><input type="number" id="new-salary" value="105000" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-teal-800 mt-2 mb-1">公司 Match (%):</label><input type="number" id="new-match" value="3" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                    </div>
+                    <button onclick="calculateCompensation()" class="w-full bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm">計算總報酬與提撥差距</button>
+                    <div id="calc-result" class="hidden mt-4 p-4 bg-slate-900 text-white rounded-xl text-xs"><p id="res-curr-total"></p><p id="res-new-total" class="mt-1"></p><p id="res-analysis" class="mt-2 pt-2 border-t border-slate-800"></p></div>
+                `;
+            } else if (currentStation === 2) {
+                scenarioBox.innerHTML = `
+                    <div class="flex items-center space-x-2"><span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">第二站 ｜ 安居生活城</span><span class="text-slate-400 text-xs">｜ 決策偏好剖析</span></div>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4">考慮購屋時，您最在意哪一項指標？</h3>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">買房涉及頭期款、月付金以及長期維護成本。您的評估重心在哪裡？</p>
+                    <div class="mt-6 space-y-3">
+                        <button onclick="chooseOption2('A')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">A. 盡可能拉高頭期款壓低每月房貸月付金</button>
+                        <button onclick="chooseOption2('B')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">B. 保留現金預備金，全面評估 PITI 加計維護與 HOA 成本</button>
+                    </div>
+                    <div id="result-box-2" class="hidden mt-6 pt-6 border-t border-slate-100">
+                        <h4 id="res-title-2" class="font-bold text-teal-900 text-lg"></h4>
+                        <p id="res-desc-2" class="text-slate-600 text-sm mt-2"></p>
+                        <div class="mt-4 bg-teal-50 p-4 rounded-2xl border border-teal-100">
+                            <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">📖 決策維度解析</span>
+                            <p id="res-knowledge-2" class="text-xs text-teal-950 mt-1 font-medium leading-relaxed"></p>
+                        </div>
+                    </div>
+                `;
+                calcBox.innerHTML = `
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">🧮 購屋總持有成本（PITI + 維護費）計算器</h3>
+                    <p class="text-slate-500 text-xs mb-4">註：PITI 通常包含本金、利息、房屋稅與房屋保險；房屋維修、HOA 及 PMI 應另外獨立列示評估。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-2"><label class="block text-xs font-medium text-slate-600">房屋總價 ($):</label><input type="number" id="home-price" value="400000" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-slate-600">頭期款 (%):</label><input type="number" id="down-pct" value="20" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl space-y-2"><label class="block text-xs font-medium text-teal-800">年房屋稅 ($):</label><input type="number" id="property-tax" value="4800" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-teal-800">年房屋保險 ($):</label><input type="number" id="home-insurance" value="1500" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-teal-800">月維修/HOA預備金 ($):</label><input type="number" id="maintenance" value="300" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                    </div>
+                    <button onclick="calculateHousing()" class="w-full bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm">計算 PITI 與實際居住總支出</button>
+                    <div id="calc-result-housing" class="hidden mt-4 p-4 bg-slate-900 text-white rounded-xl text-xs"><p id="res-total-piti" class="font-bold text-teal-300"></p></div>
+                `;
+            } else if (currentStation === 3) {
+                scenarioBox.innerHTML = `
+                    <div class="flex items-center space-x-2"><span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">第三站 ｜ 下一代學院</span><span class="text-slate-400 text-xs">｜ 目標排序偏好</span></div>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4">在教育金籌備與自身退休金之間，您的優先順序為何？</h3>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">父母希望給孩子最好的教育，但財務資源有限。不同的配置策略反映了不同的家庭目標排序。</p>
+                    <div class="mt-6 space-y-3">
+                        <button onclick="chooseOption3('A')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">A. 教育金優先：盡可能善用 529 帳戶為孩子存足大學學費</button>
+                        <button onclick="chooseOption3('B')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">B. 退休與現金流優先：確保自身退休無虞後，再彈性規劃 529 與獎學金</button>
+                    </div>
+                    <div id="result-box-3" class="hidden mt-6 pt-6 border-t border-slate-100">
+                        <h4 id="res-title-3" class="font-bold text-teal-900 text-lg"></h4>
+                        <p id="res-desc-3" class="text-slate-600 text-sm mt-2"></p>
+                        <div class="mt-4 bg-teal-50 p-4 rounded-2xl border border-teal-100">
+                            <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">📖 決策維度解析</span>
+                            <p id="res-knowledge-3" class="text-xs text-teal-950 mt-1 font-medium leading-relaxed"></p>
+                        </div>
+                    </div>
+                `;
+                calcBox.innerHTML = `
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">🧮 529 教育金動態複利試算器</h3>
+                    <p class="text-slate-500 text-xs mb-4">系統會依據您輸入的現有年齡與預計上大學年齡（動態計算距離年數）來試算複利成果。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl space-y-2"><label class="block text-xs font-medium text-slate-600">孩子目前年齡 (歲):</label><input type="number" id="child-age" value="5" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-slate-600">預計上大學年齡 (歲):</label><input type="number" id="college-age" value="18" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl space-y-2"><label class="block text-xs font-medium text-teal-800">每月投入金額 ($):</label><input type="number" id="monthly-saving" value="300" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-teal-800">預估年化報酬率 (%):</label><input type="number" id="edu-return" value="7" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                    </div>
+                    <button onclick="calculateEducation()" class="w-full bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm">計算教育金累積總額</button>
+                    <div id="calc-result-edu" class="hidden mt-4 p-4 bg-slate-900 text-white rounded-xl text-xs"><p id="res-edu-total" class="font-bold text-teal-300"></p></div>
+                `;
+            } else if (currentStation === 4) {
+                scenarioBox.innerHTML = `
+                    <div class="flex items-center space-x-2"><span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">第四站 ｜ 退休自由灣</span><span class="text-slate-400 text-xs">｜ 提領與風險偏好</span></div>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4">對於退休後的提領策略與市場風險，您的態度是？</h3>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">4% 法則僅是歷史經驗形成的規劃參考，並非適用所有退休年期的保證答案。面對市場波動與長壽風險，您傾向如何佈局？</p>
+                    <div class="mt-6 space-y-3">
+                        <button onclick="chooseOption4('A')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">A. 積極投資與固定比例提領，追求資產成長但願承擔市場順序風險</button>
+                        <button onclick="chooseOption4('B')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">B. 建立 Tax diversification 與年金保障，重視現金流穩定與抗跌防禦</button>
+                    </div>
+                    <div id="result-box-4" class="hidden mt-6 pt-6 border-t border-slate-100">
+                        <h4 id="res-title-4" class="font-bold text-teal-900 text-lg"></h4>
+                        <p id="res-desc-4" class="text-slate-600 text-sm mt-2"></p>
+                        <div class="mt-4 bg-teal-50 p-4 rounded-2xl border border-teal-100">
+                            <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">📖 決策維度解析</span>
+                            <p id="res-knowledge-4" class="text-xs text-teal-950 mt-1 font-medium leading-relaxed"></p>
+                        </div>
+                    </div>
+                `;
+                calcBox.innerHTML = `
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">🧮 退休規劃參考（4% 提領法則試算）</h3>
+                    <p class="text-slate-500 text-xs mb-4">註：此計算為規劃參考，實際退休年期需同步考量通膨、醫療及報酬順序風險。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl"><label class="block text-xs font-medium text-slate-600 mb-1">退休總資產 ($):</label><input type="number" id="retirement-assets" value="1000000" class="w-full p-2 border rounded-lg text-sm bg-white"><label class="block text-xs font-medium text-slate-600 mt-2 mb-1">預計提領率 (%):</label><input type="number" id="withdrawal-rate" value="4" step="0.1" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl"><label class="block text-xs font-medium text-teal-800 mb-1">每月預估開銷 ($):</label><input type="number" id="monthly-expense" value="5000" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                    </div>
+                    <button onclick="calculateRetirement()" class="w-full bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm">計算資產提領與現金流</button>
+                    <div id="calc-result-retire" class="hidden mt-4 p-4 bg-slate-900 text-white rounded-xl text-xs"><p id="res-retire-analysis" class="font-bold text-teal-300"></p></div>
+                `;
+            } else if (currentStation === 5) {
+                scenarioBox.innerHTML = `
+                    <div class="flex items-center space-x-2"><span class="bg-teal-100 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">第五站 ｜ 財富傳承島</span><span class="text-slate-400 text-xs">｜ 傳承規劃偏好</span></div>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4">面對身後資產安排，您的規劃考量為何？</h3>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">遺產認證（Probate）費用與時間因州別、資產結構而異，且信託必須妥善移轉資產才能發揮效用。</p>
+                    <div class="mt-6 space-y-3">
+                        <button onclick="chooseOption5('A')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">A. 優先透過遺囑與指定受益人處理，暫不考慮設立信託</button>
+                        <button onclick="chooseOption5('B')" class="w-full text-left p-4 rounded-2xl border-2 border-slate-100 hover:border-teal-500 transition text-sm font-medium">B. 評估設立可撤銷生前信託，並確實將資產過戶至信託名下以避開 Probate</button>
+                    </div>
+                    <div id="result-box-5" class="hidden mt-6 pt-6 border-t border-slate-100">
+                        <h4 id="res-title-5" class="font-bold text-teal-900 text-lg"></h4>
+                        <p id="res-desc-5" class="text-slate-600 text-sm mt-2"></p>
+                        <div class="mt-4 bg-teal-50 p-4 rounded-2xl border border-teal-100">
+                            <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">📖 決策維度解析</span>
+                            <p id="res-knowledge-5" class="text-xs text-teal-950 mt-1 font-medium leading-relaxed"></p>
+                        </div>
+                    </div>
+                `;
+                calcBox.innerHTML = `
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">🧮 遺產認證（Probate）情境估算器</h3>
+                    <p class="text-slate-500 text-xs mb-4">註：Probate 費用因州別與案件複雜度而異（通常估計為資產總額的 3% 至 7% 左右）。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl"><label class="block text-xs font-medium text-slate-600 mb-1">總資產估算值 ($):</label><input type="number" id="estate-value" value="800000" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl"><label class="block text-xs font-medium text-teal-800 mb-1">預估 Probate 成本率 (%):</label><input type="number" id="probate-rate" value="5" step="0.5" class="w-full p-2 border rounded-lg text-sm bg-white"></div>
+                    </div>
+                    <button onclick="calculateEstate()" class="w-full bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm">計算情境費用估算</button>
+                    <div id="calc-result-estate" class="hidden mt-4 p-4 bg-slate-900 text-white rounded-xl text-xs"><p id="res-probate-cost" class="font-bold text-red-400"></p></div>
+                `;
+            } else if (currentStation === 6) {
+                scenarioBox.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">隱藏區域 ｜ 台美跨境航道</span>
+                        <span class="text-slate-400 text-xs">｜ 跨境合規偏好</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4">面對台美雙邊資產與申報義務，您的處理原則為何？</h3>
+                    <p class="text-slate-600 text-sm mt-3 leading-relaxed">跨國家庭常面臨 FBAR、FATCA 與雙重稅務考量。合規申報與專業諮詢是確保資產安全的基石。</p>
+                    
+                    <div class="mt-6 space-y-3">
+                        <button onclick="chooseOption6('A')" class="w-full text-left p-4 rounded-2xl border-2 border-amber-100 hover:border-amber-500 transition text-sm font-medium">A. 自行處理，主要關注美國境內申報與日常所得</button>
+                        <button onclick="chooseOption6('B')" class="w-full text-left p-4 rounded-2xl border-2 border-amber-100 hover:border-amber-500 transition text-sm font-medium">B. 尋求跨國會計師與稅務律師協助，全面掌握年度最高總餘額與合規申報</button>
+                    </div>
+                    <div id="result-box-6" class="hidden mt-6 pt-6 border-t border-slate-100">
+                        <h4 id="res-title-6" class="font-bold text-amber-900 text-lg"></h4>
+                        <p id="res-desc-6" class="text-slate-600 text-sm mt-2"></p>
+                        <div class="mt-4 bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                            <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">📖 決策維度解析</span>
+                            <p id="res-knowledge-6" class="text-xs text-amber-950 mt-1 font-medium leading-relaxed"></p>
+                        </div>
+                    </div>
+                `;
+                calcBox.innerHTML = `
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">🧮 FBAR 海外金融帳戶合規檢視器</h3>
+                    <p class="text-slate-500 text-xs mb-4">請注意：FBAR 的 $10,000 門檻計算標準為「在整個日曆年度內，所有相關海外帳戶的**最高總餘額加總**」，而非僅看單一時間點或結餘。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl"><label class="block text-xs font-medium text-slate-600 mb-1">年度內海外帳戶「最高峰值」總額 ($):</label><input type="number" id="fbar-balance" value="15000" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white"></div>
+                        <div class="bg-amber-50/60 p-4 rounded-xl flex flex-col justify-center"><p class="text-xs text-amber-900 font-medium">💡 <b>FinCEN 規範提示：</b>只要全年任一時刻峰值合計超過 $10,000 美元即觸發申報義務（Form 114）。</p></div>
+                    </div>
+                    <button onclick="calculateFBAR()" class="w-full bg-amber-600 text-white font-bold py-2.5 rounded-xl text-sm">檢視 FBAR 申報義務</button>
+                    <div id="calc-result-fbar" class="hidden mt-4 p-4 bg-slate-900 text-white rounded-xl text-xs"><p id="res-fbar-analysis" class="font-bold text-amber-300"></p></div>
+                `;
+            }
+        }
+
+        function chooseOption1(opt) {
+            document.getElementById('result-box-1').classList.remove('hidden');
+            if (opt === 'A') {
+                document.getElementById('res-title-1').innerText = "👉 偏好特質：現金流與當下收益導向";
+                document.getElementById('res-desc-1').innerText = "您傾向快速反應帳面薪水的提升。建議同時確認新公司的 401(k) Company Match 與 Vesting 規定，避免因福利落差抵消了薪資漲幅。";
+                document.getElementById('res-knowledge-1').innerText = "【專業觀點】評估 offer 時應當計算「總報酬（Total Compensation）」，並留意舊帳戶 Rollover 與離職後的稅務影響。參考官方指引：IRS 關於退休帳戶與薪資扣除規定。";
+            } else if (opt === 'B') {
+                document.getElementById('res-title-1').innerText = "👉 偏好特質：全面總報酬與退休保障導向";
+                document.getElementById('res-desc-1').innerText = "您重視長遠資產累積與福利結構。這有助於避免因高薪但缺乏匹配福利而影響長期財富增長。";
+                document.getElementById('res-knowledge-1').innerText = "【專業觀點】2026 年 401(k) 員工貢獻上限已調整，善用雇主 Match 等同享有額外補貼。參考官方指引：IRS 退休計畫貢獻限額說明。";
+            } else {
+                document.getElementById('res-title-1').innerText = "👉 偏好特質：生活品質與職涯平衡導向";
+                document.getElementById('res-desc-1').innerText = "您將工作穩定性與生活品質列為首要考量。在財務規劃上，這意味著現金流穩定與壓力測試對您格外重要。";
+                document.getElementById('res-knowledge-1').innerText = "【專業觀點】在追求平衡之餘，也別忽略檢視整體薪資結構中的稅後收入與福利成本。";
+            }
+        }
+        function calculateCompensation() {
+            const curr = parseFloat(document.getElementById('curr-salary').value) || 0;
+            const cm = parseFloat(document.getElementById('curr-match').value) || 0;
+            const nw = parseFloat(document.getElementById('new-salary').value) || 0;
+            const nm = parseFloat(document.getElementById('new-match').value) || 0;
+            const ct = curr + (curr * cm / 100);
+            const nt = nw + (nw * nm / 100);
+            document.getElementById('calc-result').classList.remove('hidden');
+            document.getElementById('res-curr-total').innerText = `現職預估總報酬 (含 Match): $${ct.toLocaleString()}`;
+            document.getElementById('res-new-total').innerText = `新工作預估總報酬 (含 Match): $${nt.toLocaleString()}`;
+            document.getElementById('res-analysis').innerText = `📈 總報酬差異: $${(nt - ct).toLocaleString()}。請務必進一步確認新公司的 Vesting 歸屬期長短與保費差異。`;
+        }
+
+        function chooseOption2(opt) {
+            document.getElementById('result-box-2').classList.remove('hidden');
+            if (opt === 'A') {
+                document.getElementById('res-title-2').innerText = "👉 偏好特質：低負債與降低月付金導向";
+                document.getElementById('res-desc-2').innerText = "您希望藉由較高頭期款減輕每月現金流負擔。需特別留意切勿因此清空緊急預備金，導致流動性風險。";
+                document.getElementById('res-knowledge-2').innerText = "【專業觀點】購屋後應確保仍有 3-6 個月以上的現金流防禦網。參考官方與房產實務建議：維持流動性以應對突發開銷。";
+            } else {
+                document.getElementById('res-title-2').innerText = "👉 偏好特質：現金流防禦與總成本導向";
+                document.getElementById('res-desc-2').innerText = "您採取高度穩健的策略，將 PITI、房屋稅、保險及維修預算全面納入考量，並保留安全預備金。";
+                document.getElementById('res-knowledge-2').innerText = "【專業觀點】真實居住成本往往高於單純房貸。妥善管理 PITI 與維修預備金能大幅降低安居壓力。";
+            }
+        }
+        function calculateHousing() {
+            const p = parseFloat(document.getElementById('home-price').value) || 0;
+            const dp = parseFloat(document.getElementById('down-pct').value) || 0;
+            const tax = parseFloat(document.getElementById('property-tax').value) || 0;
+            const ins = parseFloat(document.getElementById('home-insurance').value) || 0;
+            const maint = parseFloat(document.getElementById('maintenance').value) || 0;
+            const loan = p * (1 - dp / 100);
+            const pi = (loan * (0.065 / 12) * Math.pow(1 + 0.065 / 12, 360)) / (Math.pow(1 + 0.065 / 12, 360) - 1);
+            const total = pi + (tax / 12) + (ins / 12) + maint;
+            document.getElementById('calc-result-housing').classList.remove('hidden');
+            document.getElementById('res-total-piti').innerText = `🏠 每月預估 PITI + 維護總支出：$${Math.round(total).toLocaleString()} / 月 (其中本利 $${Math.round(pi).toLocaleString()})`;
+        }
+
+        function chooseOption3(opt) {
+            document.getElementById('result-box-3').classList.remove('hidden');
+            if (opt === 'A') {
+                document.getElementById('res-title-3').innerText = "👉 偏好特質：子女教育優先導向";
+                document.getElementById('res-desc-3').innerText = "您將下一代的高等教育資源放在重要順位。需留意 529 的合格支出限制，並確保父母自身的退休儲蓄不被嚴重擠壓。";
+                document.getElementById('res-knowledge-3').innerText = "【專業觀點】孩子可以透過獎學金或學貸完成學業，但退休生活無法貸款。目標排序需取得平衡。參考官方指引：IRS Publication 970 (Education Tax Benefits)。";
+            } else {
+                document.getElementById('res-title-3').innerText = "👉 偏好特質：全盤財務安全與目標排序導向";
+                document.getElementById('res-desc-3').innerText = "您採取「先照顧好自己退休，就是對孩子最好保護」的金律，並善用教育稅額抵免（AOTC/LLC）與 529 彈性配置。";
+                document.getElementById('res-knowledge-3').innerText = "【專業觀點】透過 IRS 規定的教育稅額抵免與 529 相互協調，能兼顧家庭現金流與長遠目標。參考官方指引：IRS Publication 970。";
+            }
+        }
+        function calculateEducation() {
+            const age = parseFloat(document.getElementById('child-age').value) || 0;
+            const collegeAge = parseFloat(document.getElementById('college-age').value) || 18;
+            const m = parseFloat(document.getElementById('monthly-saving').value) || 0;
+            const rate = parseFloat(document.getElementById('edu-return').value) || 7;
+
+            const years = Math.max(1, collegeAge - age);
+            const months = years * 12;
+            const monthlyRate = rate / 100 / 12;
+            const total = m * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+
+            document.getElementById('calc-result-edu').classList.remove('hidden');
+            document.getElementById('res-edu-total').innerText = `🎓 距離入學還有 ${years} 年，複利滾存預估總額：$${Math.round(total).toLocaleString()} (善用 529 增長免稅優勢)`;
+        }
+
+        function chooseOption4(opt) {
+            document.getElementById('result-box-4').classList.remove('hidden');
+            if (opt === 'A') {
+                document.getElementById('res-title-4').innerText = "👉 偏好特質：積極增長與彈性提領導向";
+                document.getElementById('res-desc-4').innerText = "您願意承擔較高的市場波動以追求資產成長。需特別留意報酬順序風險（Sequence of Returns Risk）對退休初期的影響。";
+                document.getElementById('res-knowledge-4').innerText = "【專業觀點】4% 法則為歷史經驗規劃參考而非保證。退休初期若逢大跌又持續提款，可能加速資產消耗。";
+            } else {
+                document.getElementById('res-title-4').innerText = "👉 偏好特質：多元防禦與現金流保證導向";
+                document.getElementById('res-desc-4').innerText = "您重視 Tax diversification 與保證收入，透過年金與多元帳戶降低長壽與市場風險。";
+                document.getElementById('res-knowledge-4').innerText = "【專業觀點】結合 Traditional、Roth 與年金能有效降低退休稅負壓力，並防範市場下檔風險。";
+            }
+        }
+        function calculateRetirement() {
+            const a = parseFloat(document.getElementById('retirement-assets').value) || 0;
+            const rate = parseFloat(document.getElementById('withdrawal-rate').value) || 4;
+            const e = parseFloat(document.getElementById('monthly-expense').value) || 0;
+            const annualWd = a * (rate / 100);
+            const monthlyWd = annualWd / 12;
+            document.getElementById('calc-result-retire').classList.remove('hidden');
+            document.getElementById('res-retire-analysis').innerText = `🏖️ 依 ${rate}% 規劃參考，每年安全提領額為 $${Math.round(annualWd).toLocaleString()} (約 $${Math.round(monthlyWd).toLocaleString()} /月) | 預估每月開銷: $${e.toLocaleString()} ${monthlyWd >= e ? '👍 現金流初步符合預期（請留意通膨與稅務影響）！' : '⚠️ 存在資金缺口，建議評估調整支出或延長累積期！'}`;
+        }
+
+        function chooseOption5(opt) {
+            document.getElementById('result-box-5').classList.remove('hidden');
+            if (opt === 'A') {
+                document.getElementById('res-title-5').innerText = "👉 偏好特質：簡化流程與依賴法定機制導向";
+                document.getElementById('res-desc-5').innerText = "您傾向採用基本遺囑與受益人指定。需注意若資產未妥善納入規劃，家人未來可能須面對 Probate 流程。";
+                document.getElementById('res-knowledge-5').innerText = "【專業觀點】Probate 成本與時間因州別、資產而異。遺囑雖能表達意願，但未必能完全省去法院程序。";
+            } else {
+                document.getElementById('res-title-5').innerText = "👉 偏好特質：主動資產保護與效率傳承導向";
+                document.getElementById('res-desc-5').innerText = "您重視資產交接的隱私與效率，透過生前信託（Trust）妥善移轉資產以避開 Probate。";
+                document.getElementById('res-knowledge-5').innerText = "【專業觀點】信託必須落實「資產過戶至信託名下（Funding the Trust）」才能發揮相應功能。建議諮詢遺產規劃律師。";
+            }
+        }
+        function calculateEstate() {
+            const v = parseFloat(document.getElementById('estate-value').value) || 0;
+            const rate = parseFloat(document.getElementById('probate-rate').value) || 5;
+            const cost = v * (rate / 100);
+            document.getElementById('calc-result-estate').classList.remove('hidden');
+            document.getElementById('res-probate-cost').innerText = `📜 依 ${rate}% 估算，若未妥善規劃而進入 Probate，潛在行政與法律成本約為：$${Math.round(cost).toLocaleString()}（實際費用因州別與資產複雜度而異）。`;
+        }
+
+        function chooseOption6(opt) {
+            document.getElementById('result-box-6').classList.remove('hidden');
+            if (opt === 'A') {
+                document.getElementById('res-title-6').innerText = "👉 偏好特質：自主申報與簡化跨境管理導向";
+                document.getElementById('res-desc-6').innerText = "您傾向自行處理稅務。面對台美雙邊法規，務必留意 FBAR 與 FATCA 的強制申報門檻。";
+                document.getElementById('res-knowledge-6').innerText = "【專業觀點】美國稅務居民採全球所得課稅，海外金融帳戶漏報將面臨嚴厲罰則。建議參閱 FinCEN 與 IRS 官方指引。";
+            } else {
+                document.getElementById('res-title-6').innerText = "👉 偏好特質：專業團隊協同與高度合規導向";
+                document.getElementById('res-desc-6').innerText = "您重視跨國合規與資產安全，透過專業 CPA 與稅務律師確保申報無虞。";
+                document.getElementById('res-knowledge-6').innerText = "【專業觀點】跨境資產涉及 FBAR、Form 3520 及稅額抵免（FTC），尋求合格跨境專家協助是最穩健的做法。";
+            }
+        }
+        function calculateFBAR() {
+            const bal = parseFloat(document.getElementById('fbar-balance').value) || 0;
+            document.getElementById('calc-result-fbar').classList.remove('hidden');
+            if (bal >= 10000) {
+                document.getElementById('res-fbar-analysis').innerText = `⚠️ 在整個日曆年度中，您的海外帳戶最高峰值總額曾達到 $${bal.toLocaleString()}，已超過 $10,000 美元門檻！依法必須如期向 FinCEN 申報 FBAR (Form 114)。`;
+            } else {
+                document.getElementById('res-fbar-analysis').innerText = `✅ 依輸入數值，未達 $10,000 美元強制申報門檻，但仍須留意是否觸發 FATCA (Form 8938) 或者其他資產申報規定。`;
+            }
+        }
+
+        // 初始化預設載入第一站
+        switchStation(1);
+    </script>
+</body>
+</html>
