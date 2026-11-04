@@ -1,20 +1,44 @@
+// 載入 Supabase SDK 用於前台讀取
+const SUPABASE_URL = "https://nnzknvhyfyfvwcvzsehg.supabase.co";
+const SUPABASE_KEY = "sb_publishable_8YUNF2yAUi_jH5oLYeTxjQ_XfKA1Ezh";
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
 const categoryNames={retirement:"退休理財規劃",education:"教育基金與子女規劃","business-tax":"生意與稅務規劃",legacy:"遺產傳承與資產保護",market:"市場觀察與財經知識",resources:"課程與其他素材"};
 let articleData=[];
+
 async function initLibrary(){
  const grid=document.getElementById("articleGrid"); if(!grid)return;
- try{const r=await fetch("articles.json");articleData=await r.json();renderArticles();}
- catch(e){grid.innerHTML="<p>文章目錄載入失敗，請重新整理頁面。</p>";}
+ try{
+  if(supabaseClient){
+    // 優先從 Supabase 雲端資料庫讀取文章
+    const { data, error } = await supabaseClient.from('articles').select('*').order('id', { ascending: false });
+    if(!error && data && data.length > 0){
+      articleData = data;
+      renderArticles();
+      return;
+    }
+  }
+  // 備份機制：若雲端無資料則讀取原本的 static articles.json
+  const r=await fetch("articles.json");
+  articleData=await r.json();
+  renderArticles();
+ }
+ catch(e){
+  grid.innerHTML="<p>文章目錄載入失敗，請重新整理頁面。</p>";
+ }
 }
+
 function renderArticles(){
  const q=(document.getElementById("searchInput")?.value||"").trim().toLowerCase();
  const c=document.getElementById("categoryFilter")?.value||"";
  const list=articleData.filter(a=>(!c||a.category===c)&&(!q||(a.title+" "+a.excerpt+" "+a.source).toLowerCase().includes(q)));
  const grid=document.getElementById("articleGrid");
- grid.innerHTML=list.map(a=>`<div class="article-card"><span class="tag">${categoryNames[a.category]||"知識素材"} · ${a.kind}</span><h3>${escapeHTML(a.title)}</h3><p>${escapeHTML(a.excerpt||"原始文件已匯入，等待內容審閱。")}</p><div class="card-foot"><span>${a.paragraphs} 段 · 待審閱</span><a href="articles/${encodeURIComponent(a.slug)}.html">閱讀原稿 →</a></div></div>`).join("")||"<p>找不到符合條件的文章。</p>";
+ grid.innerHTML=list.map(a=>`<div class="article-card"><span class="tag">${categoryNames[a.category]||"知識素材"} · ${a.kind||"文章"}</span><h3>${escapeHTML(a.title)}</h3><p>${escapeHTML(a.excerpt||"原始文件已匯入，等待內容審閱。")}</p><div class="card-foot"><span>${a.paragraphs||10} 段 · 雲端同步</span><a href="articles/${encodeURIComponent(a.slug||'post')}.html">閱讀原稿 →</a></div></div>`).join("")||"<p>找不到符合條件的文章。</p>";
  document.getElementById("resultCount").textContent=`顯示 ${list.length} / ${articleData.length} 份文件`;
 }
-function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function escapeHTML(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
 document.getElementById("searchInput")?.addEventListener("input",renderArticles);
 document.getElementById("categoryFilter")?.addEventListener("change",renderArticles);
 initLibrary();
