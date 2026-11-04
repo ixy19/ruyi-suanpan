@@ -51,36 +51,35 @@
   .vision-points {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
     margin: 24px 0;
   }
   .vision-point-item {
     display: grid;
     grid-template-columns: 140px 1fr;
-    align-items: stretch;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    overflow: hidden;
+    gap: 16px;
+    align-items: start;
     font-size: 14px;
+    color: var(--ink);
+    background: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
   }
-  .vision-point-tag {
-    background: #e0f2fe;
-    color: #0369a1;
-    padding: 12px 14px;
-    font-size: 13px;
-    font-weight: 700;
+  .vision-point-title {
     display: flex;
     align-items: center;
     gap: 6px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .vision-point-title span {
+    color: var(--gold);
+    font-size: 16px;
   }
   .vision-point-desc {
-    padding: 12px 16px;
     color: var(--muted);
-    font-size: 13.5px;
-    line-height: 1.5;
-    display: flex;
-    align-items: center;
+    line-height: 1.6;
   }
   .article-modal {
     position: fixed;
@@ -124,7 +123,7 @@
   @media(max-width: 768px) {
     .vision-grid { grid-template-columns: 1fr; gap: 24px; }
     .vision-section { padding: 24px; }
-    .vision-point-item { grid-template-columns: 1fr; }
+    .vision-point-item { grid-template-columns: 1fr; gap: 6px; }
     .article-modal-content { padding: 24px; }
   }
 </style>
@@ -156,20 +155,20 @@
       <p>許多家庭辛勤工作，卻經常在無形中面臨三大痛點：</p>
       <div class="vision-points">
         <div class="vision-point-item">
-          <div class="vision-point-tag"><span>✦</span> 通膨與資產侵蝕</div>
+          <div class="vision-point-title"><span>✦</span> 通膨與資產侵蝕</div>
           <div class="vision-point-desc">銀行低利與高物價壓力，讓辛苦存下的積蓄默默縮水。</div>
         </div>
         <div class="vision-point-item">
-          <div class="vision-point-tag"><span>✦</span> 跨境稅務雷區</div>
+          <div class="vision-point-title"><span>✦</span> 跨境稅務雷區</div>
           <div class="vision-point-desc">台美兩地不同的稅制、資產移轉與申報規定，一不小心就容易踩雷。</div>
         </div>
         <div class="vision-point-item">
-          <div class="vision-point-tag"><span>✦</span> 家庭保障缺口</div>
+          <div class="vision-point-title"><span>✦</span> 家庭保障缺口</div>
           <div class="vision-point-desc">從退休現金流、子女教育基金到長遠的長照與資產傳承規劃。</div>
         </div>
       </div>
       <p>「Stay Ahead. Stay Protected.」不只是口號，更是我們希望透過淺顯易懂的知識、互動遊戲與專業文章，陪您提前看懂規則、守護一生心血的初衷。</p>
-   
+      <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽 67 篇專欄文章 →</a>
     </div>
     <div class="hero-art" style="text-align: center; background: var(--gold-light); border-color: rgba(197,160,89,0.3);">
       <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念" style="max-height: 380px; object-fit: cover;">
@@ -204,11 +203,25 @@
 <!-- 文章閱讀彈窗容器 -->
 <div id="articleModalContainer"></div>
 
-<!-- 財務問答中心 -->
-<section class="section qa-section" id="qa"><div class="section-heading"><div><div class="eyebrow">ASK · LEARN · UNDERSTAND</div><h2>財務問答中心</h2></div><p>把不容易開口的財務問題，變成可以好好理解的對話。</p></div>
-<div class="qa-layout"><div class="qa-intro"><h3>你的問題值得被認真回答。</h3><p>可以匿名提出問題，並選擇退休、教育、稅務或傳承等分類。此版本先提供本機示範介面；正式公開收件與管理者回覆，需要連接安全的資料庫與後台。</p><ul><li>匿名提問欄位</li><li>主題分類與關鍵字</li><li>精選問答展示規劃</li></ul></div>
-<form id="qaForm" class="panel"><label>問題分類<select id="qaCategory"><option>退休理財</option><option>教育基金</option><option>生意與稅務</option><option>遺產傳承</option><option>其他</option></select></label><label>你的問題<textarea id="qaQuestion" rows="4" required placeholder="請描述你想了解的財務問題…"></textarea></label><label class="checkline"><input type="checkbox" id="qaAnonymous" checked> 匿名顯示</label><button class="btn primary" type="submit">儲存示範問題</button><p class="form-note" id="qaMessage">示範資料只儲存在目前瀏覽器，不會傳送給網站管理者。</p></form></div>
-<div id="qaList" class="qa-list"></div>
+<!-- 財務問答中心 (改為溫馨專屬信箱引導區，避免與底部聯絡區塊重複) -->
+<section class="section qa-section" id="qa">
+<div class="section-heading">
+  <div><div class="eyebrow">ASK · LEARN · UNDERSTAND</div><h2>財務問答中心</h2></div>
+  <p>把不容易開口的財務問題，變成可以好好理解的對話。</p>
+</div>
+<div class="qa-layout" style="grid-template-columns: 1fr;">
+  <div class="qa-intro" style="text-align: center; max-width: 700px; margin: 0 auto; padding: 40px; background: #fff; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+    <span style="font-size: 40px; display: block; margin-bottom: 12px;">✉️</span>
+    <h3 style="color: var(--navy); font-size: 22px; margin-bottom: 12px;">你有關於台美理財、退休或保障的疑問嗎？</h3>
+    <p style="color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 24px;">
+      每個家庭的財務狀況都是獨一無二的。如果您有任何不容易開口、或是想進一步深入了解的跨境財務與保障規劃問題，歡迎隨時直接與創辦人聯繫：
+    </p>
+    <a href="mailto:ijuyehixy19@gmail.com?subject=茹意算盤網站讀者提問" class="btn primary" style="display: inline-block; padding: 14px 32px; font-size: 16px;">
+      發送 Email 聯繫 I-Ju Yeh →
+    </a>
+    <p style="font-size: 13px; color: var(--muted); margin-top: 16px;">您的來信將直接寄往 <strong>ijuyehixy19@gmail.com</strong>，我們將竭誠為您解答。</p>
+  </div>
+</div>
 </section>
 
 <!-- 茹意理財遊戲中心 (精簡為 2 個核心遊戲) -->
@@ -249,7 +262,7 @@
   </div>
 </div>
 
-<!-- 遊戲實際互動畫面區塊 -->
+<!-- 遊戲實際互動畫面區塊 (支援財富島與保庇宮 iframe 嵌入) -->
 <div id="gameArea" class="game-iframe-box hidden" aria-live="polite">
   <div style="background: var(--navy); color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
     <span id="activeGameTitle" style="font-weight: bold; font-size: 14px;">遊戲進行中</span>
