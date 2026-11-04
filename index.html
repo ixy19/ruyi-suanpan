@@ -120,6 +120,41 @@
   .article-modal-close:hover { background: #e2e8f0; color: var(--navy); }
   .article-modal-title { color: var(--navy); font-size: 22px; margin-bottom: 16px; line-height: 1.4; }
   .article-modal-body { color: var(--ink); font-size: 15px; line-height: 1.8; white-space: pre-wrap; }
+  
+  /* 分頁按鈕樣式 */
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+  }
+  .pagination-btn {
+    background: #fff;
+    border: 1.5px solid var(--line);
+    color: var(--navy);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pagination-btn:hover:not(:disabled) {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .pagination-btn.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
   @media(max-width: 768px) {
     .vision-grid { grid-template-columns: 1fr; gap: 24px; }
     .vision-section { padding: 24px; }
@@ -138,7 +173,6 @@
   <a href="#games">理財遊戲中心</a>
   <a href="#about">關於創辦人</a>
 </nav>
-<!-- 已拿掉右上角語言切換按鈕 -->
 </header>
 <main>
 <section class="hero">
@@ -174,16 +208,16 @@
         </div>
       </div>
       <p>「Stay Ahead. Stay Protected.」不只是口號，更是我們希望透過淺顯易懂的知識、互動遊戲與專業文章，陪您提前看懂規則、守護一生心血的初衷。</p>
-      
+      <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽專欄文章 →</a>
     </div>
     <div class="hero-art" style="text-align: center; background: var(--gold-light); border-color: rgba(197,160,89,0.3);">
       <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念" style="max-height: 380px; object-fit: cover;">
-      <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh <small>創辦人 ｜ 跨國財務教育與規劃</small></div>
+      <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh (葉意茹)<small>創辦人 ｜ 跨國財務教育與規劃</small></div>
     </div>
   </div>
 </section>
 
-<!-- 茹意知識文章庫 -->
+<!-- 茹意知識文章庫 (內建每頁 12 篇分頁機制) -->
 <section class="section library-section" id="library">
 <div class="section-heading">
   <div><div class="eyebrow">KNOWLEDGE LIBRARY</div><h2>茹意知識文章庫</h2></div>
@@ -201,9 +235,10 @@
     <option value="resources">課程與其他素材</option>
   </select>
 </div>
-<div class="library-status"><span class="status-dot"></span> 知識庫連線正常 · 隨時為您提供專業內容</div>
+<div class="library-status"><span class="status-dot"></span> 知識庫連線正常 · 每頁固定顯示 12 篇專欄文章</div>
 <div id="articleGrid" class="article-grid"><div class="loading">正在載入文章目錄…</div></div>
 <div id="resultCount" class="result-count"></div>
+<div id="paginationContainer" class="pagination-container"></div>
 </section>
 
 <!-- 文章閱讀彈窗容器 -->
@@ -322,21 +357,35 @@
     document.body.style.overflow = "auto";
   }
 
+  // 每頁顯示 12 篇與分頁邏輯
+  let currentPage = 1;
+  const itemsPerPage = 12;
+
   document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       if (typeof articles !== 'undefined' && articles.length > 0) {
         window.renderArticles = function(list) {
           const grid = document.getElementById('articleGrid');
           const countDiv = document.getElementById('resultCount');
+          const paginationDiv = document.getElementById('paginationContainer');
           if (!grid) return;
 
           if (list.length === 0) {
             grid.innerHTML = '<div class="no-results">沒有找到符合條件的文章。</div>';
             if (countDiv) countDiv.textContent = '找到 0 篇文章';
+            if (paginationDiv) paginationDiv.innerHTML = '';
             return;
           }
 
-          grid.innerHTML = list.map(art => `
+          // 計算總頁數
+          const totalPages = Math.ceil(list.length / itemsPerPage);
+          if (currentPage > totalPages) currentPage = 1;
+
+          // 切割當前頁面的文章
+          const start = (currentPage - 1) * itemsPerPage;
+          const currentItems = list.slice(start, start + itemsPerPage);
+
+          grid.innerHTML = currentItems.map(art => `
             <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(art.content || art.excerpt).replace(/"/g, '&quot;')})">
               <span class="tag">${getCategoryName(art.category)}</span>
               <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
@@ -349,9 +398,53 @@
           `).join('');
 
           if (countDiv) {
-            countDiv.textContent = `顯示 ${list.length} 篇文章（共 ${articles.length} 篇）`;
+            countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + itemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${articles.length} 篇）`;
+          }
+
+          // 渲染分頁按鈕
+          if (paginationDiv) {
+            if (totalPages <= 1) {
+              paginationDiv.innerHTML = '';
+              return;
+            }
+
+            let paginationHtml = `<button class="pagination-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>上一頁</button>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+              if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                paginationHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+              } else if (i === currentPage - 2 || i === currentPage + 2) {
+                paginationHtml += `<span style="padding: 0 4px; color: var(--muted);">…</span>`;
+              }
+            }
+
+            paginationHtml += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>下一頁</button>`;
+            paginationDiv.innerHTML = paginationHtml;
           }
         };
+
+        window.changePage = function(page) {
+          currentPage = page;
+          // 當使用搜尋或篩選時，重新渲染目前過濾後的文章列表
+          const searchInput = document.getElementById('searchInput');
+          const categoryFilter = document.getElementById('categoryFilter');
+          const query = searchInput ? searchInput.value.toLowerCase() : '';
+          const cat = categoryFilter ? categoryFilter.value : '';
+
+          let filtered = articles.filter(art => {
+            const matchCat = !cat || art.category === cat;
+            const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.content && art.content.toLowerCase().includes(query)) || (art.excerpt && art.excerpt.toLowerCase().includes(query));
+            return matchCat && matchQuery;
+          });
+
+          renderArticles(filtered);
+          document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 監聽搜尋或分類變動時自動重置回第 1 頁
+        document.getElementById('searchInput')?.addEventListener('input', () => { currentPage = 1; });
+        document.getElementById('categoryFilter')?.addEventListener('change', () => { currentPage = 1; });
+
         renderArticles(articles);
       }
     }, 500);
