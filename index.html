@@ -55,16 +55,32 @@
     margin: 24px 0;
   }
   .vision-point-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: stretch;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
     font-size: 14px;
-    color: var(--ink);
-    font-weight: 600;
   }
-  .vision-point-item span {
-    color: var(--gold);
-    font-size: 16px;
+  .vision-point-tag {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .vision-point-desc {
+    padding: 12px 16px;
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
   }
   .article-modal {
     position: fixed;
@@ -108,6 +124,7 @@
   @media(max-width: 768px) {
     .vision-grid { grid-template-columns: 1fr; gap: 24px; }
     .vision-section { padding: 24px; }
+    .vision-point-item { grid-template-columns: 1fr; }
     .article-modal-content { padding: 24px; }
   }
 </style>
@@ -115,7 +132,6 @@
 <body>
 <header class="site-header">
 <a class="brand" href="index.html"><span class="brand-mark">如</span><span>茹意算盤<small>Stay Ahead, Stay Protected.</small></span></a>
-<!-- 導覽列已乾淨移除多餘的文章庫按鈕 -->
 <nav><a href="#vision" data-zh="專欄理念" data-en="Vision">專欄理念</a><a href="#qa" data-zh="財務問答" data-en="Q&A">財務問答</a><a href="#games" data-zh="理財遊戲" data-en="Financial Games">理財遊戲中心</a><a href="#about" data-zh="關於創辦人" data-en="About">關於創辦人</a></nav>
 <button class="lang-toggle" id="langToggle" aria-label="切換語言">EN</button>
 </header>
@@ -139,11 +155,21 @@
       <p>身為身處美國印第安納州、同時連結台灣與美國的跨境家庭與專業工作者，我深切體會到台美雙棲家庭在財務與生活上常面臨的獨特挑戰。</p>
       <p>許多家庭辛勤工作，卻經常在無形中面臨三大痛點：</p>
       <div class="vision-points">
-        <div class="vision-point-item"><span>✦</span> <strong>通膨與資產侵蝕：</strong> 銀行低利與高物價壓力，讓辛苦存下的積蓄默默縮水。</div>
-        <div class="vision-point-item"><span>✦</span> <strong>跨境稅務雷區：</strong> 台美兩地不同的稅制、資產移轉與申報規定，一不小心就容易踩雷。</div>
-        <div class="vision-point-item"><span>✦</span> <strong>家庭保障缺口：</strong> 從退休現金流、子女教育基金到長遠的長照與資產傳承規劃。</div>
+        <div class="vision-point-item">
+          <div class="vision-point-tag"><span>✦</span> 通膨與資產侵蝕</div>
+          <div class="vision-point-desc">銀行低利與高物價壓力，讓辛苦存下的積蓄默默縮水。</div>
+        </div>
+        <div class="vision-point-item">
+          <div class="vision-point-tag"><span>✦</span> 跨境稅務雷區</div>
+          <div class="vision-point-desc">台美兩地不同的稅制、資產移轉與申報規定，一不小心就容易踩雷。</div>
+        </div>
+        <div class="vision-point-item">
+          <div class="vision-point-tag"><span>✦</span> 家庭保障缺口</div>
+          <div class="vision-point-desc">從退休現金流、子女教育基金到長遠的長照與資產傳承規劃。</div>
+        </div>
       </div>
       <p>「Stay Ahead. Stay Protected.」不只是口號，更是我們希望透過淺顯易懂的知識、互動遊戲與專業文章，陪您提前看懂規則、守護一生心血的初衷。</p>
+      <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽 67 篇專欄文章 →</a>
     </div>
     <div class="hero-art" style="text-align: center; background: var(--gold-light); border-color: rgba(197,160,89,0.3);">
       <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念" style="max-height: 380px; object-fit: cover;">
@@ -223,7 +249,7 @@
   </div>
 </div>
 
-<!-- 遊戲實際互動畫面區塊 (支援財富島與保庇宮 iframe 嵌入) -->
+<!-- 遊戲實際互動畫面區塊 -->
 <div id="gameArea" class="game-iframe-box hidden" aria-live="polite">
   <div style="background: var(--navy); color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
     <span id="activeGameTitle" style="font-weight: bold; font-size: 14px;">遊戲進行中</span>
@@ -240,7 +266,6 @@
 <footer class="footer"><div><strong>茹意算盤</strong><small>Stay Ahead, Stay Protected.</small></div><div class="footer-links"><a href="privacy.html">隱私權政策</a><a href="disclaimer.html">教育與免責聲明</a><a href="mailto:ijuyehixy19@gmail.com">聯絡我們</a></div><p>© 2026 Ruyi Suanpan. All rights reserved.</p></footer>
 <script src="app.js"></script>
 <script>
-  // 文章點擊閱讀彈窗邏輯
   window.openArticleModal = function(title, content) {
     const modalContainer = document.getElementById("articleModalContainer");
     modalContainer.innerHTML = `
@@ -295,7 +320,6 @@
     }, 500);
   });
 
-  // 遊戲中心互動邏輯 (台美探索島與保庇宮)
   const gameDataConfig = {
     island: {
       title: "台美財富探索島",
