@@ -22,12 +22,61 @@
     border: none;
     background: #fdf8ef;
   }
+  /* 創辦人專欄理念區塊樣式 */
+  .vision-section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 48px;
+    max-width: 1100px;
+    margin: 0 auto 80px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  .vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .vision-copy h2 {
+    color: var(--navy);
+    font-size: 28px;
+    margin: 0 0 12px;
+  }
+  .vision-copy p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+  .vision-points {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .vision-point-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .vision-point-item span {
+    color: var(--gold);
+    font-size: 16px;
+  }
+  @media(max-width: 768px) {
+    .vision-grid { grid-template-columns: 1fr; gap: 24px; }
+    .vision-section { padding: 24px; }
+  }
 </style>
 </head>
 <body>
 <header class="site-header">
 <a class="brand" href="index.html"><span class="brand-mark">如</span><span>茹意算盤<small>Stay Ahead, Stay Protected.</small></span></a>
-<nav><a href="#topics" data-zh="知識主題" data-en="Topics">知識主題</a><a href="#library" data-zh="文章資料庫" data-en="Knowledge Library">文章資料庫</a><a href="#qa" data-zh="財務問答" data-en="Q&A">財務問答</a><a href="#games" data-zh="理財遊戲" data-en="Financial Games">理財遊戲中心</a><a href="#about" data-zh="關於創辦人" data-en="About">關於創辦人</a></nav>
+<nav><a href="#vision" data-zh="專欄理念" data-en="Vision">專欄理念</a><a href="#library" data-zh="文章資料庫" data-en="Knowledge Library">文章資料庫</a><a href="#qa" data-zh="財務問答" data-en="Q&A">財務問答</a><a href="#games" data-zh="理財遊戲" data-en="Financial Games">理財遊戲中心</a><a href="#about" data-zh="關於創辦人" data-en="About">關於創辦人</a></nav>
 <button class="lang-toggle" id="langToggle" aria-label="切換語言">EN</button>
 </header>
 <main>
@@ -35,24 +84,36 @@
 <div class="hero-copy"><div class="eyebrow">TAIWAN × UNITED STATES · FINANCIAL EDUCATION</div>
 <h1>讓財務知識，<br><em>成為安心生活的力量。</em></h1>
 <p>陪伴台美家庭與企業主，看懂退休、教育、稅務與財富傳承，做出更有準備的選擇。</p>
-<div class="hero-actions"><a class="btn primary" href="#topics">探索知識主題</a><a class="btn secondary" href="#games">前往理財遊戲中心</a></div>
+<div class="hero-actions"><a class="btn primary" href="#library">探索知識文章庫</a><a class="btn secondary" href="#games">前往理財遊戲中心</a></div>
 <div class="hero-proof"><span>繁體中文為主</span><span>English support</span><span>台美視角</span></div></div>
 <div class="hero-art"><img src="assets/founder-illustration.jpg" alt="茹意算盤創辦人品牌人物插畫"><div class="art-caption">I-Ju Yeh <small>Financial Education · Taiwan &amp; U.S.</small></div></div>
 </section>
 <section class="trust-strip"><span>RETIREMENT</span><span>EDUCATION</span><span>BUSINESS TAX</span><span>LEGACY PLANNING</span></section>
 
-<section class="section" id="topics">
-<div class="section-heading"><div><div class="eyebrow">EXPLORE THE KNOWLEDGE</div><h2>四大財務知識主題</h2></div><p>從人生不同階段出發，建立看得懂、用得上的財務觀念。</p></div>
-<div class="topic-grid">
-<a class="topic-card" href="#library" data-topic="retirement"><span class="topic-count">31 份素材</span><h3>退休理財規劃</h3><span>探索相關內容 →</span></a>
-<a class="topic-card" href="#library" data-topic="education"><span class="topic-count">03 份素材</span><h3>教育基金與子女規劃</h3><span>探索相關內容 →</span></a>
-<a class="topic-card" href="#library" data-topic="business-tax"><span class="topic-count">05 份素材</span><h3>生意與稅務規劃</h3><span>探索相關內容 →</span></a>
-<a class="topic-card" href="#library" data-topic="legacy"><span class="topic-count">06 份素材</span><h3>遺產傳承與資產保護</h3><span>探索相關內容 →</span></a>
-<a class="topic-card" href="#library" data-topic="market"><span class="topic-count">19 份素材</span><h3>市場觀察與財經知識</h3><span>探索相關內容 →</span></a>
-<a class="topic-card" href="#library" data-topic="resources"><span class="topic-count">01 份素材</span><h3>課程與其他素材</h3><span>探索相關內容 →</span></a>
-</div></section>
+<!-- 創辦人的話 / 茹意專欄理念取代原本的四大主題區塊 -->
+<section class="section vision-section" id="vision">
+  <div class="vision-grid">
+    <div class="vision-copy">
+      <div class="eyebrow">FOUNDER'S VISION</div>
+      <h2>為什麼我們需要「茹意算盤」？</h2>
+      <p>身為身處美國印第安納州、同時連結台灣與美國的跨境家庭與專業工作者，我深切體會到台美雙棲家庭在財務與生活上常面臨的獨特挑戰。</p>
+      <p>許多家庭辛勤工作，卻經常在無形中面臨三大痛點：</p>
+      <div class="vision-points">
+        <div class="vision-point-item"><span>✦</span> <strong>通膨與資產侵蝕：</strong> 銀行低利與高物價壓力，讓辛苦存下的積蓄默默縮水。</div>
+        <div class="vision-point-item"><span>✦</span> <strong>跨境稅務雷區：</strong> 台美兩地不同的稅制、資產移轉與申報規定，一不小心就容易踩雷。</div>
+        <div class="vision-point-item"><span>✦</span> <strong>家庭保障缺口：</strong> 從退休現金流、子女教育基金到長遠的長照與資產傳承規劃。</div>
+      </div>
+      <p>「Stay Ahead. Stay Protected.」不只是口號，更是我們希望透過淺顯易懂的知識、互動遊戲與專業文章，陪您提前看懂規則、守護一生心血的初衷。</p>
+      <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽 67 篇專欄文章 →</a>
+    </div>
+    <div class="hero-art" style="text-align: center; background: var(--gold-light); border-color: rgba(197,160,89,0.3);">
+      <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念" style="max-height: 380px; object-fit: cover;">
+      <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh (葉意茹)<small>創辦人 ｜ 跨國財務教育與規劃</small></div>
+    </div>
+  </div>
+</section>
 
-<!-- 茹意知識文章庫 -->
+<!-- 茹意知識文章庫 (完整保留 67 篇文章與搜尋過濾) -->
 <section class="section library-section" id="library">
 <div class="section-heading">
   <div><div class="eyebrow">FROM YOUR KNOWLEDGE ARCHIVE</div><h2>茹意知識文章庫</h2></div>
@@ -172,7 +233,6 @@
         if(game.actionType === "link") {
           window.open(game.url, "_blank");
         } else {
-          // 直接用 iframe 完美載入原生的保庇宮完整網頁
           container.innerHTML = `<iframe src="${game.url}"></iframe>`;
           area.classList.remove("hidden");
           area.scrollIntoView({ behavior: 'smooth' });
