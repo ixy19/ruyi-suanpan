@@ -177,7 +177,7 @@
 <section class="hero">
 <div class="hero-copy"><div class="eyebrow">TAIWAN × UNITED STATES · FINANCIAL EDUCATION</div>
 <h1>讓財務知識，<br><em>成為安心生活的力量。</em></h1>
-<p>陪伴台美家庭與企業主，看懂退休、教育、稅務與財富傳承，做出更有準備的選擇。</p>
+<p>陪伴台美家庭與企業主, 看懂退休、教育、稅務與財富傳承, 做出更有準備的選擇。</p>
 <div class="hero-actions"><a class="btn primary" href="#library">探索知識文章庫</a><a class="btn secondary" href="#games">前往理財遊戲中心</a></div>
 <div class="hero-proof"><span>繁體中文專屬</span><span>台美跨境視角</span><span>專業理財教育</span></div></div>
 <div class="hero-art"><img src="assets/founder-illustration.jpg" alt="茹意算盤創辦人品牌人物插畫"><div class="art-caption">I-Ju Yeh <small>Financial Education · Taiwan &amp; U.S.</small></div></div>
@@ -222,7 +222,7 @@
   </div>
 </section>
 
-<!-- 茹意知識文章庫 -->
+<!-- 茹意知識文章庫 (已更新為 8 大分類單元) -->
 <section class="section library-section" id="library">
 <div class="section-heading">
   <div><div class="eyebrow">KNOWLEDGE LIBRARY</div><h2>茹意知識文章庫</h2></div>
@@ -231,13 +231,15 @@
 <div class="library-tools">
   <input id="searchInput" type="search" placeholder="搜尋文章標題或關鍵字…" aria-label="搜尋文章">
   <select id="categoryFilter" aria-label="分類篩選">
-    <option value="">全部主題</option>
-    <option value="retirement">退休理財規劃</option>
+    <option value="">全部主題（所有單元）</option>
+    <option value="insurance">美國保險</option>
     <option value="education">教育基金與子女規劃</option>
     <option value="business-tax">生意與稅務規劃</option>
     <option value="legacy">遺產傳承與資產保護</option>
+    <option value="events">定期講座資訊</option>
+    <option value="retirement">退休理財規劃</option>
     <option value="market">市場觀察與財經知識</option>
-    <option value="resources">課程與其他素材</option>
+    <option value="products">金融產品介紹</option>
   </select>
 </div>
 <div class="library-status"><span class="status-dot"></span> 知識庫連線正常 · 每頁固定顯示 12 篇專欄文章</div>
@@ -249,7 +251,7 @@
 <!-- 文章閱讀彈窗容器 -->
 <div id="articleModalContainer"></div>
 
-<!-- 財務問答中心 (已更新為最新溫馨引導文案) -->
+<!-- 財務問答中心 -->
 <section class="section qa-section" id="qa">
 <div class="section-heading">
   <div><div class="eyebrow">ASK · LEARN · UNDERSTAND</div><h2>財務問答中心</h2></div>
@@ -464,7 +466,7 @@
 
   const gameDataConfig = {
     island: {
-      title: "台美財富探索島",
+      title: "I-Ju Yeh 台美財富探索島",
       desc: "這是一個專為台美家庭設計的互動情境導覽。點擊下方按鈕將直接開啟探索島頁面，體驗跨國理財與資產配置決策。",
       actionType: "link",
       url: "台美財富探索島-.html"
