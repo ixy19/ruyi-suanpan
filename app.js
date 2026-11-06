@@ -39,7 +39,7 @@ function loadArticles() {
     });
 }
 
-// 渲染文章列表
+// 渲染文章列表（已修正：支援點擊開啟彈窗並完整顯示 art.content）
 function renderArticles(list) {
   const grid = document.getElementById('articleGrid');
   const countDiv = document.getElementById('resultCount');
@@ -51,17 +51,21 @@ function renderArticles(list) {
     return;
   }
 
-  grid.innerHTML = list.map(art => `
-    <article class="article-card">
-      <span class="tag">${escapeHtml(getCategoryName(art.category))}</span>
-      <h3>${escapeHtml(art.title)}</h3>
-      <p>${escapeHtml(art.summary || art.excerpt || '')}</p>
-      <div class="card-foot">
-        <span>閱讀時間約 3 分鐘</span>
-        <a href="#" onclick="alert('詳細文章閱讀頁面建置中，您可以直接參考完整知識庫內容！'); return false;">閱讀內文 →</a>
-      </div>
-    </article>
-  `).join('');
+  grid.innerHTML = list.map(art => {
+    const fullContent = art.content || art.excerpt || art.summary || '';
+    const cardSummary = art.summary || art.excerpt || '';
+    return `
+      <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(fullContent).replace(/"/g, '&quot;')})">
+        <span class="tag" style="pointer-events: none;">${escapeHtml(getCategoryName(art.category))}</span>
+        <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
+        <p style="pointer-events: none;">${escapeHtml(cardSummary)}</p>
+        <div class="card-foot" style="pointer-events: none;">
+          <span>點擊閱讀全文 →</span>
+          <span style="color: var(--navy); font-weight: 700;">閱讀內文</span>
+        </div>
+      </article>
+    `;
+  }).join('');
 
   if (countDiv) {
     countDiv.textContent = `顯示 ${list.length} 篇文章（共 ${articles.length} 篇）`;
