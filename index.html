@@ -177,7 +177,7 @@
 <section class="hero">
 <div class="hero-copy"><div class="eyebrow">TAIWAN × UNITED STATES · FINANCIAL EDUCATION</div>
 <h1>讓財務知識，<br><em>成為安心生活的力量。</em></h1>
-<p>陪伴台美家庭與企業主, 看懂退休、教育、稅務與財富傳承, 做出更有準備的選擇。</p>
+<p>陪伴台美家庭與企業主, 看懂退休、教育基金、生意與稅務規劃的跨境財務教育知識。</p>
 <div class="hero-actions"><a class="btn primary" href="#library">探索知識文章庫</a><a class="btn secondary" href="#games">前往理財遊戲中心</a></div>
 <div class="hero-proof"><span>繁體中文專屬</span><span>台美跨境視角</span><span>專業理財教育</span></div></div>
 <div class="hero-art"><img src="assets/founder-illustration.jpg" alt="茹意算盤創辦人品牌人物插畫"><div class="art-caption">I-Ju Yeh <small>Financial Education · Taiwan &amp; U.S.</small></div></div>
@@ -191,7 +191,7 @@
       <div class="eyebrow">FOUNDER'S VISION</div>
       <h2>為什麼有「茹意算盤」？</h2>
       <p>在美國生活多年，也一路走過學術研究、職涯轉換與家庭生活，我慢慢發現，很多台美家庭真正缺少的，不是更多的金融產品，而是有人能把複雜的財務概念，用聽得懂的方式說清楚。</p>
-      <p>退休、教育、稅務、投資、保險與財富傳承，每一個主題單獨看似乎都不難；但當它們同時出現在一個家庭的人生裡，事情就會變得複雜。</p>
+      <p>退休、教育、稅務、投資、保險與財富傳承，每一個主題單調看似乎都不難；但當它們同時出現在一個家庭的人生裡，事情就會變得複雜。</p>
       <p>尤其對台灣與美國都有家庭、資產或生活連結的人來說，不同制度之間的差異，更容易讓人不知道該從哪裡開始。所以我，創立了「茹意算盤」。</p>
       <p>我希望這裡不是一個讓人急著買什麼的地方，而是一個可以先學習、先理解、再做決定的地方。</p>
       
@@ -222,7 +222,7 @@
   </div>
 </section>
 
-<!-- 茹意知識文章庫 (已更新為 8 大分類單元) -->
+<!-- 茹意知識文章庫 -->
 <section class="section library-section" id="library">
 <div class="section-heading">
   <div><div class="eyebrow">KNOWLEDGE LIBRARY</div><h2>茹意知識文章庫</h2></div>
@@ -232,14 +232,14 @@
   <input id="searchInput" type="search" placeholder="搜尋文章標題或關鍵字…" aria-label="搜尋文章">
   <select id="categoryFilter" aria-label="分類篩選">
     <option value="">全部主題（所有單元）</option>
-    <option value="insurance">美國保險</option>
-    <option value="education">教育基金與子女規劃</option>
-    <option value="business-tax">生意與稅務規劃</option>
-    <option value="legacy">遺產傳承與資產保護</option>
-    <option value="events">定期講座資訊</option>
-    <option value="retirement">退休理財規劃</option>
-    <option value="market">市場觀察與財經知識</option>
-    <option value="products">金融產品介紹</option>
+    <option value="美國保險">美國保險</option>
+    <option value="金融產品介紹">金融產品介紹</option>
+    <option value="定期講座資訊區">定期講座資訊區</option>
+    <option value="教育基金與子女規劃">教育基金與子女規劃</option>
+    <option value="生意與稅務規劃">生意與稅務規劃</option>
+    <option value="遺產傳承與資產保護">遺產傳承與資產保護</option>
+    <option value="退休理財規劃">退休理財規劃</option>
+    <option value="市場觀察與財經知識">市場觀察與財經知識</option>
   </select>
 </div>
 <div class="library-status"><span class="status-dot"></span> 知識庫連線正常 · 每頁固定顯示 12 篇專欄文章</div>
@@ -267,7 +267,7 @@
     <div style="background: var(--gold-light); padding: 24px; border-radius: 12px; margin-bottom: 24px; border: 1px solid rgba(197,160,89,0.3);">
       <h3 style="color: var(--navy); font-size: 18px; margin-bottom: 8px;">💬 有問題，歡迎問</h3>
       <p style="color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-        不需要專業術語，也不用把問題想得很完整。<br>從一個問題開始，先把它弄懂。
+        不需要專業術語，也不用當作正式諮詢。<br>從一個問題開始，先把它弄懂。
       </p>
       <a href="mailto:ijuyehixy19@gmail.com?subject=茹意算盤讀者提問：我想了解..." class="btn primary" style="display: inline-block; padding: 14px 32px; font-size: 16px;">
         提出你的問題 →
@@ -406,7 +406,7 @@
             <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(art.content || art.excerpt).replace(/"/g, '&quot;')})">
               <span class="tag">${getCategoryName(art.category)}</span>
               <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
-              <p style="pointer-events: none;">${escapeHtml(art.excerpt || '')}</p>
+              <p style="pointer-events: none;">${escapeHtml(art.summary || art.excerpt || '')}</p>
               <div class="card-foot" style="pointer-events: none;">
                 <span>點擊閱讀全文 →</span>
                 <span style="color: var(--navy); font-weight: 700;">閱讀內文</span>
@@ -447,8 +447,8 @@
           const cat = categoryFilter ? categoryFilter.value : '';
 
           let filtered = articles.filter(art => {
-            const matchCat = !cat || art.category === cat;
-            const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.content && art.content.toLowerCase().includes(query)) || (art.excerpt && art.excerpt.toLowerCase().includes(query));
+            const matchCat = !cat || art.category === cat || getCategoryName(art.category) === getCategoryName(cat);
+            const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.content && art.content.toLowerCase().includes(query)) || (art.excerpt && art.excerpt.toLowerCase().includes(query)) || (art.summary && art.summary.toLowerCase().includes(query));
             return matchCat && matchQuery;
           });
 
