@@ -155,7 +155,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .pagination-btn:hover:not(:disabled) {
+  .pagination-btn.hover:not(:disabled) {
     background: var(--navy);
     color: #fff;
     border-color: var(--navy);
@@ -231,7 +231,7 @@
       <p>茹意算盤希望透過文章、財務問答與互動遊戲，讓原本有距離感的財務知識，變得更容易理解、更容易開始。</p>
       <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽專欄文章 →</a>
     </div>
-    <!-- 第二張圖：使用 founder-new.jpg 且不裁切頭頂，無中文名字，無咖啡元素 -->
+    <!-- 第二張圖：使用 founder-new.jpg 且維持不裁切、無中文名、無咖啡 -->
     <div class="vision-founder-box">
       <img src="assets/founder-new.jpg" alt="I-Ju Yeh 專欄理念">
       <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh<br><small>創辦人 ｜ 跨國財務教育與規劃</small></div>
@@ -419,17 +419,22 @@
           const start = (currentPage - 1) * itemsPerPage;
           const currentItems = list.slice(start, start + itemsPerPage);
 
-          grid.innerHTML = currentItems.map(art => `
-            <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(art.content || art.excerpt).replace(/"/g, '&quot;')})">
-              <span class="tag">${getCategoryName(art.category)}</span>
-              <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
-              <p style="pointer-events: none;">${escapeHtml(art.summary || art.excerpt || '')}</p>
-              <div class="card-foot" style="pointer-events: none;">
-                <span>點擊閱讀全文 →</span>
-                <span style="color: var(--navy); font-weight: 700;">閱讀內文</span>
-              </div>
-            </article>
-          `).join('');
+          grid.innerHTML = currentItems.map(art => {
+            // 關鍵修改：強制優先讀取完整的 art.content，若無才 fallback 到 excerpt 或 summary
+            const fullContent = art.content || art.excerpt || art.summary || '';
+            const cardSummary = art.summary || art.excerpt || '';
+            return `
+              <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(fullContent).replace(/"/g, '&quot;')})">
+                <span class="tag">${getCategoryName(art.category)}</span>
+                <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
+                <p style="pointer-events: none;">${escapeHtml(cardSummary)}</p>
+                <div class="card-foot" style="pointer-events: none;">
+                  <span>點擊閱讀全文 →</span>
+                  <span style="color: var(--navy); font-weight: 700;">閱讀內文</span>
+                </div>
+              </article>
+            `;
+          }).join('');
 
           if (countDiv) {
             countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + itemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${articles.length} 篇）`;
@@ -484,13 +489,13 @@
   const gameDataConfig = {
     island: {
       title: "I-Ju Yeh 台美財富探索島",
-      desc: "這是一個專為台美家庭設計的互動情境導覽。點擊下方按鈕將直接開啟探索島頁面，體驗跨國理財與資產配置決策。",
+      desc: "This is an interactive scenario tour designed for Taiwanese-American families...",
       actionType: "link",
       url: "台美財富探索島-.html"
     },
     baobei: {
       title: "保庇宮 · 線上求籤問保障",
-      desc: "誠心求籤，測出您的個人保障體質與財務隱憂！點擊下方按鈕即可直接在頁面中載入「保庇宮」完整互動遊戲畫面。",
+      desc: "Draw a lot online to check your personal protection profile...",
       actionType: "embed",
       url: "保庇宮.html"
     }
