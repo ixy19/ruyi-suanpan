@@ -213,49 +213,37 @@
     "title": "401(k)：優點很多，但它真的夠嗎？",
     "category": "退休理財規劃",
     "summary": "探討雇主贊助 401(k) 計畫的稅前增長、Company Match、2026 最新提撥上限（含 60-63 歲追補）、Vesting 歸屬期、投資選擇限制及順序報酬風險。",
-    "content": "401(k) 是美國常見的雇主贊助退休計畫，具備多項優勢但也伴隨潛在限制：\n\n1. **主要優點**：\n* **Tax-deferred growth**：傳統 Traditional 401(k) 採用稅前薪資遞延（Salary deferral），投資增長延稅。\n* **Company Match**：雇主額外提供的對等提撥。\n* **2026 Contribution Limit**：未滿 50 歲為 $24,500；50 歲以上為 $32,500；60–63 歲為新制追補上限 $35,750。\n\n2. **需要留意的問題**：\n* **Vesting 歸屬期**：公司 Match 可能設有工作年限 Vesting 規定，換工作前須確認。\n* **Investment choices 有限**：通常僅提供一組有限的基金選單（如 Target Date Fund、大中小盤、債券等）。\n* **Sequence of Returns Risk（報酬順序風險）**：退休後若一邊提款一邊遇到市場大跌，可能對資產壽命造成衝擊。\n* **401(k) Loan**：部分計畫允許借款（通常為 50% 淨值或 $50,000 取其低），離職若未依規定處理可能視為提前領取而產生稅負與罰款。"
+    "content": "① 401(k) 的優點\nTax-deferred growth\n錢進入 Traditional 401(k) 時通常是稅前 salary deferral。\n例如：\n薪水 → 401(k) → 投資增長 → 退休後提領\n不是每年都對帳戶裡的投資收益課稅。\n\n② Company Match\nCompany Match = Employer 額外幫你存退休金\n\n③ 2026 Contribution Limit\n* Under 50：$24,500\n* 50+：$32,500\n* 60–63：最多 $35,750\n其中 60–63 歲的較高 catch-up 是 2026 年的新規則之一。\n\n④ Vesting\n自己的 contribution：通常本來就是自己的。\n但：\nEmployer Match → 可能有 vesting schedule\n例如：\n公司每年幫你 match $5,000\n但規定工作滿一定年限才 100% vested。\n所以：\n**換工作以前，要看清楚 employer match 已經 vest 多少。**\n\n⑤ 401(k) 的問題\n問題一：Investment choices 有限\n很多公司 401(k) 只有一組有限的 fund menu。\n常見：\n* Target Date Fund\n* Large Cap\n* Mid Cap\n* Small Cap\n* International\n* Bond Fund\n例如：\nTarget Date 2055\n通常會隨著 target date 接近而逐漸調整資產配置，通常降低股票風險、增加債券等較保守資產。"
   },
   {
     "title": "Roth IRA + 7702 Life Insurance + Long-Term Care：打造多元退休稅務",
     "category": "退休理財規劃",
     "summary": "探討退休後避免全為 taxable income 的多元配置：Roth IRA、Roth 轉換、7702 現金值人壽保險與長照規劃。",
-    "content": "退休後如果所有收入都是 taxable income（應稅所得），稅務壓力會相當大。可以透過以下工具打造多元退休現金流：\n\n1. **Roth IRA**：以稅後資金投入，符合合格提領條件可完全免稅。2026 年供款上限為未滿 50 歲 $7,500、50 歲以上 $8,600，且受收入資格（Phase-out range）限制。\n2. **Roth Conversion**：將 Traditional 帳戶轉入 Roth IRA，適合在退休前後收入較低的年份進行部分轉換。\n3. **7702 Life Insurance**：依據 IRC §7702 規範的永久壽險（如 VUL），其現金值增長與保單提領享有獨特的稅務待遇，可作為長期資產與保障規劃的一部分。\n4. **Long-Term Care（長期照護）**：因應長壽風險與高昂的長照成本，可評估傳統長照險或混合型壽險/長照產品。"
+    "content": "退休後「不要全部都是 taxable income」\n\n① Roth IRA\n核心概念：\n現在繳稅 → 未來符合規定的 qualified distribution 可以免稅。\n2026 年：\n* Under 50：$7,500\n* Age 50+：$8,600\n\nRoth IRA 有 income eligibility rules。\n2026 年：\nSingle / Head of Household\n$153,000–$168,000 是 phase-out range。\nMarried Filing Jointly\n$242,000–$252,000 是 phase-out range。\nPhase-out：逐步減少、逐步取消\n**直接 Roth IRA contribution 的 eligibility 會隨收入 phase out。**\n(收入越高，你可以直接存進 Roth IRA 的額度就會逐漸減少)\n\n② Roth Conversion\nTraditional 401(k) / Traditional IRA\n↓\nRoth Conversion\n↓\nRoth IRA\n轉換的金額通常會進入當年度 taxable income。\n\n**退休前後 income較低的年份，是否適合做部分 Roth conversion？**\n但實際金額需要考慮：\n* tax bracket\n* Medicare IRMAA\n* Social Security\n* RMD\n* other taxable income\n\n③ 7702\nIRC §7702 是美國稅法對「life insurance contract」的定義與稅務規範之一。\nPermanent Life Insurance → Cash Value → Tax treatment\nVUL\nVariable Universal Life\n* Death benefit\n* Cash value\n* Investment subaccounts\n* Flexible premium / policy structure"
   },
   {
     "title": "Traditional IRA、Roth IRA、Taxable Account：同樣投資 $100,000，20 年後差多少？",
     "category": "退休理財規劃",
     "summary": "以 $100,000 初始投資、7% 年報酬率為例，詳細比較 Traditional IRA、Roth IRA 與一般應稅帳戶在 20 年後的稅後差異。",
-    "content": "透過 $100,000 投資 20 年、年報酬率 7% 的情境（期末帳戶價值約 $386,968），比較三種帳戶的稅務差異：\n\n1. **Traditional IRA**：投資期間延稅，提領時按普通所得稅率（如假設 24%）課稅，稅後剩餘約 $294,096。\n2. **Roth IRA**：投入時使用稅後資金，符合條件的合格提領 100% 免稅，稅後剩餘 $386,968。\n3. **Taxable Account（一般應稅帳戶）**：資金彈性最高，但須依資本利得稅率（如假設 15%）繳納資本利得稅，稅後剩餘約 $343,923（若採相同稅前收入成本比較，結果更貼近 Traditional 與 Roth 的稅後平衡）。\n\n選擇時須衡量目前及未來稅率、流動性需求以及 RMD（強制最低提領）規定。"
+    "content": "投資時，我們常常關心報酬率，但有一個問題同樣重要：\n**同樣一筆錢，放在不同的投資帳戶裡，20 年後扣除稅款，最後能留下多少？**\n在美國，常見的三種投資帳戶包括：\n* Traditional IRA：傳統退休帳戶，通常具有延稅效果。\n* Roth IRA：羅斯退休帳戶，符合規定的合格提領可以免稅。\n* Taxable Brokerage Account：一般應稅投資帳戶，投資收益依照不同類型及實現時間課稅。\n\n這三種帳戶都可以用來累積資產，但它們的稅務處理方式不同。\n今天我們用一個簡單的例子來比較。\n\n一、先設定共同的投資條件\n假設我們有一筆 $100,000 的投資資金：\n* 初始投資金額：$100,000\n* 每年投資報酬率：7%\n* 投資期間：20 年\n* 投資方式：長期持有\n* 投資期間追加投入：無\n\n為了讓比較簡單，我們先假設每年 7% 的報酬率全部來自資產價格增值，沒有股息或利息分配。\n20 年後，帳戶在計算提領稅款之前，累積金額約為：\n**$386,968**\n\n接下來，看看三種帳戶有什麼不同。\n二、三種帳戶的稅務差異\n1. Traditional IRA：現在延稅，未來提領時課稅\nTraditional IRA 的主要特色是延稅。\n符合扣除資格的供款，可能降低當年度應稅所得；帳戶內的投資收益通常不需要每年繳稅。\n但是，未來提領時，原本尚未課稅的金額通常需要計入普通所得。\n假設退休提領時適用 24% 的聯邦所得稅率：\n* 初始投資：$100,000\n* 20 年後帳戶價值：$386,968\n* 假設提領稅率：24%\n* 提領後剩餘金額：$294,096\n\n這裡的重點是：投資期間不必因為帳戶內的增值而繳稅，讓全部資金繼續累積；但未來提領時，仍須繳納適用的所得稅。\n2. Roth IRA：現在先繳稅，未來合格提領免稅"
   },
   {
     "title": "我們的退休帳戶有哪些選擇？全方位退休資產總覽",
     "category": "退休理財規劃",
     "summary": "系統性梳理雇主贊助計畫、個人退休帳戶（IRA）、年金、現金值人壽保險及長照規劃，幫助建立全面的退休現金流藍圖。",
-    "content": "退休規劃不只是存錢，更要搞懂退休資金可以放在哪裡：\n\n1. **Employer-sponsored plans**：如 Traditional 401(k) 與 Roth 401(k)。\n2. **Individual retirement accounts**：如 Traditional IRA 與 Roth IRA。\n3. **Annuity（年金）**：可用於資產累積（固定、指數、RILA、變額）與穩定收入給付。\n4. **Life insurance / cash value**：如 VUL 等永久壽險的現金值可作為資產配置的一部分。\n5. **Long-term care planning**：納入長壽與長照風險考量。"
+    "content": "退休不是只有 401(k)：先搞懂你的退休錢可以放在哪裡。\n① Employer-sponsored plans\n401(k)\n* 傳統 Traditional 401(k)\n  * 稅前收入投入\n  * 當年度降低 taxable income\n  * 帳戶內投資增長延稅\n  * 提領時通常計入 ordinary income\n* Roth 401(k)\n  * 稅後收入投入\n  * 符合規定的 qualified distribution 可免稅\n\n② Individual retirement accounts\nTraditional IRA\n* 稅務優惠\n* 投資增長延稅\n* 提領通常課 ordinary income tax\nRoth IRA\n* 先繳稅\n* 符合規定的提領可免稅\n\n③ Annuity\n年金可以用來解決不同問題：\nAccumulation\n* Fixed\n* Fixed Index\n* RILA\n* Variable\nIncome\n* Guaranteed Fixed\n* Fixed Index / indexed income\n* Variable / investment-based income options\n\n④ Life insurance / cash value\n例如：\nPermanent Life Insurance / VUL\n* Cash value\n* 投資 subaccounts\n* 具有壽險保障\n* 可以成為退休資產配置的一部分\n\n⑤ Long-term care planning\n退休規劃不只是「存多少錢」。\n還要考慮：\n**退休收入 → 稅務 → 市場風險 → 長壽 → 長照**"
   },
   {
     "title": "既有的人壽保單轉入 ILIT：三年追溯規則與容易忽略的風險",
     "category": "退休理財規劃",
     "summary": "解析將既有人壽保單轉入不可撤銷保險信託（ILIT）以節省遺產稅時，必須特別注意的美國聯邦稅法「三年追溯規則」（§2035）。",
-    "content": "將既有人壽保單轉入 ILIT（不可撤銷人壽保險信託）有機會排除未來身故理賠金的遺產稅，但須注意美國聯邦稅法 §2035 的**三年追溯規則（Three-Year Rule）**：\n\n* **三年內身故風險**：若被保險人在轉讓既有保單後三年內身故，理賠金仍可能被拉回聯邦遺產總額計算。\n* **贈與稅與估值**：保單轉讓可能構成贈與，須依 IRS 規定評估公平市價（FMV）並申報 Form 709。\n* **實務建議**：直接由 ILIT 作為新保單的初始擁有者通常可避免此項三年規則，轉讓既有保單前應尋求專業律師與 CPA 評估。"
+    "content": "把既有人壽保單放進不可撤銷人壽保險信託（ILIT），有機會降低未來的聯邦遺產稅負擔，但並不是轉進信託就能立即排除遺產稅。\n其中一個重要關鍵，就是美國聯邦稅法中的三年追溯規則（Three-Year Rule）。\n\n一、ILIT 是什麼？為什麼有人把人壽保單放進信託？\nILIT，全名為 Irrevocable Life Insurance Trust，中文稱為「不可撤銷人壽保險信託」。\n簡單來說，就是透過不可撤銷信託持有及管理人壽保單。若信託架構、保單所有權及相關安排都符合規定，未來被保險人身故時，死亡賠償金通常可以支付給信託，而不納入被保險人的聯邦遺產稅計算。\n這樣安排可能有幾個目的：\n* **降低遺產稅負擔**：讓符合條件的保險理賠金不計入被保險人的應稅遺產。\n* **提供家庭流動資金**：讓信託持有資金，依信託條款支應家庭或受益人的需要。\n* **安排財產傳承**：透過信託條款，事先規劃受益人取得資產的方式與時間。\n\n不過，ILIT 並不是單純把保單換個名字。保單所有權、控制權及信託管理方式都很重要。\n\n二、既有保單轉入 ILIT，可能涉及贈與稅\n假設老王已經有一張死亡給付 500 美元的人壽保單，現在想把保單所有權轉讓給 ILIT。\n這項轉讓可能構成一筆贈與，需要依保單當時的公平市價（Fair Market Value, FMV）評估贈與價值。\n**注意：保單的贈與價值不一定等於現金價值（Cash Surrender Value）。** 實際估值須依保單種類及適用的 IRS 規則計算。\n如果這筆轉讓屬於需要申報的贈與，通常需要考慮提交 Form 709（United States Gift Tax Return）。\n但申報贈與稅，不代表當下就一定要繳贈與稅。若贈與金額超過當年度免稅額，可能使用贈與人可用的終身贈與／遺產稅免稅額（Lifetime Gift and Estate Tax Exemption）。\n\n三、最重要的風險：三年追溯規則\n這是既有人壽保單轉入 ILIT 時，必須特別留意的地方。\n根據美國《內地稅收法典》（Internal Revenue Code）§2035，如果被保險人在死亡前三年內，轉讓了原本會依 §2042 納入遺產的保單權益，相關死亡給付可能被納入其遺產總額。\n換句話說：\n**如果被保險人在轉讓既有保單後三年內身故，原本希望排除在遺產之外的死亡給付，仍可能被拉回遺產稅計算。**"
   },
   {
     "title": "美國社會安全金可能在 2032 年面臨資金缺口？退休金真的會領不到嗎？",
     "category": "退休理財規劃",
     "summary": "依據 SSA 2026 年報告，解析 OASI 信託基金儲備金預計在 2032 年第四季耗盡的影響、預估可支付比例（78%）與未來可能的改革方向。",
-    "content": "根據 SSA 2026 年報告，OASI（老年與遺屬保險）信託基金預計於 2032 年第四季耗盡儲備金。\n\n* **代表意義**：並非完全歸零或發不出錢，而是當年度薪資稅收入預計僅夠支付原定福利的 78%。\n* **可能改革方向**：提高薪資課稅上限（2026 年上限為 $184,500）、調整完全退休年齡（FRA）、調整 COLA 計算方式或調高社安稅率。\n* **因應之道**：退休規劃不宜完全依賴單一來源，應同步結合 401(k)、IRA 與個人儲蓄分散風險。"
-  },
-  {
-    "title": "退休後每月 $6,000 美元收入，怎麼規劃？資產配置與現金流案例",
-    "category": "退休理財規劃",
-    "summary": "以 55 歲配置年金、67 歲領取美金 $3,000 加計社會安全金 $3,000 為例，探討如何將資產轉換為穩定的退休現金流。",
-    "content": "退休後每月 $6,000 美元收入，怎麼規劃？\n\n退休後，很多人真正擔心的不是「我有多少資產」，而是：\n這些資產，能不能變成一筆穩定、可以用很多年的退休收入？\n下面用一個簡單的案例，來看看退休收入可以怎麼安排。\n\n一個退休收入案例\n\n假設一位退休人士：\n55 歲時\n將部分既有的 401(k) 或 IRA 資產，例如 $186,941 美元，配置到一項具有未來收入給付設計的年金。\n67 歲時\n年金開始提供每月約 $3,000 美元的收入。\n同時，如果這位退休人士符合資格，並在適當的年齡開始領取 Social Security，假設每月也有約 $3,000 美元：\n\n退休後每月收入\n\n年金 $3,000\n+\nSocial Security $3,000\n=\n每月約 $6,000 美元\n如果以 1 美元 $\\approx$ 33 台幣粗略換算，\n約等於 每月 20 萬台幣。\n\n這個案例真正要看的，是「收入來源」\n\n退休的現金流，可以來自不同地方：\n🧰 401(k) / IRA\n📈 股票、基金等投資資產\n💰 年金收入\n🪪 Social Security\n🏠 其他退休資產或收入\n重點不是把所有資產都放進同一個工具，而是思考：\n哪些資產負責成長？\n哪些資產負責提供穩定收入？\n如果能把不同資產安排成不同角色，就有機會讓退休現金流更加有規劃。"
-  },
-  {
-    "title": "退休規劃總複習：4% 法則真的夠嗎？",
-    "category": "退休理財規劃",
-    "summary": "總結經典的 4% 提領法則，並深入探討報酬順序風險、通膨風險、大額支出與長壽風險，建立可動態調整的退休規劃觀念。",
-    "content": "前幾天談了 401(k)、IRA、Roth、年金、稅務與長照，今天用一個很經典的退休概念，把這些拼圖串起來——「4% 法則」。\n\n💡 什麼是 4% 法則？\n簡單來說：\n假設退休時有 $1,000,000，第一年提領約 4%＝$40,000 作為生活費；之後再根據通膨調整提領金額。\n這個概念源自歷史市場資料，主要是用來估算退休資產在一段長時間內是否可能支撐生活支出，常被用作 30 年退休期間的參考。\n但問題是：4% 不是保證，也不是每個人的答案。\n\n退休時還要考慮：\n📉 Sequence of Returns Risk ｜ 報酬順序風險\n如果退休初期剛好遇到市場大跌，同時又需要持續提款，可能對資產壽命造成較大的影響。\n\n📈 Inflation Risk ｜ 通膨風險\n如果生活成本長期上升，原本設定的退休收入可能越來越不夠用。\n\n🏦 Large Expense Risk ｜ 大額支出風險\n醫療、長照、房屋、家庭支援或一次性的大筆支出，都可能打亂原本的退休計畫。\n\n🍷 Longevity Risk ｜ 長壽風險\n如果退休後不是活 20～30 年，而是更久呢？\n\n所以退休規劃真正要問的，不只是：「我有多少錢？」\n而是：「這筆錢能不能陪我走完退休人生？」\n因此，除了累積資產，也需要一起思考：\n401(k) → IRA / Roth → 投資配置 → 收入來源 → 稅務多元化 → 長壽風險 → 長期照護🌱\n\n4% 法則可以是一張地圖，但不能當成導航終點。每個人的退休年齡、資產、支出、風險承受度與壽命都不同，退休提領策略也應該跟著個人情況調整。退休規劃，不是找到一個神奇數字，而是建立一套能隨人生變化彈性調整的計畫。"
+    "content": "美國社會安全金（Social Security）會不會有一天發不出來？\n\n根據美國社會安全局（Social Security Administration, SSA）2026 年發布的年度信託基金報告，老年與遺屬保險信託基金（Old-Age and Survivors Insurance Trust Fund, OASI），預計將在 2032 年第四季耗盡累積儲備金。\n這個消息聽起來令人擔心，但先別慌！所謂的「信託基金枯竭」，並不代表社會安全金會完全歸零，而是代表過去累積的儲備金用完了。\n那麼，退休族群未來還能領到多少錢？\n一、信託基金枯竭，代表什麼？\n美國社會安全制度主要透過工作期間納入的薪資稅（Payroll Taxes），也就是大家熟悉的一般 FICA Tax，以及其他收入來支應福利。\n目前累積的信託基金儲備金，可以在年度收入不足時補足差額。\n當 OASI 信託基金儲備金耗盡後，制度仍會持續收到當年度的薪資稅收入，但這些收入預計不足以支付所有原定福利。\n因此，問題不是「完全沒有錢可以發」，而是「收到的錢不夠支付原本承諾的全部金額」。\n\n二、如果儲備金耗盡，福利可能減少多少？\n根據 SSA 2026 年報告的中間預估情境（Intermediate Assumptions）：\n* 預計耗盡時間：2032 年第四季。\n* 屆時預計可支付比例：原定 OASI 福利的 78%。\n* 可能的給付缺口：約 22%。\n\n換句話說，假設某位退休人士原本每月預計領取 $2,000，若未來真的依照這項預估發展，且國會沒有採取改革措施，當時可支付的金額可能約為 $1,560。\n這只是依照目前預測所做的示意計算，並不是對未來個人實際給付金額的保證。\n特別提醒：OASI 是老年與遺屬保險基金；如果將 OASI 與 DI（Disability Insurance，失能險）合併計算，兩個信託基金合計預計在 2034 年耗盡儲備金，屆時預計可支付原定福利的 83%。因此，78% 與 83% 分別代表不同基金範圍與不同預估年份。\n\n三、未來可能有哪幾項改革方向？\n為了維持社會安全制度的長期財務穩定，政策討論可能包括增加收入、調整福利支出，或同時採取兩種方式。\n以下是常見的四種改革方向：\n1. 提高薪資課稅上限\n目前社安稅只針對每年一定上限內的薪資課徵。2026 年的 Social Security 薪資課稅上限為 $184,500，超過這個金額的薪資不再繳納 6.2% 的員工社安稅。\n未來可能進一步提高課稅上限，或調整超過上限的薪資課稅方式。\n2. 調整完全退休年齡（Full Retirement Age, FRA）\n目前，1960 年或之後出生者的完全退休年齡為 67 歲。\n未來政策可能討論延後完全退休年齡，藉此調整福利支出。不過，這不代表目前已經決定要提高退休年齡。\n3. 調整生活成本調整（COLA）"
   },
   {
     "title": "住在美國，就一定要申報「全球收入」嗎？",
