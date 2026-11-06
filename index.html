@@ -82,7 +82,7 @@
     line-height: 1.6;
   }
   
-  /* 專門給第二張圖（專欄理念區）的完整顯示設定，保留頭頂不切掉 */
+  /* 專門給第二張圖（專欄理念區）的完整顯示設定，強制讀取 founder-new.jpg，頭頂不切掉 */
   .vision-founder-box {
     background: var(--gold-light);
     border: 1px solid rgba(197,160,89,0.3);
@@ -155,7 +155,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .pagination-btn:hover:not(:disabled) {
+  .pagination-btn.hover:not(:disabled) {
     background: var(--navy);
     color: #fff;
     border-color: var(--navy);
@@ -200,7 +200,7 @@
 </section>
 <section class="trust-strip"><span>RETIREMENT</span><span>EDUCATION</span><span>BUSINESS TAX</span><span>LEGACY PLANNING</span></section>
 
-<!-- 創辦人的話 / 茹意專欄理念 (第二張圖已替換為新照片，頭頂完整不切掉) -->
+<!-- 創辦人的話 / 茹意專欄理念 -->
 <section class="section vision-section" id="vision">
   <div class="vision-grid">
     <div class="vision-copy">
@@ -343,7 +343,7 @@
 </div>
 </section>
 
-<!-- 關於創辦人 (第三張圖保持不變) -->
+<!-- 關於創辦人 -->
 <section class="section about-section" id="about">
   <div class="about-image"><img src="assets/founder-illustration.jpg" alt="茹意算盤創辦人品牌人物插畫"></div>
   <div class="about-copy">
