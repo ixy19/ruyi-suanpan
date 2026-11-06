@@ -77,7 +77,6 @@ function getCategoryName(cat) {
     'legacy': '遺產傳承與資產保護',
     'market': '市場觀察與財經知識',
     'resources': '課程與其他素材',
-    // 增加中文對應，讓直接寫中文分類名稱也能完美顯示與篩選
     '市場觀察與財經知識': '市場觀察與財經知識',
     '退休理財規劃': '退休理財規劃',
     '教育基金與子女規劃': '教育基金與子女規劃',
@@ -85,7 +84,7 @@ function getCategoryName(cat) {
     '遺產傳承與資產保護': '遺產傳承與資產保護',
     '課程與其他素材': '課程與其他素材'
   };
-  return map[cat] || '財經知識庫';
+  return map[cat] || cat || '財經知識庫';
 }
 
 // 設定搜尋與分類篩選
@@ -98,7 +97,8 @@ function setupFilters() {
     const category = categoryFilter ? categoryFilter.value : '';
 
     const filtered = articles.filter(art => {
-      const matchCat = !category || art.category === category;
+      // 同時支援英文代號與中文名稱的比對
+      const matchCat = !category || art.category === category || getCategoryName(art.category) === getCategoryName(category);
       const matchKey = !keyword || 
         art.title.toLowerCase().includes(keyword) || 
         (art.excerpt && art.excerpt.toLowerCase().includes(keyword)) ||
