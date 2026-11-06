@@ -81,6 +81,22 @@
     color: var(--muted);
     line-height: 1.6;
   }
+  
+  /* 讓創辦人圖片完整顯示，避免頭頂被切掉 */
+  .founder-img-box {
+    background: var(--gold-light);
+    border: 1px solid rgba(197,160,89,0.3);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .founder-img-box img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain; /* 確保圖片不被裁切，完整呈現 */
+    border-radius: 8px;
+  }
+
   .article-modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -215,9 +231,9 @@
       <p>茹意算盤希望透過文章、財務問答與互動遊戲，讓原本有距離感的財務知識，變得更容易理解、更容易開始。</p>
       <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽專欄文章 →</a>
     </div>
-    <div class="hero-art" style="text-align: center; background: var(--gold-light); border-color: rgba(197,160,89,0.3);">
-      <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念" style="max-height: 380px; object-fit: cover;">
-      <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh<small>創辦人 ｜ 跨國財務教育與規劃</small></div>
+    <div class="founder-img-box">
+      <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念">
+      <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh<br><small>創辦人 ｜ 跨國財務教育與規劃</small></div>
     </div>
   </div>
 </section>
