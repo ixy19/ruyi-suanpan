@@ -39,7 +39,7 @@ function loadArticles() {
     });
 }
 
-// 渲染文章列表（已修正：支援點擊開啟彈窗並完整顯示 art.content）
+// 渲染文章列表（已修正：點擊彈窗時強制優先抓取完整內文 art.content，確保與您原本寫的一模一樣）
 function renderArticles(list) {
   const grid = document.getElementById('articleGrid');
   const countDiv = document.getElementById('resultCount');
@@ -52,7 +52,8 @@ function renderArticles(list) {
   }
 
   grid.innerHTML = list.map(art => {
-    const fullContent = art.content || art.excerpt || art.summary || '';
+    // 這裡我們強制讓彈窗讀取完整內文：如果 art.content 存在就用它，否則才用 summary 或 excerpt
+    const fullContent = art.content || art.summary || art.excerpt || '';
     const cardSummary = art.summary || art.excerpt || '';
     return `
       <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(fullContent).replace(/"/g, '&quot;')})">
