@@ -82,7 +82,7 @@
     line-height: 1.6;
   }
   
-  /* 專門給第二張圖（專欄理念區）的完整顯示設定，強制讀取 founder-new.jpg，頭頂不切掉 */
+  /* 專門給第二張圖（專欄理念區）的完整顯示設定：使用 contain 確保頭頂與頭髮完整不被切掉 */
   .vision-founder-box {
     background: var(--gold-light);
     border: 1px solid rgba(197,160,89,0.3);
@@ -155,7 +155,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .pagination-btn.hover:not(:disabled) {
+  .pagination-btn:hover:not(:disabled) {
     background: var(--navy);
     color: #fff;
     border-color: var(--navy);
@@ -232,7 +232,7 @@
       <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽專欄文章 →</a>
     </div>
     <div class="vision-founder-box">
-      <img src="assets/founder-new.jpg" alt="I-Ju Yeh 專欄理念">
+      <img src="assets/founder-illustration.jpg" alt="I-Ju Yeh 專欄理念">
       <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh<br><small>創辦人 ｜ 跨國財務教育與規劃</small></div>
     </div>
   </div>
