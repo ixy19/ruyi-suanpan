@@ -53,9 +53,9 @@ function renderArticles(list) {
 
   grid.innerHTML = list.map(art => `
     <article class="article-card">
-      <span class="tag">${getCategoryName(art.category)}</span>
+      <span class="tag">${escapeHtml(getCategoryName(art.category))}</span>
       <h3>${escapeHtml(art.title)}</h3>
-      <p>${escapeHtml(art.excerpt || '')}</p>
+      <p>${escapeHtml(art.summary || art.excerpt || '')}</p>
       <div class="card-foot">
         <span>閱讀時間約 3 分鐘</span>
         <a href="#" onclick="alert('詳細文章閱讀頁面建置中，您可以直接參考完整知識庫內容！'); return false;">閱讀內文 →</a>
@@ -77,12 +77,17 @@ function getCategoryName(cat) {
     'legacy': '遺產傳承與資產保護',
     'market': '市場觀察與財經知識',
     'resources': '課程與其他素材',
+    'insurance': '美國保險',
+    'financial-products': '金融產品介紹',
+    'seminar': '定期講座資訊區',
     '市場觀察與財經知識': '市場觀察與財經知識',
     '退休理財規劃': '退休理財規劃',
     '教育基金與子女規劃': '教育基金與子女規劃',
     '生意與稅務規劃': '生意與稅務規劃',
     '遺產傳承與資產保護': '遺產傳承與資產保護',
     '課程與其他素材': '課程與其他素材',
+    '美國保險': '美國保險',
+    '金融產品介紹': '金融產品介紹',
     '定期講座資訊區': '定期講座資訊區'
   };
   return map[cat] || cat || '財經知識庫';
@@ -98,10 +103,10 @@ function setupFilters() {
     const category = categoryFilter ? categoryFilter.value : '';
 
     const filtered = articles.filter(art => {
-      // 同時支援英文代號與中文名稱的比對
       const matchCat = !category || art.category === category || getCategoryName(art.category) === getCategoryName(category);
       const matchKey = !keyword || 
         art.title.toLowerCase().includes(keyword) || 
+        (art.summary && art.summary.toLowerCase().includes(keyword)) ||
         (art.excerpt && art.excerpt.toLowerCase().includes(keyword)) ||
         (art.content && art.content.toLowerCase().includes(keyword));
       return matchCat && matchKey;
@@ -124,7 +129,8 @@ function updateLibraryStatus(text) {
 
 // 簡單的 HTML 轉義防護
 function escapeHtml(str) {
-  return str
+  if (!str) return '';
+  return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -240,7 +246,6 @@ function initLangToggle() {
     currentLang = currentLang === 'zh' ? 'en' : 'zh';
     toggleBtn.textContent = currentLang === 'zh' ? 'EN' : '繁中';
     
-    // 切換導覽列屬性
     document.querySelectorAll("[data-zh]").forEach(el => {
       el.textContent = el.getAttribute(`data-${currentLang}`) || el.textContent;
     });
