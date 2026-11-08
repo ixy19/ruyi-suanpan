@@ -3,10 +3,63 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="google-site-verification" content="heS2_bh3BPUOZG/">
-<title>茹意算盤｜台美家庭的財務知識與規劃</title>
-<meta name="description" content="茹意算盤以繁體中文為主，分享退休、教育基金、生意與稅務規劃的跨境財務教育知識。">
+
+<meta name="google-site-verification" content="heS2_bh3BPUOZGjcB43f3xQvqdFFFLM0Vd0v0qbMgYk">
+
+<title>茹意算盤 Ruyi Suanpan｜台美家庭財務教育與退休規劃</title>
+
+<meta name="description" content="茹意算盤 Ruyi Suanpan，以繁體中文分享美國退休規劃、401(k)、IRA、Roth IRA、ETF、教育基金、保險、稅務與台美跨境財務知識，陪伴台美家庭看懂財務選擇。">
+
 <meta name="theme-color" content="#10243d">
+
+<link rel="canonical" href="https://ruyi-suanpan.pages.dev/">
+
+<!-- Facebook / LINE / 社群分享 -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="茹意算盤 Ruyi Suanpan">
+<meta property="og:title" content="茹意算盤｜台美家庭財務教育與退休規劃">
+<meta property="og:description" content="陪伴台美家庭看懂退休、投資、教育基金、保險、稅務與跨境財務。">
+<meta property="og:url" content="https://ruyi-suanpan.pages.dev/">
+<meta property="og:image" content="https://ruyi-suanpan.pages.dev/assets/founder-illustration.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="茹意算盤｜台美家庭財務教育">
+<meta name="twitter:description" content="讓財務知識，成為安心生活的力量。">
+<meta name="twitter:image" content="https://ruyi-suanpan.pages.dev/assets/founder-illustration.jpg">
+
+<!-- Google 品牌識別 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ruyi-suanpan.pages.dev/#organization",
+      "name": "茹意算盤",
+      "alternateName": "Ruyi Suanpan",
+      "url": "https://ruyi-suanpan.pages.dev/",
+      "description": "提供台美家庭財務教育、退休規劃、投資、保險與跨境稅務知識。",
+      "founder": {
+        "@type": "Person",
+        "name": "I-Ju Yeh"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ruyi-suanpan.pages.dev/#website",
+      "name": "茹意算盤 Ruyi Suanpan",
+      "alternateName": "茹意算盤",
+      "url": "https://ruyi-suanpan.pages.dev/",
+      "inLanguage": "zh-Hant",
+      "publisher": {
+        "@id": "https://ruyi-suanpan.pages.dev/#organization"
+      }
+    }
+  ]
+}
+</script>
+
 <link rel="stylesheet" href="styles.css">
 <style>
   .game-iframe-box {
@@ -421,7 +474,6 @@
           const currentItems = list.slice(start, start + itemsPerPage);
 
           grid.innerHTML = currentItems.map(art => {
-            // 關鍵修改：強制優先讀取完整的 art.content，若無才 fallback 到 excerpt 或 summary
             const fullContent = art.content || art.excerpt || art.summary || '';
             const cardSummary = art.summary || art.excerpt || '';
             return `
