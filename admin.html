@@ -84,14 +84,14 @@
 <script>
   const SUPABASE_URL = "https://nnzknvhyfyfvwcvzsehg.supabase.co";
   const SUPABASE_KEY = "sb_publishable_8YUNF2yAUi_jH5oLYeTxjQ_XfKA1Ezh";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const articleForm = document.getElementById('articleForm');
   const adminArticleList = document.getElementById('adminArticleList');
 
   // 載入後台文章列表
   async function loadAdminArticles() {
-    const { data, error } = await supabase.from('articles').select('*').order('id', { ascending: false });
+    const { data, error } = await db.from('articles').select('*').order('id', { ascending: false });
     if (error) {
       adminArticleList.innerHTML = "<p>載入文章失敗：" + error.message + "</p>";
       return;
@@ -128,9 +128,9 @@
 
     let res;
     if (id) {
-      res = await supabase.from('articles').update(payload).eq('id', id);
+      res = await db.from('articles').update(payload).eq('id', id);
     } else {
-      res = await supabase.from('articles').insert([payload]);
+      res = await db.from('articles').insert([payload]);
     }
 
     if (res.error) {
@@ -146,8 +146,8 @@
   // 刪除文章
   window.deleteArticle = async function(id) {
     if (!confirm("確定要刪除這篇文章嗎？")) return;
-    const { error } = await supabase.from('articles').delete().eq('id', id);
-    if (error) alert("刪除失敗：" + error.message);
+    const { error } = await db.from('articles').delete().eq('id', id);
+    if (error) alert("刪除失敗：" + error.error.message);
     else loadAdminArticles();
   };
 
