@@ -70,6 +70,8 @@
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<!-- 載入 Supabase JS 客戶端 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   .game-iframe-box {
     margin-top: 20px;
@@ -145,7 +147,6 @@
     line-height: 1.6;
   }
   
-  /* 第二張圖專屬容器：確保完整顯示不裁切頭頂 (object-fit: contain) */
   .vision-founder-box {
     background: var(--gold-light);
     border: 1px solid rgba(197,160,89,0.3);
@@ -218,7 +219,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .pagination-btn.hover:not(:disabled) {
+  .pagination-btn:hover:not(:disabled) {
     background: var(--navy);
     color: #fff;
     border-color: var(--navy);
@@ -294,7 +295,6 @@
       <p>茹意算盤希望透過文章、財務問答與互動遊戲，讓原本有距離感的財務知識，變得更容易理解、更容易開始。</p>
       <a class="btn primary" href="#library" style="margin-top: 12px;">直接瀏覽專欄文章 →</a>
     </div>
-    <!-- 第二張圖：使用 founder-new.jpg 且維持不裁切、無中文名、無咖啡 -->
     <div class="vision-founder-box">
       <img src="assets/founder-new.jpg" alt="I-Ju Yeh 專欄理念">
       <div class="art-caption" style="margin-top: 16px;">I-Ju Yeh<br><small>創辦人 ｜ 跨國財務教育與規劃</small></div>
@@ -313,17 +313,17 @@
   <select id="categoryFilter" aria-label="分類篩選">
     <option value="">全部主題（所有單元）</option>
     <option value="美國保險">美國保險</option>
-    <option value="金融產品介紹">金融產品介紹</option>
-    <option value="定期講座資訊區">定期講座資訊區</option>
     <option value="教育基金與子女規劃">教育基金與子女規劃</option>
     <option value="生意與稅務規劃">生意與稅務規劃</option>
     <option value="遺產傳承與資產保護">遺產傳承與資產保護</option>
+    <option value="定期講座資訊">定期講座資訊</option>
     <option value="退休理財規劃">退休理財規劃</option>
     <option value="市場觀察與財經知識">市場觀察與財經知識</option>
+    <option value="金融產品介紹">金融產品介紹</option>
   </select>
 </div>
-<div class="library-status"><span class="status-dot"></span> 知識庫連線正常 · 每頁固定顯示 12 篇專欄文章</div>
-<div id="articleGrid" class="article-grid"><div class="loading">正在載入文章目錄…</div></div>
+<div class="library-status"><span class="status-dot"></span> 雲端知識庫連線正常 · 每頁固定顯示 12 篇專欄文章</div>
+<div id="articleGrid" class="article-grid"><div class="loading">正在從雲端載入文章目錄…</div></div>
 <div id="resultCount" class="result-count"></div>
 <div id="paginationContainer" class="pagination-container"></div>
 </section>
@@ -438,14 +438,18 @@
 </footer>
 <script src="app.js"></script>
 <script>
+  const SUPABASE_URL = "https://nnzknvhyfyfvwcvzsehg.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_8YUNF2yAUi_jH5oLYeTxjQ_XfKA1Ezh";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
   window.openArticleModal = function(title, content) {
     const modalContainer = document.getElementById("articleModalContainer");
     modalContainer.innerHTML = `
       <div class="article-modal" onclick="closeArticleModal(event)">
         <div class="article-modal-content" onclick="event.stopPropagation()">
           <button class="article-modal-close" onclick="closeArticleModal()">&times;</button>
-          <h2 class="article-modal-title">${title}</h2>
-          <div class="article-modal-body">${content}</div>
+          <h2 class="article-modal-title">${escapeHtml(title)}</h2>
+          <div class="article-modal-body">${escapeHtml(content)}</div>
         </div>
       </div>
     `;
@@ -459,93 +463,116 @@
 
   let currentPage = 1;
   const itemsPerPage = 12;
+  let articles = [];
+
+  async function loadFrontendArticles() {
+    const grid = document.getElementById('articleGrid');
+    const { data, error } = await db.from('articles').select('*').order('id', { ascending: false });
+    
+    if (error) {
+      grid.innerHTML = '<div class="no-results">載入文章失敗：' + error.message + '</div>';
+      return;
+    }
+
+    articles = data || [];
+    if (articles.length === 0) {
+      grid.innerHTML = '<div class="no-results">目前雲端資料庫沒有任何文章。</div>';
+      return;
+    }
+
+    renderArticles(articles);
+
+    document.getElementById('searchInput')?.addEventListener('input', () => { currentPage = 1; filterAndRender(); });
+    document.getElementById('categoryFilter')?.addEventListener('change', () => { currentPage = 1; filterAndRender(); });
+  }
+
+  function filterAndRender() {
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const query = searchInput ? searchInput.value.toLowerCase() : '';
+    const cat = categoryFilter ? categoryFilter.value : '';
+
+    let filtered = articles.filter(art => {
+      const matchCat = !cat || art.category === cat;
+      const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.excerpt && art.excerpt.toLowerCase().includes(query));
+      return matchCat && matchQuery;
+    });
+
+    renderArticles(filtered);
+  }
+
+  function renderArticles(list) {
+    const grid = document.getElementById('articleGrid');
+    const countDiv = document.getElementById('resultCount');
+    const paginationDiv = document.getElementById('paginationContainer');
+    if (!grid) return;
+
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="no-results">沒有找到符合條件的文章。</div>';
+      if (countDiv) countDiv.textContent = '找到 0 篇文章';
+      if (paginationDiv) paginationDiv.innerHTML = '';
+      return;
+    }
+
+    const totalPages = Math.ceil(list.length / itemsPerPage);
+    if (currentPage > totalPages) currentPage = 1;
+
+    const start = (currentPage - 1) * itemsPerPage;
+    const currentItems = list.slice(start, start + itemsPerPage);
+
+    grid.innerHTML = currentItems.map(art => {
+      const fullContent = art.excerpt || '暫無詳細內容';
+      const cardSummary = art.excerpt || '';
+      return `
+        <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(fullContent).replace(/"/g, '&quot;')})">
+          <span class="tag">${escapeHtml(art.category)}</span>
+          <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
+          <p style="pointer-events: none;">${escapeHtml(cardSummary)}</p>
+          <div class="card-foot" style="pointer-events: none;">
+            <span>點擊閱讀全文 →</span>
+            <span style="color: var(--navy); font-weight: 700;">閱讀內文</span>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    if (countDiv) {
+      countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + itemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${articles.length} 篇）`;
+    }
+
+    if (paginationDiv) {
+      if (totalPages <= 1) {
+        paginationDiv.innerHTML = '';
+        return;
+      }
+
+      let paginationHtml = `<button class="pagination-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>上一頁</button>`;
+      
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+          paginationHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+          paginationHtml += `<span style="padding: 0 4px; color: var(--muted);">…</span>`;
+        }
+      }
+
+      paginationHtml += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>下一頁</button>`;
+      paginationDiv.innerHTML = paginationHtml;
+    }
+  }
+
+  window.changePage = function(page) {
+    currentPage = page;
+    filterAndRender();
+    document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function escapeHtml(s) {
+    return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-      if (typeof articles !== 'undefined' && articles.length > 0) {
-        window.renderArticles = function(list) {
-          const grid = document.getElementById('articleGrid');
-          const countDiv = document.getElementById('resultCount');
-          const paginationDiv = document.getElementById('paginationContainer');
-          if (!grid) return;
-
-          if (list.length === 0) {
-            grid.innerHTML = '<div class="no-results">沒有找到符合條件的文章。</div>';
-            if (countDiv) countDiv.textContent = '找到 0 篇文章';
-            if (paginationDiv) paginationDiv.innerHTML = '';
-            return;
-          }
-
-          const totalPages = Math.ceil(list.length / itemsPerPage);
-          if (currentPage > totalPages) currentPage = 1;
-
-          const start = (currentPage - 1) * itemsPerPage;
-          const currentItems = list.slice(start, start + itemsPerPage);
-
-          grid.innerHTML = currentItems.map(art => {
-            const fullContent = art.content || art.excerpt || art.summary || '';
-            const cardSummary = art.summary || art.excerpt || '';
-            return `
-              <article class="article-card" style="cursor: pointer;" onclick="openArticleModal(${JSON.stringify(art.title).replace(/"/g, '&quot;')}, ${JSON.stringify(fullContent).replace(/"/g, '&quot;')})">
-                <span class="tag">${getCategoryName(art.category)}</span>
-                <h3 style="pointer-events: none;">${escapeHtml(art.title)}</h3>
-                <p style="pointer-events: none;">${escapeHtml(cardSummary)}</p>
-                <div class="card-foot" style="pointer-events: none;">
-                  <span>點擊閱讀全文 →</span>
-                  <span style="color: var(--navy); font-weight: 700;">閱讀內文</span>
-                </div>
-              </article>
-            `;
-          }).join('');
-
-          if (countDiv) {
-            countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + itemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${articles.length} 篇）`;
-          }
-
-          if (paginationDiv) {
-            if (totalPages <= 1) {
-              paginationDiv.innerHTML = '';
-              return;
-            }
-
-            let paginationHtml = `<button class="pagination-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>上一頁</button>`;
-            
-            for (let i = 1; i <= totalPages; i++) {
-              if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                paginationHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-              } else if (i === currentPage - 2 || i === currentPage + 2) {
-                paginationHtml += `<span style="padding: 0 4px; color: var(--muted);">…</span>`;
-              }
-            }
-
-            paginationHtml += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>下一頁</button>`;
-            paginationDiv.innerHTML = paginationHtml;
-          }
-        };
-
-        window.changePage = function(page) {
-          currentPage = page;
-          const searchInput = document.getElementById('searchInput');
-          const categoryFilter = document.getElementById('categoryFilter');
-          const query = searchInput ? searchInput.value.toLowerCase() : '';
-          const cat = categoryFilter ? categoryFilter.value : '';
-
-          let filtered = articles.filter(art => {
-            const matchCat = !cat || art.category === cat || getCategoryName(art.category) === getCategoryName(cat);
-            const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.content && art.content.toLowerCase().includes(query)) || (art.excerpt && art.excerpt.toLowerCase().includes(query)) || (art.summary && art.summary.toLowerCase().includes(query));
-            return matchCat && matchQuery;
-          });
-
-          renderArticles(filtered);
-          document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        document.getElementById('searchInput')?.addEventListener('input', () => { currentPage = 1; });
-        document.getElementById('categoryFilter')?.addEventListener('change', () => { currentPage = 1; });
-
-        renderArticles(articles);
-      }
-    }, 500);
+    loadFrontendArticles();
   });
 
   const gameDataConfig = {
