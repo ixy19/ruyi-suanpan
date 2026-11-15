@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>茹意算盤｜管理者後台（免登入測試版）</title>
+<title>茹意算盤｜管理者後台</title>
 <link rel="stylesheet" href="styles.css">
 <!-- 載入 Supabase JS 客戶端 -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -16,6 +16,14 @@
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #dce2e8; border-radius: 6px; font: inherit; }
 .btn-row { display: flex; gap: 10px; margin-top: 15px; }
 .article-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--line); background: #fff; margin-bottom: 8px; border-radius: 6px; }
+.admin-tools { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.admin-tools select, .admin-tools input { flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; }
+.pagination-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; }
+.pagination-btn { background: #fff; border: 1.5px solid var(--line); color: var(--navy); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.pagination-btn:hover:not(:disabled) { background: var(--navy); color: #fff; border-color: var(--navy); }
+.pagination-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.result-count { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -28,7 +36,7 @@
 <main class="admin-container">
   <div class="admin-panel" style="display:flex; justify-content:space-between; align-items:center;">
     <div>
-      <h2 style="margin:0; font-size:16px;">後台管理模式（測試版）</h2>
+      <h2 style="margin:0; font-size:16px;">後台管理模式</h2>
       <span style="font-size:11px; color:var(--gold);">已成功連接 Supabase 雲端資料庫</span>
     </div>
   </div>
@@ -50,22 +58,18 @@
         <label>分類</label>
         <select id="artCategory">
           <option value="美國保險">美國保險</option>
+          <option value="金融產品介紹">金融產品介紹</option>
+          <option value="定期講座資訊">定期講座資訊</option>
           <option value="教育基金與子女規劃">教育基金與子女規劃</option>
           <option value="生意與稅務規劃">生意與稅務規劃</option>
           <option value="遺產傳承與資產保護">遺產傳承與資產保護</option>
-          <option value="定期講座資訊">定期講座資訊</option>
           <option value="退休理財規劃">退休理財規劃</option>
           <option value="市場觀察與財經知識">市場觀察與財經知識</option>
-          <option value="金融產品介紹">金融產品介紹</option>
         </select>
       </div>
       <div class="form-group">
         <label>文章摘要 (Excerpt)</label>
         <textarea id="artExcerpt" rows="3" placeholder="請輸入文章簡短摘要..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>來源檔名 (Source)</label>
-        <input type="text" id="artSource" value="Admin Published">
       </div>
       <div class="btn-row">
         <button type="submit" class="btn primary">儲存至雲端資料庫</button>
@@ -74,10 +78,26 @@
     </form>
   </div>
 
-  <!-- 現有雲端文章清單 -->
+  <!-- 現有雲端文章清單（含分類篩選與分頁） -->
   <div class="admin-panel">
     <h2>雲端文章列表</h2>
+    <div class="admin-tools">
+      <input id="adminSearchInput" type="search" placeholder="搜尋後台文章標題…" aria-label="搜尋後台文章">
+      <select id="adminCategoryFilter" aria-label="後台分類篩選">
+        <option value="">全部主題（所有單元）</option>
+        <option value="美國保險">美國保險</option>
+        <option value="金融產品介紹">金融產品介紹</option>
+        <option value="定期講座資訊">定期講座資訊</option>
+        <option value="教育基金與子女規劃">教育基金與子女規劃</option>
+        <option value="生意與稅務規劃">生意與稅務規劃</option>
+        <option value="遺產傳承與資產保護">遺產傳承與資產保護</option>
+        <option value="退休理財規劃">退休理財規劃</option>
+        <option value="市場觀察與財經知識">市場觀察與財經知識</option>
+      </select>
+    </div>
+    <div id="adminResultCount" class="result-count"></div>
     <div id="adminArticleList">正在載入文章...</div>
+    <div id="adminPaginationContainer" class="pagination-container"></div>
   </div>
 </main>
 
@@ -88,30 +108,97 @@
 
   const articleForm = document.getElementById('articleForm');
   const adminArticleList = document.getElementById('adminArticleList');
+  
+  let adminArticles = [];
+  let adminCurrentPage = 1;
+  const adminItemsPerPage = 12;
 
-  // 載入後台文章列表
+  // 載入後台文章資料
   async function loadAdminArticles() {
     const { data, error } = await db.from('articles').select('*').order('id', { ascending: false });
     if (error) {
       adminArticleList.innerHTML = "<p>載入文章失敗：" + error.message + "</p>";
       return;
     }
-    if (!data || data.length === 0) {
-      adminArticleList.innerHTML = "<p>目前雲端資料庫沒有任何文章。</p>";
+    adminArticles = data || [];
+    filterAndRenderAdmin();
+
+    document.getElementById('adminSearchInput')?.addEventListener('input', () => { adminCurrentPage = 1; filterAndRenderAdmin(); });
+    document.getElementById('adminCategoryFilter')?.addEventListener('change', () => { adminCurrentPage = 1; filterAndRenderAdmin(); });
+  }
+
+  function filterAndRenderAdmin() {
+    const query = document.getElementById('adminSearchInput').value.toLowerCase();
+    const cat = document.getElementById('adminCategoryFilter').value;
+
+    let filtered = adminArticles.filter(art => {
+      const matchCat = !cat || art.category === cat;
+      const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.excerpt && art.excerpt.toLowerCase().includes(query));
+      return matchCat && matchQuery;
+    });
+
+    renderAdminList(filtered);
+  }
+
+  function renderAdminList(list) {
+    const countDiv = document.getElementById('adminResultCount');
+    const paginationDiv = document.getElementById('adminPaginationContainer');
+
+    if (list.length === 0) {
+      adminArticleList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--muted);">沒有找到符合條件的文章。</div>';
+      if (countDiv) countDiv.textContent = '找到 0 篇文章';
+      if (paginationDiv) paginationDiv.innerHTML = '';
       return;
     }
-    adminArticleList.innerHTML = data.map(a => `
+
+    const totalPages = Math.ceil(list.length / adminItemsPerPage);
+    if (adminCurrentPage > totalPages) adminCurrentPage = 1;
+
+    const start = (adminCurrentPage - 1) * adminItemsPerPage;
+    const currentItems = list.slice(start, start + adminItemsPerPage);
+
+    adminArticleList.innerHTML = currentItems.map(a => `
       <div class="article-row">
         <div>
           <strong>${escapeHTML(a.title)}</strong><br>
           <small style="color:var(--muted)">分類：${escapeHTML(a.category)} | 代稱：${escapeHTML(a.slug)}</small>
         </div>
-        <div>
+        <div style="display:flex; gap:6px;">
           <button type="button" class="btn secondary" onclick="editArticle('${a.id}', '${escapeHTML(a.title).replace(/'/g, "\\'")}', '${escapeHTML(a.slug)}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt || '').replace(/'/g, "\\'")}')" style="padding:6px 12px; font-size:11px;">編輯</button>
           <button type="button" class="btn secondary" onclick="deleteArticle('${a.id}')" style="padding:6px 12px; font-size:11px; color:red; border-color:red;">刪除</button>
         </div>
       </div>
     `).join('');
+
+    if (countDiv) {
+      countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + adminItemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${adminArticles.length} 篇）`;
+    }
+
+    if (paginationDiv) {
+      if (totalPages <= 1) {
+        paginationDiv.innerHTML = '';
+        return;
+      }
+
+      let paginationHtml = `<button class="pagination-btn" onclick="changeAdminPage(${adminCurrentPage - 1})" ${adminCurrentPage === 1 ? 'disabled' : ''}>上一頁</button>`;
+      
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= adminCurrentPage - 1 && i <= adminCurrentPage + 1)) {
+          paginationHtml += `<button class="pagination-btn ${i === adminCurrentPage ? 'active' : ''}" onclick="changeAdminPage(${i})">${i}</button>`;
+        } else if (i === adminCurrentPage - 2 || i === adminCurrentPage + 2) {
+          paginationHtml += `<span style="padding: 0 4px; color: var(--muted);">…</span>`;
+        }
+      }
+
+      paginationHtml += `<button class="pagination-btn" onclick="changeAdminPage(${adminCurrentPage + 1})" ${adminCurrentPage === totalPages ? 'disabled' : ''}>下一頁</button>`;
+      paginationDiv.innerHTML = paginationHtml;
+    }
+  }
+
+  window.changeAdminPage = function(page) {
+    adminCurrentPage = page;
+    filterAndRenderAdmin();
+    window.scrollTo({ top: 400, behavior: 'smooth' });
   }
 
   // 儲存文章 (新增或更新)
@@ -122,9 +209,8 @@
     const slug = document.getElementById('artSlug').value.trim();
     const category = document.getElementById('artCategory').value;
     const excerpt = document.getElementById('artExcerpt').value.trim();
-    const source = document.getElementById('artSource').value.trim();
 
-    const payload = { title, slug, category, excerpt, source, paragraphs: 10, kind: "雲端後台發布" };
+    const payload = { title, slug, category, excerpt, kind: "雲端後台發布" };
 
     let res;
     if (id) {
@@ -147,7 +233,7 @@
   window.deleteArticle = async function(id) {
     if (!confirm("確定要刪除這篇文章嗎？")) return;
     const { error } = await db.from('articles').delete().eq('id', id);
-    if (error) alert("刪除失敗：" + error.error.message);
+    if (error) alert("刪除失敗：" + error.message);
     else loadAdminArticles();
   };
 
