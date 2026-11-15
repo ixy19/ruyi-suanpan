@@ -49,12 +49,14 @@
       <div class="form-group">
         <label>分類</label>
         <select id="artCategory">
-          <option value="retirement">退休理財規劃</option>
-          <option value="education">教育基金與子女規劃</option>
-          <option value="business-tax">生意與稅務規劃</option>
-          <option value="legacy">遺產傳承與資產保護</option>
-          <option value="market">市場觀察與財經知識</option>
-          <option value="resources">課程與其他素材</option>
+          <option value="美國保險">美國保險</option>
+          <option value="教育基金與子女規劃">教育基金與子女規劃</option>
+          <option value="生意與稅務規劃">生意與稅務規劃</option>
+          <option value="遺產傳承與資產保護">遺產傳承與資產保護</option>
+          <option value="定期講座資訊">定期講座資訊</option>
+          <option value="退休理財規劃">退休理財規劃</option>
+          <option value="市場觀察與財經知識">市場觀察與財經知識</option>
+          <option value="金融產品介紹">金融產品介紹</option>
         </select>
       </div>
       <div class="form-group">
@@ -105,7 +107,7 @@
           <small style="color:var(--muted)">分類：${a.category} | 代稱：${a.slug}</small>
         </div>
         <div>
-          <button class="btn secondary" onclick="editArticle(${a.id}, '${escapeHTML(a.title)}', '${a.slug}', '${a.category}', '${escapeHTML(a.excerpt||'')}')" style="padding:6px 12px; font-size:11px;">編輯</button>
+          <button class="btn secondary" onclick="editArticle(${a.id}, '${escapeHTML(a.title)}', '${a.slug}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt||'')}')" style="padding:6px 12px; font-size:11px;">編輯</button>
           <button class="btn secondary" onclick="deleteArticle(${a.id})" style="padding:6px 12px; font-size:11px; color:red; border-color:red;">刪除</button>
         </div>
       </div>
@@ -115,7 +117,7 @@
   // 儲存文章 (新增或更新)
   articleForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const id = document.getElementById('articleId').value;
+    const id =[cite: 1] document.getElementById('articleId').value;
     const title = document.getElementById('artTitle').value.trim();
     const slug = document.getElementById('artSlug').value.trim();
     const category = document.getElementById('artCategory').value;
