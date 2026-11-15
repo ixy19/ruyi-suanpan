@@ -53,7 +53,7 @@
           <option value="教育基金與子女規劃">教育基金與子女規劃</option>
           <option value="生意與稅務規劃">生意與稅務規劃</option>
           <option value="遺產傳承與資產保護">遺產傳承與資產保護</option>
-          <option value="定期講座資訊">定期講座資訊區</option>
+          <option value="定期講座資訊">定期講座資訊</option>
           <option value="退休理財規劃">退休理財規劃</option>
           <option value="市場觀察與財經知識">市場觀察與財經知識</option>
           <option value="金融產品介紹">金融產品介紹</option>
@@ -61,7 +61,7 @@
       </div>
       <div class="form-group">
         <label>文章摘要 (Excerpt)</label>
-        <textarea id="artExcerpt" rows="3" placeholder="請輸入文章..."></textarea>
+        <textarea id="artExcerpt" rows="3" placeholder="請輸入文章簡短摘要..."></textarea>
       </div>
       <div class="form-group">
         <label>來源檔名 (Source)</label>
@@ -104,11 +104,11 @@
       <div class="article-row">
         <div>
           <strong>${escapeHTML(a.title)}</strong><br>
-          <small style="color:var(--muted)">分類：${a.category} | 代稱：${a.slug}</small>
+          <small style="color:var(--muted)">分類：${escapeHTML(a.category)} | 代稱：${escapeHTML(a.slug)}</small>
         </div>
         <div>
-          <button class="btn secondary" onclick="editArticle(${a.id}, '${escapeHTML(a.title)}', '${a.slug}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt||'')}')" style="padding:6px 12px; font-size:11px;">編輯</button>
-          <button class="btn secondary" onclick="deleteArticle(${a.id})" style="padding:6px 12px; font-size:11px; color:red; border-color:red;">刪除</button>
+          <button type="button" class="btn secondary" onclick="editArticle('${a.id}', '${escapeHTML(a.title).replace(/'/g, "\\'")}', '${escapeHTML(a.slug)}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt || '').replace(/'/g, "\\'")}')" style="padding:6px 12px; font-size:11px;">編輯</button>
+          <button type="button" class="btn secondary" onclick="deleteArticle('${a.id}')" style="padding:6px 12px; font-size:11px; color:red; border-color:red;">刪除</button>
         </div>
       </div>
     `).join('');
@@ -117,7 +117,7 @@
   // 儲存文章 (新增或更新)
   articleForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const id =[cite: 1] document.getElementById('articleId').value;
+    const id = document.getElementById('articleId').value;
     const title = document.getElementById('artTitle').value.trim();
     const slug = document.getElementById('artSlug').value.trim();
     const category = document.getElementById('artCategory').value;
