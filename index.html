@@ -436,11 +436,11 @@
   <div class="footer-links"><a href="privacy.html">隱私權政策</a><a href="disclaimer.html">教育與免責聲明</a><a href="mailto:ijuyehixy19@gmail.com">聯絡我們</a></div>
   <p>© 2026 Ruyi Suanpan. All rights reserved.</p>
 </footer>
-<script src="app.js"></script>
+
 <script>
   const SUPABASE_URL = "https://nnzknvhyfyfvwcvzsehg.supabase.co";
   const SUPABASE_KEY = "sb_publishable_8YUNF2yAUi_jH5oLYeTxjQ_XfKA1Ezh";
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const cloudDb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   window.openArticleModal = function(title, content) {
     const modalContainer = document.getElementById("articleModalContainer");
@@ -461,47 +461,47 @@
     document.body.style.overflow = "auto";
   }
 
-  let currentPage = 1;
-  const itemsPerPage = 12;
-  let articles = [];
+  let cloudCurrentPage = 1;
+  const cloudItemsPerPage = 12;
+  let cloudArticles = [];
 
   async function loadFrontendArticles() {
     const grid = document.getElementById('articleGrid');
-    const { data, error } = await db.from('articles').select('*').order('id', { ascending: false });
+    const { data, error } = await cloudDb.from('articles').select('*').order('id', { ascending: false });
     
     if (error) {
       grid.innerHTML = '<div class="no-results">載入文章失敗：' + error.message + '</div>';
       return;
     }
 
-    articles = data || [];
-    if (articles.length === 0) {
+    cloudArticles = data || [];
+    if (cloudArticles.length === 0) {
       grid.innerHTML = '<div class="no-results">目前雲端資料庫沒有任何文章。</div>';
       return;
     }
 
-    renderArticles(articles);
+    renderCloudArticles(cloudArticles);
 
-    document.getElementById('searchInput')?.addEventListener('input', () => { currentPage = 1; filterAndRender(); });
-    document.getElementById('categoryFilter')?.addEventListener('change', () => { currentPage = 1; filterAndRender(); });
+    document.getElementById('searchInput')?.addEventListener('input', () => { cloudCurrentPage = 1; filterAndRenderCloud(); });
+    document.getElementById('categoryFilter')?.addEventListener('change', () => { cloudCurrentPage = 1; filterAndRenderCloud(); });
   }
 
-  function filterAndRender() {
+  function filterAndRenderCloud() {
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
     const query = searchInput ? searchInput.value.toLowerCase() : '';
     const cat = categoryFilter ? categoryFilter.value : '';
 
-    let filtered = articles.filter(art => {
+    let filtered = cloudArticles.filter(art => {
       const matchCat = !cat || art.category === cat;
       const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.excerpt && art.excerpt.toLowerCase().includes(query));
       return matchCat && matchQuery;
     });
 
-    renderArticles(filtered);
+    renderCloudArticles(filtered);
   }
 
-  function renderArticles(list) {
+  function renderCloudArticles(list) {
     const grid = document.getElementById('articleGrid');
     const countDiv = document.getElementById('resultCount');
     const paginationDiv = document.getElementById('paginationContainer');
@@ -514,11 +514,11 @@
       return;
     }
 
-    const totalPages = Math.ceil(list.length / itemsPerPage);
-    if (currentPage > totalPages) currentPage = 1;
+    const totalPages = Math.ceil(list.length / cloudItemsPerPage);
+    if (cloudCurrentPage > totalPages) cloudCurrentPage = 1;
 
-    const start = (currentPage - 1) * itemsPerPage;
-    const currentItems = list.slice(start, start + itemsPerPage);
+    const start = (cloudCurrentPage - 1) * cloudItemsPerPage;
+    const currentItems = list.slice(start, start + cloudItemsPerPage);
 
     grid.innerHTML = currentItems.map(art => {
       const fullContent = art.content || art.excerpt || '暫無詳細內容';
@@ -537,7 +537,7 @@
     }).join('');
 
     if (countDiv) {
-      countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + itemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${articles.length} 篇）`;
+      countDiv.textContent = `顯示第 ${start + 1} - ${Math.min(start + cloudItemsPerPage, list.length)} 篇，共 ${list.length} 篇文章（總庫 ${cloudArticles.length} 篇）`;
     }
 
     if (paginationDiv) {
@@ -546,24 +546,24 @@
         return;
       }
 
-      let paginationHtml = `<button class="pagination-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>上一頁</button>`;
+      let paginationHtml = `<button class="pagination-btn" onclick="changeCloudPage(${cloudCurrentPage - 1})" ${cloudCurrentPage === 1 ? 'disabled' : ''}>上一頁</button>`;
       
       for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-          paginationHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-        } else if (i === currentPage - 2 || i === currentPage + 2) {
+        if (i === 1 || i === totalPages || (i >= cloudCurrentPage - 1 && i <= cloudCurrentPage + 1)) {
+          paginationHtml += `<button class="pagination-btn ${i === cloudCurrentPage ? 'active' : ''}" onclick="changeCloudPage(${i})">${i}</button>`;
+        } else if (i === cloudCurrentPage - 2 || i === cloudCurrentPage + 2) {
           paginationHtml += `<span style="padding: 0 4px; color: var(--muted);">…</span>`;
         }
       }
 
-      paginationHtml += `<button class="pagination-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>下一頁</button>`;
+      paginationHtml += `<button class="pagination-btn" onclick="changeCloudPage(${cloudCurrentPage + 1})" ${cloudCurrentPage === totalPages ? 'disabled' : ''}>下一頁</button>`;
       paginationDiv.innerHTML = paginationHtml;
     }
   }
 
-  window.changePage = function(page) {
-    currentPage = page;
-    filterAndRender();
+  window.changeCloudPage = function(page) {
+    cloudCurrentPage = page;
+    filterAndRenderCloud();
     document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
   }
 
