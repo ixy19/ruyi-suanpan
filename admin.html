@@ -168,7 +168,7 @@
           <small style="color:var(--muted)">分類：${escapeHTML(a.category)} | 代稱：${escapeHTML(a.slug)}</small>
         </div>
         <div style="display:flex; gap:6px;">
-          <button type="button" class="btn secondary" onclick="editArticle('${a.id}', '${escapeHTML(a.title).replace(/'/g, "\\'")}', '${escapeHTML(a.slug)}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt || '').replace(/'/g, "\\'")}', ${JSON.stringify(a.content || '').replace(/'/g, "&#39;")})" style="padding:6px 12px; font-size:11px;">編輯</button>
+          <button type="button" class="btn secondary" onclick="editArticle('${a.id}')" style="padding:6px 12px; font-size:11px;">編輯</button>
           <button type="button" class="btn secondary" onclick="deleteArticle('${a.id}')" style="padding:6px 12px; font-size:11px; color:red; border-color:red;">刪除</button>
         </div>
       </div>
@@ -242,14 +242,19 @@
     else loadAdminArticles();
   };
 
-  // 帶入編輯
-  window.editArticle = function(id, title, slug, category, excerpt, content) {
-    document.getElementById('articleId').value = id;
-    document.getElementById('artTitle').value = title;
-    document.getElementById('artSlug').value = slug;
-    document.getElementById('artCategory').value = category;
-    document.getElementById('artExcerpt').value = excerpt;
-    document.getElementById('artContent').value = content;
+  // 帶入編輯（直接從記憶體中的 adminArticles 陣列尋找，安全且完美支援長文與換行）
+  window.editArticle = function(id) {
+    const article = adminArticles.find(item => String(item.id) === String(id));
+    if (!article) {
+      alert("找不到該篇文章資料");
+      return;
+    }
+    document.getElementById('articleId').value = article.id;
+    document.getElementById('artTitle').value = article.title || '';
+    document.getElementById('artSlug').value = article.slug || '';
+    document.getElementById('artCategory').value = article.category || '美國保險';
+    document.getElementById('artExcerpt').value = article.excerpt || '';
+    document.getElementById('artContent').value = article.content || '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
