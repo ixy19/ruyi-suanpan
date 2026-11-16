@@ -71,6 +71,10 @@
         <label>文章摘要 (Excerpt)</label>
         <textarea id="artExcerpt" rows="3" placeholder="請輸入文章簡短摘要..."></textarea>
       </div>
+      <div class="form-group">
+        <label>文章完整內文 (Content)</label>
+        <textarea id="artContent" rows="10" placeholder="請輸入文章完整內文..."></textarea>
+      </div>
       <div class="btn-row">
         <button type="submit" class="btn primary">儲存至雲端資料庫</button>
         <button type="button" id="resetFormBtn" class="btn secondary">清除重填</button>
@@ -133,7 +137,7 @@
 
     let filtered = adminArticles.filter(art => {
       const matchCat = !cat || art.category === cat;
-      const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.excerpt && art.excerpt.toLowerCase().includes(query));
+      const matchQuery = !query || art.title.toLowerCase().includes(query) || (art.excerpt && art.excerpt.toLowerCase().includes(query)) || (art.content && art.content.toLowerCase().includes(query));
       return matchCat && matchQuery;
     });
 
@@ -164,7 +168,7 @@
           <small style="color:var(--muted)">分類：${escapeHTML(a.category)} | 代稱：${escapeHTML(a.slug)}</small>
         </div>
         <div style="display:flex; gap:6px;">
-          <button type="button" class="btn secondary" onclick="editArticle('${a.id}', '${escapeHTML(a.title).replace(/'/g, "\\'")}', '${escapeHTML(a.slug)}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt || '').replace(/'/g, "\\'")}')" style="padding:6px 12px; font-size:11px;">編輯</button>
+          <button type="button" class="btn secondary" onclick="editArticle('${a.id}', '${escapeHTML(a.title).replace(/'/g, "\\'")}', '${escapeHTML(a.slug)}', '${escapeHTML(a.category)}', '${escapeHTML(a.excerpt || '').replace(/'/g, "\\'")}', ${JSON.stringify(a.content || '').replace(/'/g, "&#39;")})" style="padding:6px 12px; font-size:11px;">編輯</button>
           <button type="button" class="btn secondary" onclick="deleteArticle('${a.id}')" style="padding:6px 12px; font-size:11px; color:red; border-color:red;">刪除</button>
         </div>
       </div>
@@ -209,8 +213,9 @@
     const slug = document.getElementById('artSlug').value.trim();
     const category = document.getElementById('artCategory').value;
     const excerpt = document.getElementById('artExcerpt').value.trim();
+    const content = document.getElementById('artContent').value.trim();
 
-    const payload = { title, slug, category, excerpt, kind: "雲端後台發布" };
+    const payload = { title, slug, category, excerpt, content, kind: "雲端後台發布" };
 
     let res;
     if (id) {
@@ -238,12 +243,13 @@
   };
 
   // 帶入編輯
-  window.editArticle = function(id, title, slug, category, excerpt) {
+  window.editArticle = function(id, title, slug, category, excerpt, content) {
     document.getElementById('articleId').value = id;
     document.getElementById('artTitle').value = title;
     document.getElementById('artSlug').value = slug;
     document.getElementById('artCategory').value = category;
     document.getElementById('artExcerpt').value = excerpt;
+    document.getElementById('artContent').value = content;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
