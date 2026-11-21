@@ -31,7 +31,6 @@
       max-width: 1060px;
       margin: 0 auto;
     }
-    /* 頂部語言切換列 */
     .top-bar {
       display: flex;
       justify-content: flex-end;
@@ -60,7 +59,6 @@
       color: var(--primary);
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);
     }
-
     header {
       text-align: center;
       margin-bottom: 24px;
@@ -265,8 +263,6 @@
       font-weight: 700;
       color: #0f172a;
     }
-
-    /* 互動小問號 Tooltip */
     .tip-btn {
       display: inline-flex;
       align-items: center;
@@ -314,8 +310,6 @@
       display: block;
       margin-bottom: 3px;
     }
-
-    /* 底部新手白話名詞小百科 */
     .glossary-card {
       margin-top: 22px;
       background: var(--card);
@@ -376,7 +370,6 @@
       color: #334155;
       line-height: 1.55;
     }
-
     footer {
       margin-top: 20px;
       font-size: 0.82rem;
@@ -387,7 +380,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- 語言切換按鈕 -->
     <div class="top-bar">
       <div class="lang-switch" role="group" aria-label="Language Switch">
         <button type="button" id="langZhBtn" class="active">繁體中文</button>
@@ -401,17 +393,14 @@
     </header>
 
     <div class="grid">
-      <!-- 左側控制面板 -->
       <div class="card">
         <h2 id="panel1Title">1. 選擇報稅身分、居住州與金額</h2>
 
-        <!-- 報稅身分切換 -->
         <div class="segmented" role="tablist">
           <button type="button" id="btnMFJ" class="active">夫妻合併申報 (MFJ)</button>
           <button type="button" id="btnSingle">單身申報 (Single)</button>
         </div>
 
-        <!-- 選擇州別 -->
         <div class="control-group">
           <div class="control-header">
             <span class="label-with-tip">
@@ -426,7 +415,6 @@
           </div>
         </div>
 
-        <!-- 微調州稅率滑桿 -->
         <div class="control-group">
           <div class="control-header">
             <span class="label-with-tip">
@@ -438,7 +426,6 @@
           <input type="range" id="stateRateSlider" min="0" max="14" step="0.05" value="4.15" />
         </div>
 
-        <!-- 轉換前原本的 AGI -->
         <div class="control-group">
           <div class="control-header">
             <span class="label-with-tip">
@@ -455,7 +442,6 @@
           <div class="hint-box" id="agiWhereHint"></div>
         </div>
 
-        <!-- 預計 Roth 轉換金額 -->
         <div class="control-group">
           <div class="control-header">
             <span class="label-with-tip">
@@ -474,7 +460,6 @@
         <div class="breakdown" id="spaceAdvice"></div>
       </div>
 
-      <!-- 右側結果與圖表 -->
       <div class="card">
         <h2 id="panel2Title">2. 預估稅額與邊際級距分析</h2>
 
@@ -521,7 +506,6 @@
       </div>
     </div>
 
-    <!-- 新手白話名詞小百科 -->
     <details class="glossary-card" open>
       <summary>
         <span id="glossarySummaryTitle">📖 新手白話名詞小百科（第一次玩先看這裡！）</span>
@@ -533,7 +517,6 @@
     <footer id="footerNote"></footer>
   </div>
 
-  <!-- 浮動提示氣泡 -->
   <div id="floatingTooltip" class="floating-tooltip" role="tooltip"></div>
 
   <script>
@@ -598,38 +581,14 @@
           }
         ],
         tips: {
-          state: {
-            title: "州稅怎麼算？",
-            body: "這裡帶入的是各州政府單獨收的州（與地方）所得稅率，不含聯邦稅。最後會跟聯邦稅分開計算再加總。"
-          },
-          stateRate: {
-            title: "為什麼要微調？",
-            body: "像德州、佛州是 0%；印第安納州是單一稅率加郡稅；加州、紐約等累進稅率州則依收入高低不同，可依您的實際級距拉動微調。"
-          },
-          agi: {
-            title: "什麼是 AGI（調整後總收入）？",
-            body: "就是整年總收入，先扣掉放進 Traditional 401(k)、HSA 等稅前帳戶的錢。可參考去年報稅單 Form 1040 第 11 行。"
-          },
-          roth: {
-            title: "什麼是 Roth 轉換？",
-            body: "把以前還沒繳稅的退休金（如 Traditional IRA / 401k），趁今年轉進『未來領錢完全免稅』的 Roth 帳戶；轉過去的金額會算進今年收入繳稅。"
-          },
-          taxable: {
-            title: "應稅所得怎麼算？",
-            body: "轉換後總 AGI 減去『標準扣除額』（2026 夫妻 $32,200 / 單身 $16,100）後，剩下的才是真正要按級距繳聯邦稅的金額。"
-          },
-          bracket: {
-            title: "跳級距會整筆變貴嗎？",
-            body: "不會！美國採『超額累進』，就像水桶裝滿溢出來才算下一層稅率，只有超出門檻的那一塊會用到較高稅率，前面的額度依然維持低稅率。"
-          },
-          effRate: {
-            title: "轉換有效稅率是什麼？",
-            body: "多增加的總稅額 ÷ 這次轉進 Roth 的金額，代表您平均花多少 % 的稅金，把這筆錢變成未來永久免稅的資產。"
-          },
-          stdDed: {
-            title: "標準扣除額 (Standard Deduction)",
-            body: "政府直接給的基本免稅額，超過這個額度才需要繳聯邦所得稅。"
-          }
+          state: { title: "州稅怎麼算？", body: "這裡帶入的是各州政府單獨收的州（與地方）所得稅率，不含聯邦稅。最後會跟聯邦稅分開計算再加總。" },
+          stateRate: { title: "為什麼要微調？", body: "像德州、佛州是 0%；印第安納州是單一稅率加郡稅；加州、紐約等累進稅率州則依收入高低不同，可依您的實際級距拉動微調。" },
+          agi: { title: "什麼是 AGI（調整後總收入）？", body: "就是整年總收入，先扣掉放進 Traditional 401(k)、HSA 等稅前帳戶的錢。可參考去年報稅單 Form 1040 第 11 行。" },
+          roth: { title: "什麼是 Roth 轉換？", body: "把以前還沒繳稅的退休金（如 Traditional IRA / 401k），趁今年轉進『未來領錢完全免稅』的 Roth 帳戶；轉過去的金額會算進今年收入繳稅。" },
+          taxable: { title: "應稅所得怎麼算？", body: "轉換後總 AGI 減去『標準扣除額』（2026 夫妻 $32,200 / 單身 $16,100）後，剩下的才是真正要按級距繳聯邦稅的金額。" },
+          bracket: { title: "跳級距會整筆變貴嗎？", body: "不會！美國採『超額累進』，就像水桶裝滿溢出來才算下一層稅率，只有超出門檻的那一塊會用到較高稅率，前面的額度依然維持低稅率。" },
+          effRate: { title: "轉換有效稅率是什麼？", body: "多增加的總稅額 ÷ 這次轉進 Roth 的金額，代表您平均花多少 % 的稅金，把這筆錢變成未來永久免稅的資產。" },
+          stdDed: { title: "標準扣除額 (Standard Deduction)", body: "政府直接給的基本免稅額，超過這個額度才需要繳聯邦所得稅。" }
         },
         footerNote: "* 註：本工具採用 2026 年 IRS 聯邦稅率與標準扣除額（單身 $16,100；夫妻合併 $32,200）。州稅採用各州 2026 年基準估算（免州稅州為 0%；單一稅率州為法定稅率；累進稅率州提供常見中產級距估算並支援滑桿微調，部分州對退休金轉出有額外免稅額度，實際請以各州稅表為準）。"
       },
@@ -690,38 +649,14 @@
           }
         ],
         tips: {
-          state: {
-            title: "How is State Tax Calculated?",
-            body: "This rate reflects state (and local) income tax only—separate from federal tax. The calculator computes federal and state taxes independently and adds them together."
-          },
-          stateRate: {
-            title: "Why Fine-Tune the Rate?",
-            body: "No-income-tax states (TX, FL, WA, etc.) are 0%. Flat-tax states use a single rate, while progressive-tax states (CA, NY, NJ) vary by income—adjust the slider to match your bracket."
-          },
-          agi: {
-            title: "What is AGI (Adjusted Gross Income)?",
-            body: "Total income minus pre-tax deductions like Traditional 401(k) and HSA contributions. You can find last year's AGI on Form 1040, Line 11."
-          },
-          roth: {
-            title: "What is a Roth Conversion?",
-            body: "Moving pre-tax retirement funds (Traditional IRA / 401k) into a tax-free Roth IRA. The converted amount counts as taxable ordinary income in the year of conversion."
-          },
-          taxable: {
-            title: "How is Taxable Income Calculated?",
-            body: "Post-Conversion Total AGI minus the 2026 Standard Deduction ($32,200 MFJ / $16,100 Single). This is the amount actually taxed across federal brackets."
-          },
-          bracket: {
-            title: "Does Jumping a Bracket Raise Tax on Everything?",
-            body: "No. Like filling buckets one after another, only the portion spilling over the threshold is taxed at the higher marginal rate."
-          },
-          effRate: {
-            title: "What is Effective Conversion Tax Rate?",
-            body: "Total Extra Tax ÷ Converted Amount. It shows the average tax percentage you pay to permanently lock in tax-free growth."
-          },
-          stdDed: {
-            title: "Standard Deduction",
-            body: "The automatic tax-free income shield granted by the IRS before federal income tax applies."
-          }
+          state: { title: "How is State Tax Calculated?", body: "This rate reflects state (and local) income tax only—separate from federal tax. The calculator computes federal and state taxes independently and adds them together." },
+          stateRate: { title: "Why Fine-Tune the Rate?", body: "No-income-tax states (TX, FL, WA, etc.) are 0%. Flat-tax states use a single rate, while progressive-tax states (CA, NY, NJ) vary by income—adjust the slider to match your bracket." },
+          agi: { title: "What is AGI (Adjusted Gross Income)?", body: "Total income minus pre-tax deductions like Traditional 401(k) and HSA contributions. You can find last year's AGI on Form 1040, Line 11." },
+          roth: { title: "What is a Roth Conversion?", body: "Moving pre-tax retirement funds (Traditional IRA / 401k) into a tax-free Roth IRA. The converted amount counts as taxable ordinary income in the year of conversion." },
+          taxable: { title: "How is Taxable Income Calculated?", body: "Post-Conversion Total AGI minus the 2026 Standard Deduction ($32,200 MFJ / $16,100 Single). This is the amount actually taxed across federal brackets." },
+          bracket: { title: "Does Jumping a Bracket Raise Tax on Everything?", body: "No. Like filling buckets one after another, only the portion spilling over the threshold is taxed at the higher marginal rate." },
+          effRate: { title: "What is Effective Conversion Tax Rate?", body: "Total Extra Tax ÷ Converted Amount. It shows the average tax percentage you pay to permanently lock in tax-free growth." },
+          stdDed: { title: "Standard Deduction", body: "The automatic tax-free income shield granted by the IRS before federal income tax applies." }
         },
         footerNote: "* Note: Uses 2026 IRS federal brackets and standard deductions ($16,100 Single; $32,200 Married Filing Jointly). State rates reflect 2026 baselines (0% for no-tax states; statutory rates for flat-tax states; typical middle-income marginal estimates for progressive states, adjustable via slider). Some states exempt qualified retirement distributions; consult a CPA for official filing."
       }
@@ -949,7 +884,6 @@
       const selectedState = US_STATES.find((s) => s.code === stateSelect.value) || US_STATES[0];
       document.getElementById("stateNoteText").textContent = currentLang === "zh" ? selectedState.noteZh : selectedState.noteEn;
 
-      // 渲染名詞小百科
       const gGrid = document.getElementById("glossaryGrid");
       gGrid.innerHTML = t.glossaryItems.map((item) => `
         <div class="glossary-item">
@@ -958,7 +892,6 @@
         </div>
       `).join("");
 
-      // 更新圖表語系
       taxChart.data.datasets[0].label = t.chartFed;
       taxChart.data.datasets[1].label = t.chartState;
       taxChart.options.scales.x.title.text = t.chartX;
@@ -1087,7 +1020,6 @@
       taxChart.update();
     }
 
-    // 互動提示氣泡控制 (隨當前語言讀取對應解釋)
     const tooltipEl = document.getElementById("floatingTooltip");
     let activeTipBtn = null;
 
