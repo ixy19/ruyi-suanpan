@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 全美 Roth 轉換稅額試算器 | 2026 US Roth Conversion Tax Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --primary: #1e40af;
+      --primary-light: #dbeafe;
+      --accent: #0f766e;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --warn-bg: #fef3c7;
+      --warn-text: #92400e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px 16px 32px;
+    }
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+    /* 頂部語言切換列 */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+    .lang-switch {
+      display: inline-flex;
+      background: #e2e8f0;
+      padding: 3px;
+      border-radius: 999px;
+      gap: 2px;
+    }
+    .lang-switch button {
+      border: none;
+      background: transparent;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .lang-switch button.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 1.75rem;
+      color: #0f172a;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 20px;
+    }
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    }
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+      color: #0f172a;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+    }
+    .segmented button {
+      border: none;
+      background: transparent;
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .segmented button.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    }
+    .control-group {
+      margin-bottom: 18px;
+    }
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.94rem;
+      gap: 8px;
+    }
+    .label-with-tip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .value-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.94rem;
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .sub-input {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+    .sub-input input[type="number"] {
+      width: 120px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .hint-box {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 6px 10px;
+      border-radius: 6px;
+      line-height: 1.45;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .stat-box.highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-box.highlight .stat-value {
+      color: var(--primary);
+    }
+    .bracket-pill {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.78rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      background: #dcfce7;
+      color: #166534;
+    }
+    .bracket-pill.warn {
+      background: var(--warn-bg);
+      color: var(--warn-text);
+    }
+    .chart-wrap {
+      position: relative;
+      height: 270px;
+      width: 100%;
+    }
+    .breakdown {
+      margin-top: 14px;
+      font-size: 0.88rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+    }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      gap: 12px;
+    }
+    .breakdown-row.total {
+      border-top: 1px dashed #cbd5e1;
+      margin-top: 6px;
+      padding-top: 8px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* 互動小問號 Tooltip */
+    .tip-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .tip-btn:hover, .tip-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .floating-tooltip {
+      position: fixed;
+      z-index: 9999;
+      max-width: 310px;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 13px;
+      border-radius: 10px;
+      font-size: 0.83rem;
+      line-height: 1.5;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .floating-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .floating-tooltip strong {
+      color: #93c5fd;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    /* 底部新手白話名詞小百科 */
+    .glossary-card {
+      margin-top: 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 24px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    }
+    .glossary-card summary {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      user-select: none;
+    }
+    .glossary-card summary::-webkit-details-marker {
+      display: none;
+    }
+    .glossary-card summary .toggle-hint {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: #f1f5f9;
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 720px) {
+      .glossary-grid { grid-template-columns: 1fr; }
+    }
+    .glossary-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 15px;
+    }
+    .glossary-item h3 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+    .glossary-item p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 語言切換按鈕 -->
+    <div class="top-bar">
+      <div class="lang-switch" role="group" aria-label="Language Switch">
+        <button type="button" id="langZhBtn" class="active">繁體中文</button>
+        <button type="button" id="langEnBtn">English</button>
+      </div>
+    </div>
+
+    <header>
+      <h1 id="mainTitle">2026 全美 Roth 轉換稅額試算器</h1>
+      <p id="mainSubtitle">支援「單身 (Single)」與「夫妻合併 (MFJ)」切換｜點擊欄位旁的 <strong>ⓘ</strong> 可看白話說明</p>
+    </header>
+
+    <div class="grid">
+      <!-- 左側控制面板 -->
+      <div class="card">
+        <h2 id="panel1Title">1. 選擇報稅身分、居住州與金額</h2>
+
+        <!-- 報稅身分切換 -->
+        <div class="segmented" role="tablist">
+          <button type="button" id="btnMFJ" class="active">夫妻合併申報 (MFJ)</button>
+          <button type="button" id="btnSingle">單身申報 (Single)</button>
+        </div>
+
+        <!-- 選擇州別 -->
+        <div class="control-group">
+          <div class="control-header">
+            <span class="label-with-tip">
+              <span id="stateSelectLabel">居住州別（自動帶入該州單獨稅率）</span>
+              <button type="button" class="tip-btn" data-tip-key="state">i</button>
+            </span>
+            <span class="value-badge" id="stateBadge">IN 4.15%</span>
+          </div>
+          <select id="stateSelect"></select>
+          <div class="sub-input">
+            <span id="stateNoteText">印第安納州 2.95% 州稅 + 約 1.20% 郡稅 (County Tax)</span>
+          </div>
+        </div>
+
+        <!-- 微調州稅率滑桿 -->
+        <div class="control-group">
+          <div class="control-header">
+            <span class="label-with-tip">
+              <span id="stateRateTitle">微調適用州/地方邊際稅率</span>
+              <button type="button" class="tip-btn" data-tip-key="stateRate">i</button>
+            </span>
+            <span class="value-badge" id="stateRateLabel">4.15%</span>
+          </div>
+          <input type="range" id="stateRateSlider" min="0" max="14" step="0.05" value="4.15" />
+        </div>
+
+        <!-- 轉換前原本的 AGI -->
+        <div class="control-group">
+          <div class="control-header">
+            <span class="label-with-tip">
+              <span id="baseAgiTitle">轉換前家庭預估 AGI</span>
+              <button type="button" class="tip-btn" data-tip-key="agi">i</button>
+            </span>
+            <span class="value-badge" id="baseAgiLabel">$120,000</span>
+          </div>
+          <input type="range" id="baseAgiSlider" min="0" max="250000" step="1000" value="120000" />
+          <div class="sub-input">
+            <label for="baseAgiInput" id="exactInputLabel1">精準輸入 ($)：</label>
+            <input type="number" id="baseAgiInput" min="0" max="1000000" step="500" value="120000" />
+          </div>
+          <div class="hint-box" id="agiWhereHint"></div>
+        </div>
+
+        <!-- 預計 Roth 轉換金額 -->
+        <div class="control-group">
+          <div class="control-header">
+            <span class="label-with-tip">
+              <span id="convertAmtTitle">預計 Roth 轉換金額</span>
+              <button type="button" class="tip-btn" data-tip-key="roth">i</button>
+            </span>
+            <span class="value-badge" id="convertAmtLabel">$70,000</span>
+          </div>
+          <input type="range" id="convertAmtSlider" min="0" max="120000" step="1000" value="70000" />
+          <div class="sub-input">
+            <label for="convertAmtInput" id="exactInputLabel2">精準輸入 ($)：</label>
+            <input type="number" id="convertAmtInput" min="0" max="500000" step="500" value="70000" />
+          </div>
+        </div>
+
+        <div class="breakdown" id="spaceAdvice"></div>
+      </div>
+
+      <!-- 右側結果與圖表 -->
+      <div class="card">
+        <h2 id="panel2Title">2. 預估稅額與邊際級距分析</h2>
+
+        <div class="summary-grid">
+          <div class="stat-box">
+            <div class="stat-label">
+              <span id="totalAgiLabel">轉換後總 AGI</span>
+              <button type="button" class="tip-btn" data-tip-key="taxable">i</button>
+            </div>
+            <div class="stat-value" id="totalAgiStat">$190,000</div>
+            <div class="stat-label" style="margin-top:4px;"><span id="taxablePrefix">應稅所得：</span><span id="taxableStat">$157,800</span></div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-label">
+              <span id="bracketTitle">最高聯邦邊際稅率級距</span>
+              <button type="button" class="tip-btn" data-tip-key="bracket">i</button>
+            </div>
+            <div class="stat-value" id="bracketStat">22%</div>
+            <div id="bracketBadge" class="bracket-pill">維持在 22%（未跳級）</div>
+          </div>
+
+          <div class="stat-box highlight">
+            <div class="stat-label">
+              <span id="extraTaxTitle">本次轉換「額外增加」總稅額</span>
+              <button type="button" class="tip-btn" data-tip-key="effRate">i</button>
+            </div>
+            <div class="stat-value" id="extraTotalTaxStat">$15,905</div>
+            <div class="stat-label" style="margin-top:4px;"><span id="effRatePrefix">轉換有效稅率：</span><span id="effRateStat">22.7%</span></div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-label" id="splitTaxTitle">其中聯邦稅 / 州與地方稅</div>
+            <div class="stat-value" style="font-size:1.05rem;" id="splitTaxStat">$13,000 / $2,905</div>
+            <div class="stat-label" style="margin-top:4px;" id="cashTipText">建議用帳戶外的現金繳稅</div>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="taxChart"></canvas>
+        </div>
+
+        <div class="breakdown" id="taxDetailBox"></div>
+      </div>
+    </div>
+
+    <!-- 新手白話名詞小百科 -->
+    <details class="glossary-card" open>
+      <summary>
+        <span id="glossarySummaryTitle">📖 新手白話名詞小百科（第一次玩先看這裡！）</span>
+        <span class="toggle-hint" id="glossaryToggleHint">點擊可收合 / 展開</span>
+      </summary>
+      <div class="glossary-grid" id="glossaryGrid"></div>
+    </details>
+
+    <footer id="footerNote"></footer>
+  </div>
+
+  <!-- 浮動提示氣泡 -->
+  <div id="floatingTooltip" class="floating-tooltip" role="tooltip"></div>
+
+  <script>
+    let currentLang = "zh";
+    let filingStatus = "mfj";
+
+    const I18N = {
+      zh: {
+        docTitle: "2026 全美 Roth 轉換稅額試算器 | 2026 US Roth Conversion Tax Calculator",
+        mainTitle: "2026 全美 Roth 轉換稅額試算器",
+        mainSubtitle: "支援「單身 (Single)」與「夫妻合併 (MFJ)」切換｜點擊欄位旁的 <strong>ⓘ</strong> 可看白話說明",
+        panel1Title: "1. 選擇報稅身分、居住州與金額",
+        panel2Title: "2. 預估稅額與邊際級距分析",
+        btnMFJ: "夫妻合併申報 (MFJ)",
+        btnSingle: "單身申報 (Single)",
+        stateSelectLabel: "居住州別（自動帶入該州單獨稅率）",
+        stateRateTitle: "微調適用州/地方邊際稅率",
+        baseAgiTitleMFJ: "轉換前家庭預估 AGI",
+        baseAgiTitleSingle: "轉換前個人預估 AGI",
+        exactInput: "精準輸入 ($)：",
+        agiHintMFJ: "💡 <strong>去哪找數字？</strong>拿夫妻預估年薪，減去今年放進 Traditional 401(k) 與 HSA 的金額（或看去年稅表 Form 1040 第 11 行）。",
+        agiHintSingle: "💡 <strong>去哪找數字？</strong>如果今年沒有其他工作收入請設 <strong>$0</strong>；若有工作，拿年薪減去今年放進 Traditional 401(k) 與 HSA 的金額。",
+        convertAmtTitle: "預計 Roth 轉換金額",
+        totalAgiLabel: "轉換後總 AGI",
+        taxablePrefix: "應稅所得：",
+        bracketTitle: "最高聯邦邊際稅率級距",
+        extraTaxTitle: "本次轉換「額外增加」總稅額",
+        effRatePrefix: "轉換有效稅率：",
+        splitTaxTitle: "其中聯邦稅 / 州與地方稅",
+        cashTipText: "建議用帳戶外的現金繳稅",
+        chartX: "Roth 轉換金額",
+        chartY: "預估增加稅額 ($)",
+        chartFed: "轉換增加的聯邦稅 ($)",
+        chartState: "轉換增加的州與地方稅 ($)",
+        badgeJump: (b1, b2) => `從 ${b1}% 跳升至 ${b2}%`,
+        badgeCross: (b2) => `跨過標準扣除額，最高達 ${b2}%`,
+        badgeStay: (b2) => `維持在 ${b2}%（未跳級）`,
+        stdDedRow: (statusLabel) => `2026 ${statusLabel}標準扣除額`,
+        room12Row: (cap) => `鎖定 <strong>12%</strong> 級距（AGI ≤ ${cap}）可轉空間：`,
+        room22Row: (cap) => `鎖定 <strong>22%</strong> 級距（AGI ≤ ${cap}）可轉空間：`,
+        baseFedRow: "轉換前預估聯邦稅（僅原收入）：",
+        newFedRow: "轉換後預估聯邦稅總額：",
+        netTotalRow: "本次轉換淨增加（聯邦 + 州/地方稅）：",
+        glossarySummaryTitle: "📖 新手白話名詞小百科（第一次玩先看這裡！）",
+        glossaryToggleHint: "點擊可收合 / 展開",
+        glossaryItems: [
+          {
+            q: "1. 什麼是 Roth 帳戶？為什麼要做「Roth 轉換」？",
+            a: "一般的傳統退休金（Traditional IRA / 401k）是「現在存錢先抵稅，以後退休領出來連本帶利都要繳稅」；<strong>Roth 帳戶則是「現在先繳稅，以後一輩子增值與領出來通通免稅」</strong>。趁某一年收入較低、稅率便宜時把錢搬過去，就叫 <strong>Roth 轉換（Roth Conversion）</strong>。"
+          },
+          {
+            q: "2. 什麼是 AGI（調整後總收入）？",
+            a: "把整年所有收入加起來，先扣掉放進 <strong>Traditional 401(k)、HSA（健康儲蓄帳戶）</strong> 等稅前項目的金額，就是 <strong>AGI</strong>。國稅局（IRS）就是用這個數字來決定您的稅率級距。"
+          },
+          {
+            q: "3. 什麼是「標準扣除額（Standard Deduction）」？",
+            a: "政府直接送給每個家庭的<strong>「基本免稅額」</strong>，不需要留任何收據就能直接從 AGI 扣掉（2026 年夫妻合併為 <strong>$32,200</strong>、單身為 <strong>$16,100</strong>），超過這條線的部分才要繳聯邦所得稅。"
+          },
+          {
+            q: "4. 「跳級距」會讓所有收入都變高稅率嗎？",
+            a: "<strong>不會！</strong>美國稅率是「分段計算」的。例如夫妻超過 $133,000 總收入才會跨進 22% 級距，但<strong>只有超過 $133,000 的那一小塊</strong>會被課 22%，前面在 10% 和 12% 區間的額度依然維持低稅率，不用擔心整筆變貴。"
+          }
+        ],
+        tips: {
+          state: {
+            title: "州稅怎麼算？",
+            body: "這裡帶入的是各州政府單獨收的州（與地方）所得稅率，不含聯邦稅。最後會跟聯邦稅分開計算再加總。"
+          },
+          stateRate: {
+            title: "為什麼要微調？",
+            body: "像德州、佛州是 0%；印第安納州是單一稅率加郡稅；加州、紐約等累進稅率州則依收入高低不同，可依您的實際級距拉動微調。"
+          },
+          agi: {
+            title: "什麼是 AGI（調整後總收入）？",
+            body: "就是整年總收入，先扣掉放進 Traditional 401(k)、HSA 等稅前帳戶的錢。可參考去年報稅單 Form 1040 第 11 行。"
+          },
+          roth: {
+            title: "什麼是 Roth 轉換？",
+            body: "把以前還沒繳稅的退休金（如 Traditional IRA / 401k），趁今年轉進『未來領錢完全免稅』的 Roth 帳戶；轉過去的金額會算進今年收入繳稅。"
+          },
+          taxable: {
+            title: "應稅所得怎麼算？",
+            body: "轉換後總 AGI 減去『標準扣除額』（2026 夫妻 $32,200 / 單身 $16,100）後，剩下的才是真正要按級距繳聯邦稅的金額。"
+          },
+          bracket: {
+            title: "跳級距會整筆變貴嗎？",
+            body: "不會！美國採『超額累進』，就像水桶裝滿溢出來才算下一層稅率，只有超出門檻的那一塊會用到較高稅率，前面的額度依然維持低稅率。"
+          },
+          effRate: {
+            title: "轉換有效稅率是什麼？",
+            body: "多增加的總稅額 ÷ 這次轉進 Roth 的金額，代表您平均花多少 % 的稅金，把這筆錢變成未來永久免稅的資產。"
+          },
+          stdDed: {
+            title: "標準扣除額 (Standard Deduction)",
+            body: "政府直接給的基本免稅額，超過這個額度才需要繳聯邦所得稅。"
+          }
+        },
+        footerNote: "* 註：本工具採用 2026 年 IRS 聯邦稅率與標準扣除額（單身 $16,100；夫妻合併 $32,200）。州稅採用各州 2026 年基準估算（免州稅州為 0%；單一稅率州為法定稅率；累進稅率州提供常見中產級距估算並支援滑桿微調，部分州對退休金轉出有額外免稅額度，實際請以各州稅表為準）。"
+      },
+      en: {
+        docTitle: "2026 US Roth Conversion Tax Calculator (Bilingual)",
+        mainTitle: "2026 US Roth Conversion Tax Calculator",
+        mainSubtitle: "Supports Single & Married Filing Jointly (MFJ) | Click <strong>ⓘ</strong> icons for plain-English explanations",
+        panel1Title: "1. Filing Status, State & Amounts",
+        panel2Title: "2. Estimated Tax & Marginal Bracket Analysis",
+        btnMFJ: "Married Filing Jointly (MFJ)",
+        btnSingle: "Single Filer",
+        stateSelectLabel: "State of Residence (Auto-fills State Tax Rate)",
+        stateRateTitle: "Fine-Tune State / Local Marginal Rate",
+        baseAgiTitleMFJ: "Pre-Conversion Household AGI",
+        baseAgiTitleSingle: "Pre-Conversion Personal AGI",
+        exactInput: "Exact Amount ($):",
+        agiHintMFJ: "💡 <strong>Where to find this:</strong> Combined gross wages minus pre-tax Traditional 401(k) & HSA contributions (or check Line 11 on last year's Form 1040).",
+        agiHintSingle: "💡 <strong>Where to find this:</strong> Enter <strong>$0</strong> if you have no other earned income this year; otherwise, gross salary minus pre-tax 401(k) & HSA contributions.",
+        convertAmtTitle: "Planned Roth Conversion Amount",
+        totalAgiLabel: "Post-Conversion Total AGI",
+        taxablePrefix: "Taxable Income: ",
+        bracketTitle: "Top Federal Marginal Tax Bracket",
+        extraTaxTitle: "Extra Total Tax from Conversion",
+        effRatePrefix: "Effective Conversion Tax Rate: ",
+        splitTaxTitle: "Federal Tax / State & Local Tax",
+        cashTipText: "Pay taxes with outside cash (avoid withholding)",
+        chartX: "Roth Conversion Amount",
+        chartY: "Estimated Extra Tax ($)",
+        chartFed: "Extra Federal Tax ($)",
+        chartState: "Extra State & Local Tax ($)",
+        badgeJump: (b1, b2) => `Jumps from ${b1}% to ${b2}% bracket`,
+        badgeCross: (b2) => `Crosses standard deduction, up to ${b2}%`,
+        badgeStay: (b2) => `Stays in ${b2}% bracket (no bracket jump)`,
+        stdDedRow: (statusLabel) => `2026 ${statusLabel} Standard Deduction`,
+        room12Row: (cap) => `Room left in <strong>12%</strong> bracket (AGI ≤ ${cap}):`,
+        room22Row: (cap) => `Room left in <strong>22%</strong> bracket (AGI ≤ ${cap}):`,
+        baseFedRow: "Baseline Federal Tax (Before Conversion):",
+        newFedRow: "Total Federal Tax (After Conversion):",
+        netTotalRow: "Net Extra Tax (Federal + State/Local):",
+        glossarySummaryTitle: "📖 Plain-English Tax Glossary (New to Roth Conversions? Start Here!)",
+        glossaryToggleHint: "Click to Collapse / Expand",
+        glossaryItems: [
+          {
+            q: "1. What is a Roth Account & Why Do a 'Roth Conversion'?",
+            a: "Traditional retirement accounts (Traditional IRA / 401k) give you a tax break upfront, but withdrawals in retirement are taxed as ordinary income. <strong>Roth accounts grow 100% tax-free, and qualified withdrawals are completely tax-free.</strong> Moving pre-tax money into a Roth during a lower-income year is called a <strong>Roth Conversion</strong>."
+          },
+          {
+            q: "2. What is AGI (Adjusted Gross Income)?",
+            a: "Your total annual income minus pre-tax deductions such as <strong>Traditional 401(k) and HSA contributions</strong>. The IRS uses your AGI to determine your tax brackets and eligibility."
+          },
+          {
+            q: "3. What is the 'Standard Deduction'?",
+            a: "A built-in tax-free allowance granted automatically by the IRS with no receipts required (<strong>$32,200</strong> for Married Filing Jointly and <strong>$16,100</strong> for Single filers in 2026). Only income above this threshold is subject to federal income tax."
+          },
+          {
+            q: "4. Does 'Jumping a Tax Bracket' Tax All My Income at the Higher Rate?",
+            a: "<strong>No!</strong> US federal tax brackets are progressive. For example, if a married couple crosses $133,000 total AGI into the 22% bracket, <strong>only the dollars above $133,000</strong> are taxed at 22%—everything below stays in the 0%, 10%, and 12% tiers."
+          }
+        ],
+        tips: {
+          state: {
+            title: "How is State Tax Calculated?",
+            body: "This rate reflects state (and local) income tax only—separate from federal tax. The calculator computes federal and state taxes independently and adds them together."
+          },
+          stateRate: {
+            title: "Why Fine-Tune the Rate?",
+            body: "No-income-tax states (TX, FL, WA, etc.) are 0%. Flat-tax states use a single rate, while progressive-tax states (CA, NY, NJ) vary by income—adjust the slider to match your bracket."
+          },
+          agi: {
+            title: "What is AGI (Adjusted Gross Income)?",
+            body: "Total income minus pre-tax deductions like Traditional 401(k) and HSA contributions. You can find last year's AGI on Form 1040, Line 11."
+          },
+          roth: {
+            title: "What is a Roth Conversion?",
+            body: "Moving pre-tax retirement funds (Traditional IRA / 401k) into a tax-free Roth IRA. The converted amount counts as taxable ordinary income in the year of conversion."
+          },
+          taxable: {
+            title: "How is Taxable Income Calculated?",
+            body: "Post-Conversion Total AGI minus the 2026 Standard Deduction ($32,200 MFJ / $16,100 Single). This is the amount actually taxed across federal brackets."
+          },
+          bracket: {
+            title: "Does Jumping a Bracket Raise Tax on Everything?",
+            body: "No. Like filling buckets one after another, only the portion spilling over the threshold is taxed at the higher marginal rate."
+          },
+          effRate: {
+            title: "What is Effective Conversion Tax Rate?",
+            body: "Total Extra Tax ÷ Converted Amount. It shows the average tax percentage you pay to permanently lock in tax-free growth."
+          },
+          stdDed: {
+            title: "Standard Deduction",
+            body: "The automatic tax-free income shield granted by the IRS before federal income tax applies."
+          }
+        },
+        footerNote: "* Note: Uses 2026 IRS federal brackets and standard deductions ($16,100 Single; $32,200 Married Filing Jointly). State rates reflect 2026 baselines (0% for no-tax states; statutory rates for flat-tax states; typical middle-income marginal estimates for progressive states, adjustable via slider). Some states exempt qualified retirement distributions; consult a CPA for official filing."
+      }
+    };
+
+    const FED_TAX_2026 = {
+      mfj: {
+        labelZh: "夫妻合併申報 (MFJ)",
+        labelEn: "MFJ",
+        stdDeduction: 32200,
+        brackets: [
+          { limit: 24800, rate: 0.10 },
+          { limit: 100800, rate: 0.12 },
+          { limit: 211400, rate: 0.22 },
+          { limit: 403550, rate: 0.24 },
+          { limit: 512450, rate: 0.32 },
+          { limit: 768700, rate: 0.35 },
+          { limit: Infinity, rate: 0.37 }
+        ]
+      },
+      single: {
+        labelZh: "單身申報 (Single)",
+        labelEn: "Single",
+        stdDeduction: 16100,
+        brackets: [
+          { limit: 12400, rate: 0.10 },
+          { limit: 50400, rate: 0.12 },
+          { limit: 105700, rate: 0.22 },
+          { limit: 201775, rate: 0.24 },
+          { limit: 256225, rate: 0.32 },
+          { limit: 640600, rate: 0.35 },
+          { limit: Infinity, rate: 0.37 }
+        ]
+      }
+    };
+
+    const US_STATES = [
+      { code: "IN", nameZh: "Indiana (印第安納州)", nameEn: "Indiana (IN)", rate: 4.15, noteZh: "2.95% 單一州稅 + 約 1.20% 郡稅 (County Tax)", noteEn: "2.95% flat state tax + ~1.20% avg. county tax" },
+      { code: "AK", nameZh: "Alaska (阿拉斯加州)", nameEn: "Alaska (AK)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "FL", nameZh: "Florida (佛羅里達州)", nameEn: "Florida (FL)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "NV", nameZh: "Nevada (內華達州)", nameEn: "Nevada (NV)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "NH", nameZh: "New Hampshire (新罕布夏州)", nameEn: "New Hampshire (NH)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "SD", nameZh: "South Dakota (南達科他州)", nameEn: "South Dakota (SD)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "TN", nameZh: "Tennessee (田納西州)", nameEn: "Tennessee (TN)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "TX", nameZh: "Texas (德克薩斯州)", nameEn: "Texas (TX)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "WA", nameZh: "Washington (華盛頓州)", nameEn: "Washington (WA)", rate: 0.00, noteZh: "無一般州所得稅（僅針對高資本利得課稅）", noteEn: "No general wage/IRA income tax (0%)" },
+      { code: "WY", nameZh: "Wyoming (懷俄明州)", nameEn: "Wyoming (WY)", rate: 0.00, noteZh: "無州個人所得稅 (0%)", noteEn: "No state individual income tax (0%)" },
+      { code: "AL", nameZh: "Alabama (阿拉巴馬州)", nameEn: "Alabama (AL)", rate: 5.00, noteZh: "累進稅率 2%–5%（多數所得適用 5%）", noteEn: "Progressive 2%–5% (5% top marginal rate)" },
+      { code: "AZ", nameZh: "Arizona (亞利桑那州)", nameEn: "Arizona (AZ)", rate: 2.50, noteZh: "2.50% 單一稅率 (Flat Tax)", noteEn: "2.50% flat state income tax" },
+      { code: "AR", nameZh: "Arkansas (阿肯色州)", nameEn: "Arkansas (AR)", rate: 3.90, noteZh: "累進稅率 2%–3.9%", noteEn: "Progressive 2%–3.9%" },
+      { code: "CA", nameZh: "California (加州)", nameEn: "California (CA)", rate: 9.30, noteZh: "累進稅率 1%–13.3%（預設中產常見 9.3% 級距，請依收入微調）", noteEn: "Progressive 1%–13.3% (default 9.3% middle-income tier; adjust via slider)" },
+      { code: "CO", nameZh: "Colorado (科羅拉多州)", nameEn: "Colorado (CO)", rate: 4.40, noteZh: "4.40% 單一稅率 (Flat Tax)", noteEn: "4.40% flat state income tax" },
+      { code: "CT", nameZh: "Connecticut (康乃狄克州)", nameEn: "Connecticut (CT)", rate: 5.50, noteZh: "累進稅率 2%–6.99%（預設中產常見 5.5% 級距）", noteEn: "Progressive 2%–6.99% (default 5.5% middle tier)" },
+      { code: "DE", nameZh: "Delaware (德拉瓦州)", nameEn: "Delaware (DE)", rate: 6.60, noteZh: "累進稅率 2.2%–6.6%（超過 $60k 為 6.6%）", noteEn: "Progressive 2.2%–6.6% (6.6% above $60k)" },
+      { code: "DC", nameZh: "Washington, D.C. (華盛頓特區)", nameEn: "Washington, D.C. (DC)", rate: 8.50, noteZh: "累進稅率 4%–10.75%（預設常見 8.5% 級距）", noteEn: "Progressive 4%–10.75% (default 8.5% tier)" },
+      { code: "GA", nameZh: "Georgia (喬治亞州)", nameEn: "Georgia (GA)", rate: 5.19, noteZh: "5.19% 單一稅率 (Flat Tax)", noteEn: "5.19% flat state income tax" },
+      { code: "HI", nameZh: "Hawaii (夏威夷州)", nameEn: "Hawaii (HI)", rate: 8.25, noteZh: "累進稅率 1.4%–11%（預設中產常見 8.25% 級距）", noteEn: "Progressive 1.4%–11% (default 8.25% middle tier)" },
+      { code: "ID", nameZh: "Idaho (愛達荷州)", nameEn: "Idaho (ID)", rate: 5.30, noteZh: "5.30% 單一稅率 (Flat Tax)", noteEn: "5.30% flat state income tax" },
+      { code: "IL", nameZh: "Illinois (伊利諾州)", nameEn: "Illinois (IL)", rate: 4.95, noteZh: "4.95% 單一稅率（註：IL 對合格退休金分配通常免徵州稅）", noteEn: "4.95% flat tax (Note: IL generally exempts qualified retirement distributions)" },
+      { code: "IA", nameZh: "Iowa (愛荷華州)", nameEn: "Iowa (IA)", rate: 3.80, noteZh: "3.80% 單一稅率（註：55 歲以上退休金在 IA 通常免稅）", noteEn: "3.80% flat tax (Note: retirement income is generally exempt at age 55+)" },
+      { code: "KS", nameZh: "Kansas (堪薩斯州)", nameEn: "Kansas (KS)", rate: 5.58, noteZh: "累進稅率 5.2%–5.58%", noteEn: "Progressive 5.2%–5.58%" },
+      { code: "KY", nameZh: "Kentucky (肯塔基州)", nameEn: "Kentucky (KY)", rate: 3.50, noteZh: "3.50% 單一稅率（註：KY 有退休金免稅額度）", noteEn: "3.50% flat tax (Note: KY offers a pension income exclusion)" },
+      { code: "LA", nameZh: "Louisiana (路易斯安那州)", nameEn: "Louisiana (LA)", rate: 3.00, noteZh: "3.00% 單一稅率 (Flat Tax)", noteEn: "3.00% flat state income tax" },
+      { code: "ME", nameZh: "Maine (緬因州)", nameEn: "Maine (ME)", rate: 7.15, noteZh: "累進稅率 5.8%–7.15%", noteEn: "Progressive 5.8%–7.15%" },
+      { code: "MD", nameZh: "Maryland (馬里蘭州)", nameEn: "Maryland (MD)", rate: 7.95, noteZh: "4.75%–5.75% 州稅 + 約 3.2% 地方郡稅（預設約 7.95%）", noteEn: "4.75%–5.75% state + ~3.2% local county tax (~7.95% combined)" },
+      { code: "MA", nameZh: "Massachusetts (麻薩諸塞州)", nameEn: "Massachusetts (MA)", rate: 5.00, noteZh: "5.00% 單一稅率（超過百萬另有 4% 附加稅）", noteEn: "5.00% flat tax (+4% surtax above $1M)" },
+      { code: "MI", nameZh: "Michigan (密西根州)", nameEn: "Michigan (MI)", rate: 4.25, noteZh: "4.25% 單一稅率（部分城市另有地方稅）", noteEn: "4.25% flat tax (some cities levy local tax)" },
+      { code: "MN", nameZh: "Minnesota (明尼蘇達州)", nameEn: "Minnesota (MN)", rate: 7.85, noteZh: "累進稅率 5.35%–9.85%（預設中產常見 7.85% 級距）", noteEn: "Progressive 5.35%–9.85% (default 7.85% middle tier)" },
+      { code: "MS", nameZh: "Mississippi (密西西比州)", nameEn: "Mississippi (MS)", rate: 4.00, noteZh: "4.00% 單一稅率（超過 $10,000 部分）", noteEn: "4.00% flat tax above $10,000" },
+      { code: "MO", nameZh: "Missouri (密蘇里州)", nameEn: "Missouri (MO)", rate: 4.70, noteZh: "累進稅率 2%–4.7%", noteEn: "Progressive 2%–4.7%" },
+      { code: "MT", nameZh: "Montana (蒙大拿州)", nameEn: "Montana (MT)", rate: 5.65, noteZh: "累進稅率 4.7%–5.65%", noteEn: "Progressive 4.7%–5.65%" },
+      { code: "NE", nameZh: "Nebraska (內布拉斯加州)", nameEn: "Nebraska (NE)", rate: 4.55, noteZh: "累進稅率 2.46%–4.55%", noteEn: "Progressive 2.46%–4.55%" },
+      { code: "NJ", nameZh: "New Jersey (紐澤西州)", nameEn: "New Jersey (NJ)", rate: 6.37, noteZh: "累進稅率 1.4%–10.75%（預設中產常見 6.37% 級距）", noteEn: "Progressive 1.4%–10.75% (default 6.37% middle tier)" },
+      { code: "NM", nameZh: "New Mexico (新墨西哥州)", nameEn: "New Mexico (NM)", rate: 4.90, noteZh: "累進稅率 1.5%–5.9%（預設常見 4.9% 級距）", noteEn: "Progressive 1.5%–5.9% (default 4.9% tier)" },
+      { code: "NY", nameZh: "New York (紐約州)", nameEn: "New York (NY)", rate: 6.00, noteZh: "累進稅率 3.9%–10.9%（若住 NYC 需另加約 3.88% 市稅）", noteEn: "Progressive 3.9%–10.9% (add ~3.88% if NYC resident)" },
+      { code: "NC", nameZh: "North Carolina (北卡羅來納州)", nameEn: "North Carolina (NC)", rate: 3.99, noteZh: "3.99% 單一稅率 (Flat Tax)", noteEn: "3.99% flat state income tax" },
+      { code: "ND", nameZh: "North Dakota (北達科他州)", nameEn: "North Dakota (ND)", rate: 1.95, noteZh: "累進稅率 1.95%–2.50%", noteEn: "Progressive 1.95%–2.50%" },
+      { code: "OH", nameZh: "Ohio (俄亥俄州)", nameEn: "Ohio (OH)", rate: 2.75, noteZh: "2.75% 單一稅率（部分市鎮另有地方稅）", noteEn: "2.75% flat tax (municipal taxes may apply)" },
+      { code: "OK", nameZh: "Oklahoma (奧克拉荷馬州)", nameEn: "Oklahoma (OK)", rate: 4.50, noteZh: "累進稅率 0.25%–4.50%", noteEn: "Progressive 0.25%–4.50%" },
+      { code: "OR", nameZh: "Oregon (奧勒岡州)", nameEn: "Oregon (OR)", rate: 8.75, noteZh: "累進稅率 4.75%–9.9%（預設常見 8.75% 級距）", noteEn: "Progressive 4.75%–9.9% (default 8.75% tier)" },
+      { code: "PA", nameZh: "Pennsylvania (賓夕法尼亞州)", nameEn: "Pennsylvania (PA)", rate: 3.07, noteZh: "3.07% 單一稅率（註：PA 對合格退休金分配通常免稅）", noteEn: "3.07% flat tax (Note: PA generally exempts qualified retirement distributions)" },
+      { code: "RI", nameZh: "Rhode Island (羅德島州)", nameEn: "Rhode Island (RI)", rate: 4.75, noteZh: "累進稅率 3.75%–5.99%（預設常見 4.75% 級距）", noteEn: "Progressive 3.75%–5.99% (default 4.75% tier)" },
+      { code: "SC", nameZh: "South Carolina (南卡羅來納州)", nameEn: "South Carolina (SC)", rate: 6.00, noteZh: "累進稅率 0%–6.0%", noteEn: "Progressive 0%–6.0%" },
+      { code: "UT", nameZh: "Utah (猶他州)", nameEn: "Utah (UT)", rate: 4.50, noteZh: "4.50% 單一稅率 (Flat Tax)", noteEn: "4.50% flat state income tax" },
+      { code: "VT", nameZh: "Vermont (佛蒙特州)", nameEn: "Vermont (VT)", rate: 6.60, noteZh: "累進稅率 3.35%–8.75%（預設常見 6.6% 級距）", noteEn: "Progressive 3.35%–8.75% (default 6.6% tier)" },
+      { code: "VA", nameZh: "Virginia (維吉尼亞州)", nameEn: "Virginia (VA)", rate: 5.75, noteZh: "累進稅率 2%–5.75%（超過 $17,000 為 5.75%）", noteEn: "Progressive 2%–5.75% (5.75% above $17,000)" },
+      { code: "WV", nameZh: "West Virginia (西維吉尼亞州)", nameEn: "West Virginia (WV)", rate: 4.82, noteZh: "累進稅率 2.22%–4.82%", noteEn: "Progressive 2.22%–4.82%" },
+      { code: "WI", nameZh: "Wisconsin (威斯康辛州)", nameEn: "Wisconsin (WI)", rate: 5.30, noteZh: "累進稅率 3.5%–7.65%（預設常見 5.3% 級距）", noteEn: "Progressive 3.5%–7.65% (default 5.3% tier)" }
+    ];
+
+    function calcFedTax(agi, status) {
+      const cfg = FED_TAX_2026[status];
+      const taxable = Math.max(0, agi - cfg.stdDeduction);
+      let tax = 0;
+      let prevLimit = 0;
+      for (const b of cfg.brackets) {
+        if (taxable > prevLimit) {
+          const chunk = Math.min(taxable, b.limit) - prevLimit;
+          tax += chunk * b.rate;
+          prevLimit = b.limit;
+        } else {
+          break;
+        }
+      }
+      return tax;
+    }
+
+    function getMarginalBracket(agi, status) {
+      const cfg = FED_TAX_2026[status];
+      const taxable = Math.max(0, agi - cfg.stdDeduction);
+      if (taxable === 0) return 0;
+      for (const b of cfg.brackets) {
+        if (taxable <= b.limit) return Math.round(b.rate * 100);
+      }
+      return 37;
+    }
+
+    const fmt = (n) => "$" + Math.round(n).toLocaleString("en-US");
+
+    const stateSelect = document.getElementById("stateSelect");
+    const btnMFJ = document.getElementById("btnMFJ");
+    const btnSingle = document.getElementById("btnSingle");
+    const stateRateSlider = document.getElementById("stateRateSlider");
+    const baseAgiSlider = document.getElementById("baseAgiSlider");
+    const baseAgiInput = document.getElementById("baseAgiInput");
+    const convertAmtSlider = document.getElementById("convertAmtSlider");
+    const convertAmtInput = document.getElementById("convertAmtInput");
+
+    function populateStateDropdown() {
+      const prevVal = stateSelect.value || "IN";
+      stateSelect.innerHTML = "";
+      US_STATES.forEach((st) => {
+        const opt = document.createElement("option");
+        opt.value = st.code;
+        const name = currentLang === "zh" ? st.nameZh : st.nameEn;
+        const baseWord = currentLang === "zh" ? "基準" : "Est.";
+        opt.textContent = `${name} — ${baseWord} ${st.rate.toFixed(2)}%`;
+        stateSelect.appendChild(opt);
+      });
+      stateSelect.value = prevVal;
+    }
+
+    const ctx = document.getElementById("taxChart").getContext("2d");
+    const taxChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: I18N.zh.chartFed,
+            data: [],
+            borderColor: "#1e40af",
+            backgroundColor: "rgba(30, 64, 175, 0.12)",
+            fill: true,
+            tension: 0.2,
+            borderWidth: 2.5
+          },
+          {
+            label: I18N.zh.chartState,
+            data: [],
+            borderColor: "#0f766e",
+            backgroundColor: "rgba(15, 118, 110, 0.10)",
+            fill: true,
+            tension: 0.2,
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: I18N.zh.chartX } },
+          y: {
+            title: { display: true, text: I18N.zh.chartY },
+            ticks: { callback: (v) => "$" + v.toLocaleString("en-US") }
+          }
+        }
+      }
+    });
+
+    function applyLanguageTexts() {
+      const t = I18N[currentLang];
+      document.documentElement.lang = currentLang === "zh" ? "zh-Hant" : "en";
+      document.title = t.docTitle;
+
+      document.getElementById("mainTitle").textContent = t.mainTitle;
+      document.getElementById("mainSubtitle").innerHTML = t.mainSubtitle;
+      document.getElementById("panel1Title").textContent = t.panel1Title;
+      document.getElementById("panel2Title").textContent = t.panel2Title;
+      btnMFJ.textContent = t.btnMFJ;
+      btnSingle.textContent = t.btnSingle;
+      document.getElementById("stateSelectLabel").textContent = t.stateSelectLabel;
+      document.getElementById("stateRateTitle").textContent = t.stateRateTitle;
+      document.getElementById("exactInputLabel1").textContent = t.exactInput;
+      document.getElementById("exactInputLabel2").textContent = t.exactInput;
+      document.getElementById("convertAmtTitle").textContent = t.convertAmtTitle;
+      document.getElementById("totalAgiLabel").textContent = t.totalAgiLabel;
+      document.getElementById("taxablePrefix").textContent = t.taxablePrefix;
+      document.getElementById("bracketTitle").textContent = t.bracketTitle;
+      document.getElementById("extraTaxTitle").textContent = t.extraTaxTitle;
+      document.getElementById("effRatePrefix").textContent = t.effRatePrefix;
+      document.getElementById("splitTaxTitle").textContent = t.splitTaxTitle;
+      document.getElementById("cashTipText").textContent = t.cashTipText;
+      document.getElementById("glossarySummaryTitle").textContent = t.glossarySummaryTitle;
+      document.getElementById("glossaryToggleHint").textContent = t.glossaryToggleHint;
+      document.getElementById("footerNote").textContent = t.footerNote;
+
+      if (filingStatus === "mfj") {
+        document.getElementById("baseAgiTitle").textContent = t.baseAgiTitleMFJ;
+        document.getElementById("agiWhereHint").innerHTML = t.agiHintMFJ;
+      } else {
+        document.getElementById("baseAgiTitle").textContent = t.baseAgiTitleSingle;
+        document.getElementById("agiWhereHint").innerHTML = t.agiHintSingle;
+      }
+
+      const selectedState = US_STATES.find((s) => s.code === stateSelect.value) || US_STATES[0];
+      document.getElementById("stateNoteText").textContent = currentLang === "zh" ? selectedState.noteZh : selectedState.noteEn;
+
+      // 渲染名詞小百科
+      const gGrid = document.getElementById("glossaryGrid");
+      gGrid.innerHTML = t.glossaryItems.map((item) => `
+        <div class="glossary-item">
+          <h3>${item.q}</h3>
+          <p>${item.a}</p>
+        </div>
+      `).join("");
+
+      // 更新圖表語系
+      taxChart.data.datasets[0].label = t.chartFed;
+      taxChart.data.datasets[1].label = t.chartState;
+      taxChart.options.scales.x.title.text = t.chartX;
+      taxChart.options.scales.y.title.text = t.chartY;
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById("langZhBtn").classList.toggle("active", lang === "zh");
+      document.getElementById("langEnBtn").classList.toggle("active", lang === "en");
+      hideTooltip();
+      populateStateDropdown();
+      applyLanguageTexts();
+      updateUI();
+    }
+
+    function setFilingStatus(status) {
+      filingStatus = status;
+      btnMFJ.classList.toggle("active", status === "mfj");
+      btnSingle.classList.toggle("active", status === "single");
+
+      if (status === "mfj") {
+        if (Number(baseAgiInput.value) === 0) {
+          baseAgiInput.value = 120000;
+          baseAgiSlider.value = 120000;
+        }
+      } else {
+        if (Number(baseAgiInput.value) === 120000) {
+          baseAgiInput.value = 0;
+          baseAgiSlider.value = 0;
+        }
+      }
+      applyLanguageTexts();
+      updateUI();
+    }
+
+    function updateUI() {
+      const t = I18N[currentLang];
+      const cfg = FED_TAX_2026[filingStatus];
+      const baseAgi = Math.max(0, Number(baseAgiInput.value) || 0);
+      const convertAmt = Math.max(0, Number(convertAmtInput.value) || 0);
+      const stateRatePct = Number(stateRateSlider.value);
+      const stateRate = stateRatePct / 100;
+      const selectedState = US_STATES.find((s) => s.code === stateSelect.value) || US_STATES[0];
+
+      document.getElementById("baseAgiLabel").textContent = fmt(baseAgi);
+      document.getElementById("convertAmtLabel").textContent = fmt(convertAmt);
+      document.getElementById("stateRateLabel").textContent = stateRatePct.toFixed(2) + "%";
+      document.getElementById("stateBadge").textContent = `${selectedState.code} ${stateRatePct.toFixed(2)}%`;
+
+      const totalAgi = baseAgi + convertAmt;
+      const taxable = Math.max(0, totalAgi - cfg.stdDeduction);
+
+      const baseFedTax = calcFedTax(baseAgi, filingStatus);
+      const newFedTax = calcFedTax(totalAgi, filingStatus);
+      const extraFedTax = newFedTax - baseFedTax;
+      const extraStateTax = convertAmt * stateRate;
+      const extraTotalTax = extraFedTax + extraStateTax;
+      const effRate = convertAmt > 0 ? (extraTotalTax / convertAmt) * 100 : 0;
+
+      const baseBracket = getMarginalBracket(baseAgi, filingStatus);
+      const newBracket = getMarginalBracket(totalAgi, filingStatus);
+
+      document.getElementById("totalAgiStat").textContent = fmt(totalAgi);
+      document.getElementById("taxableStat").textContent = fmt(taxable);
+      document.getElementById("bracketStat").textContent = newBracket + "%";
+
+      const badge = document.getElementById("bracketBadge");
+      if (newBracket > baseBracket && baseBracket > 0) {
+        badge.textContent = t.badgeJump(baseBracket, newBracket);
+        badge.className = "bracket-pill warn";
+      } else if (baseBracket === 0 && newBracket > 12) {
+        badge.textContent = t.badgeCross(newBracket);
+        badge.className = "bracket-pill warn";
+      } else {
+        badge.textContent = t.badgeStay(newBracket);
+        badge.className = "bracket-pill";
+      }
+
+      document.getElementById("extraTotalTaxStat").textContent = fmt(extraTotalTax);
+      document.getElementById("effRateStat").textContent = effRate.toFixed(1) + "%";
+      document.getElementById("splitTaxStat").textContent = `${fmt(extraFedTax)} / ${fmt(extraStateTax)}`;
+
+      const cap12Taxable = cfg.brackets[1].limit;
+      const cap22Taxable = cfg.brackets[2].limit;
+      const limit12Agi = cap12Taxable + cfg.stdDeduction;
+      const limit22Agi = cap22Taxable + cfg.stdDeduction;
+      const room12 = Math.max(0, limit12Agi - baseAgi);
+      const room22 = Math.max(0, limit22Agi - baseAgi);
+      const statusDisplay = currentLang === "zh" ? cfg.labelZh : cfg.labelEn;
+
+      document.getElementById("spaceAdvice").innerHTML = `
+        <div class="breakdown-row">
+          <span class="label-with-tip">${t.stdDedRow(statusDisplay)}
+            <button type="button" class="tip-btn" data-tip-key="stdDed">i</button>
+          </span>
+          <strong>${fmt(cfg.stdDeduction)}</strong>
+        </div>
+        <div class="breakdown-row"><span>${t.room12Row(fmt(limit12Agi))}</span><strong>${fmt(room12)}</strong></div>
+        <div class="breakdown-row"><span>${t.room22Row(fmt(limit22Agi))}</span><strong>${fmt(room22)}</strong></div>
+      `;
+
+      document.getElementById("taxDetailBox").innerHTML = `
+        <div class="breakdown-row"><span>${t.baseFedRow}</span><span>${fmt(baseFedTax)}</span></div>
+        <div class="breakdown-row"><span>${t.newFedRow}</span><span>${fmt(newFedTax)}</span></div>
+        <div class="breakdown-row total"><span>${t.netTotalRow}</span><span>${fmt(extraTotalTax)}</span></div>
+      `;
+
+      const maxChart = Math.max(70000, Math.ceil(convertAmt / 10000) * 10000);
+      const steps = 10;
+      const stepSize = maxChart / steps;
+      const labels = [];
+      const fedData = [];
+      const stateData = [];
+
+      for (let i = 0; i <= steps; i++) {
+        const amt = i * stepSize;
+        labels.push("$" + (amt / 1000) + "k");
+        fedData.push(Math.round(calcFedTax(baseAgi + amt, filingStatus) - baseFedTax));
+        stateData.push(Math.round(amt * stateRate));
+      }
+
+      taxChart.data.labels = labels;
+      taxChart.data.datasets[0].data = fedData;
+      taxChart.data.datasets[1].data = stateData;
+      taxChart.update();
+    }
+
+    // 互動提示氣泡控制 (隨當前語言讀取對應解釋)
+    const tooltipEl = document.getElementById("floatingTooltip");
+    let activeTipBtn = null;
+
+    function showTooltip(btn) {
+      const tipKey = btn.getAttribute("data-tip-key");
+      const tipObj = I18N[currentLang].tips[tipKey];
+      if (!tipObj) return;
+
+      if (activeTipBtn) activeTipBtn.classList.remove("active");
+      activeTipBtn = btn;
+      btn.classList.add("active");
+
+      tooltipEl.innerHTML = `<strong>${tipObj.title}</strong>${tipObj.body}`;
+      tooltipEl.classList.add("visible");
+
+      const rect = btn.getBoundingClientRect();
+      const tipRect = tooltipEl.getBoundingClientRect();
+
+      let left = rect.left + rect.width / 2 - tipRect.width / 2;
+      left = Math.max(12, Math.min(window.innerWidth - tipRect.width - 12, left));
+
+      let top = rect.top - tipRect.height - 8;
+      if (top < 12) {
+        top = rect.bottom + 8;
+      }
+
+      tooltipEl.style.left = left + "px";
+      tooltipEl.style.top = top + "px";
+    }
+
+    function hideTooltip() {
+      if (activeTipBtn) {
+        activeTipBtn.classList.remove("active");
+        activeTipBtn = null;
+      }
+      tooltipEl.classList.remove("visible");
+    }
+
+    document.addEventListener("mouseover", (e) => {
+      const btn = e.target.closest(".tip-btn");
+      if (btn) showTooltip(btn);
+    });
+
+    document.addEventListener("mouseout", (e) => {
+      const btn = e.target.closest(".tip-btn");
+      if (btn) hideTooltip();
+    });
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tip-btn");
+      if (btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (activeTipBtn === btn) {
+          hideTooltip();
+        } else {
+          showTooltip(btn);
+        }
+      } else {
+        hideTooltip();
+      }
+    });
+
+    window.addEventListener("scroll", hideTooltip, true);
+    window.addEventListener("resize", hideTooltip);
+
+    document.getElementById("langZhBtn").addEventListener("click", () => setLanguage("zh"));
+    document.getElementById("langEnBtn").addEventListener("click", () => setLanguage("en"));
+    btnMFJ.addEventListener("click", () => setFilingStatus("mfj"));
+    btnSingle.addEventListener("click", () => setFilingStatus("single"));
+
+    stateSelect.addEventListener("change", () => {
+      const selected = US_STATES.find((s) => s.code === stateSelect.value);
+      if (selected) {
+        stateRateSlider.value = selected.rate;
+        document.getElementById("stateNoteText").textContent = currentLang === "zh" ? selected.noteZh : selected.noteEn;
+      }
+      updateUI();
+    });
+
+    stateRateSlider.addEventListener("input", updateUI);
+    baseAgiSlider.addEventListener("input", () => { baseAgiInput.value = baseAgiSlider.value; updateUI(); });
+    baseAgiInput.addEventListener("input", () => { baseAgiSlider.value = Math.min(250000, baseAgiInput.value); updateUI(); });
+    convertAmtSlider.addEventListener("input", () => { convertAmtInput.value = convertAmtSlider.value; updateUI(); });
+    convertAmtInput.addEventListener("input", () => { convertAmtSlider.value = Math.min(120000, convertAmtInput.value); updateUI(); });
+
+    populateStateDropdown();
+    applyLanguageTexts();
+    updateUI();
+  </script>
+</body>
+</html>
