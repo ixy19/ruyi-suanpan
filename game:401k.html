@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>401(k) 換工作大冒險｜茹意算盤 Ruyi Suanpan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FAF7F2;
+      --card-white: #FFFFFF;
+      --primary-green: #1F4E46;
+      --primary-green-light: #2E6B60;
+      --accent-gold: #D98A2B;
+      --accent-gold-bg: #FFF6E9;
+      --text-dark: #2B2B2B;
+      --text-muted: #66635E;
+      --border-soft: #E8E1D5;
+      --success-bg: #ECF8F2;
+      --success-border: #389E74;
+      --success-text: #1B5E43;
+      --warn-bg: #FFF8EB;
+      --warn-border: #E09F3E;
+      --warn-text: #7A4B00;
+      --danger-bg: #FDF0EE;
+      --danger-border: #D9534F;
+      --danger-text: #8A2421;
+      --shadow-card: 0 10px 30px rgba(31, 78, 70, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 540px;
+      padding: 16px 16px 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 頂部品牌列 */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px 16px;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--primary-green);
+      text-decoration: none;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      display: inline-block;
+    }
+
+    .tagline-pill {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: #EFE9DF;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    /* 主卡片 */
+    .card {
+      background: var(--card-white);
+      border-radius: 22px;
+      padding: 24px 20px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-soft);
+      animation: fadeSlideUp 0.35s ease;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 封面頁 */
+    .hero-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1F4E46 0%, #2F6E63 100%);
+      color: #FFF;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 18px rgba(31, 78, 70, 0.2);
+    }
+
+    h1.game-title {
+      margin: 0 0 10px;
+      font-size: 1.55rem;
+      line-height: 1.3;
+      color: var(--primary-green);
+      font-weight: 900;
+    }
+
+    .game-subtitle {
+      margin: 0 0 20px;
+      color: var(--text-muted);
+      font-size: 0.96rem;
+    }
+
+    .feature-list {
+      background: var(--bg-cream);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      border: 1px solid var(--border-soft);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    .feature-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 進度條 */
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-green);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #EAE3D7;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-gold));
+      width: 25%;
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* 關卡內容 */
+    .character-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-gold-bg);
+      color: #8A5311;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      border: 1px solid #F3DEC0;
+    }
+
+    .question-title {
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+
+    .scenario-box {
+      background: #F8F5EF;
+      border-left: 4px solid var(--accent-gold);
+      padding: 12px 14px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.94rem;
+      color: var(--text-dark);
+      margin-bottom: 18px;
+    }
+
+    /* 選項按鈕 */
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: all 0.18s ease;
+      line-height: 1.5;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--primary-green);
+      background: #F4F9F8;
+      transform: translateY(-1px);
+    }
+
+    .option-btn:active:not(:disabled) {
+      transform: scale(0.99);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #EFE9DF;
+      color: var(--primary-green);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .option-btn.selected-best {
+      border-color: var(--success-border);
+      background: var(--success-bg);
+    }
+    .option-btn.selected-best .option-letter {
+      background: var(--success-border);
+      color: #FFF;
+    }
+
+    .option-btn.selected-warn {
+      border-color: var(--warn-border);
+      background: var(--warn-bg);
+    }
+    .option-btn.selected-warn .option-letter {
+      background: var(--warn-border);
+      color: #FFF;
+    }
+
+    .option-btn.selected-danger {
+      border-color: var(--danger-border);
+      background: var(--danger-bg);
+    }
+    .option-btn.selected-danger .option-letter {
+      background: var(--danger-border);
+      color: #FFF;
+    }
+
+    .option-btn.dimmed {
+      opacity: 0.55;
+    }
+
+    /* 即時結果回饋卡片 */
+    .feedback-panel {
+      margin-top: 18px;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1.5px solid;
+      animation: fadeSlideUp 0.28s ease;
+    }
+
+    .feedback-panel.best {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .feedback-panel.warn {
+      background: var(--warn-bg);
+      border-color: var(--warn-border);
+      color: var(--warn-text);
+    }
+
+    .feedback-panel.danger {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .feedback-headline {
+      font-weight: 800;
+      font-size: 1.02rem;
+      margin: 0 0 6px;
+    }
+
+    .feedback-detail {
+      font-size: 0.92rem;
+      margin: 0 0 10px;
+      color: var(--text-dark);
+    }
+
+    .best-hint {
+      font-size: 0.86rem;
+      background: rgba(255, 255, 255, 0.72);
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--primary-green);
+      font-weight: 600;
+    }
+
+    /* 主要操作按鈕 */
+    .primary-btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px 20px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      background: var(--primary-green);
+      color: #FFFFFF;
+      cursor: pointer;
+      margin-top: 18px;
+      box-shadow: 0 6px 16px rgba(31, 78, 70, 0.22);
+      transition: background 0.2s ease, transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-green-light);
+    }
+
+    .primary-btn:active {
+      transform: scale(0.99);
+    }
+
+    .cta-gold-btn {
+      background: linear-gradient(135deg, #D98A2B 0%, #C47418 100%);
+      box-shadow: 0 6px 18px rgba(217, 138, 43, 0.3);
+      margin-top: 12px;
+    }
+
+    .cta-gold-btn:hover {
+      background: linear-gradient(135deg, #E29638 0%, #CC7D20 100%);
+    }
+
+    .secondary-btn {
+      width: 100%;
+      border: 1.5px solid var(--primary-green);
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 700;
+      background: #FFFFFF;
+      color: var(--primary-green);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .secondary-btn:hover {
+      background: #F2F7F6;
+    }
+
+    /* 結算畫面 */
+    .result-badge-box {
+      text-align: center;
+      padding: 12px 0 8px;
+    }
+
+    .score-circle {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--accent-gold-bg);
+      border: 3px solid var(--accent-gold);
+      color: var(--primary-green);
+      margin-bottom: 12px;
+    }
+
+    .score-num {
+      font-size: 1.65rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .score-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #8A5311;
+    }
+
+    .rank-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--primary-green);
+      margin: 4px 0 8px;
+    }
+
+    .rank-desc {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      margin: 0 0 18px;
+    }
+
+    .summary-recap {
+      background: var(--bg-cream);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border-soft);
+    }
+
+    .summary-recap-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      margin: 0 0 10px;
+    }
+
+    .recap-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.86rem;
+      padding: 6px 0;
+      border-bottom: 1px dashed #DFD7C8;
+    }
+
+    .recap-row:last-child {
+      border-bottom: none;
+    }
+
+    .cta-box {
+      background: linear-gradient(180deg, #F3F8F7 0%, #FAF7F2 100%);
+      border: 1.5px solid #CBE0DC;
+      border-radius: 18px;
+      padding: 18px 16px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .cta-box h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      color: var(--primary-green);
+    }
+
+    .cta-box p {
+      margin: 0 0 12px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .copy-toast {
+      font-size: 0.82rem;
+      color: var(--success-text);
+      font-weight: 700;
+      margin-top: 8px;
+      min-height: 20px;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 22px;
+      padding: 0 8px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- 頂部品牌識別 -->
+    <header class="top-bar">
+      <a href="https://ruyi-suanpan.pages.dev/" target="_blank" rel="noopener" class="brand-badge">
+        <span class="brand-dot"></span>
+        <span>茹意算盤 Ruyi Suanpan</span>
+      </a>
+      <span class="tagline-pill">Stay Ahead. Stay Protected.</span>
+    </header>
+
+    <!-- 1. 開始畫面 -->
+    <section id="start-screen" class="card">
+      <div class="hero-icon">💼</div>
+      <h1 class="game-title">401(k) 換工作大冒險</h1>
+      <p class="game-subtitle">離職、跳槽、轉職時，舊公司的 401(k) 該怎麼搬才不會白白被扣稅或罰錢？用 4 個真實情境測測你的退休金防雷力！</p>
+
+      <div class="feature-list">
+        <div class="feature-item"><span>🎯</span><span><strong>4 個生活化關卡</strong>：從最後一張薪資單到 Backdoor Roth 隱藏地雷</span></div>
+        <div class="feature-item"><span>⚡</span><span><strong>選完立刻看結果</strong>：每個選項都有專屬財務後果與白話解析</span></div>
+        <div class="feature-item"><span>⏱️</span><span><strong>約 1 分鐘玩完</strong>：不需輸入任何個人資產數字，輕鬆無壓力</span></div>
+      </div>
+
+      <button class="primary-btn" onclick="startGame()">開始闖關（共 4 關） →</button>
+    </section>
+
+    <!-- 2. 遊戲關卡畫面 -->
+    <section id="quiz-screen" class="card hidden">
+      <div class="progress-header">
+        <span id="stage-label">第 1 關 / 共 4 關</span>
+        <span id="score-live">目前得分：0</span>
+      </div>
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <div id="character-chip" class="character-chip">👨‍💻 角色情境</div>
+      <h2 id="question-title" class="question-title">題目標題</h2>
+      <div id="scenario-box" class="scenario-box">情境描述</div>
+
+      <div id="options-group" class="options-group"></div>
+
+      <div id="feedback-panel" class="feedback-panel hidden">
+        <div id="feedback-headline" class="feedback-headline"></div>
+        <p id="feedback-detail" class="feedback-detail"></p>
+        <div id="best-hint" class="best-hint hidden"></div>
+      </div>
+
+      <button id="next-btn" class="primary-btn hidden" onclick="nextQuestion()">下一關 →</button>
+    </section>
+
+    <!-- 3. 結算畫面 -->
+    <section id="result-screen" class="card hidden">
+      <div class="result-badge-box">
+        <div class="score-circle">
+          <span id="final-score" class="score-num">4 / 4</span>
+          <span class="score-label">最佳決策</span>
+        </div>
+        <h2 id="rank-title" class="rank-title">401(k) 轉職神隊友</h2>
+        <p id="rank-desc" class="rank-desc">評語描述</p>
+      </div>
+
+      <div class="summary-recap">
+        <div class="summary-recap-title">📋 你的 4 關決策回顧</div>
+        <div id="recap-list"></div>
+      </div>
+
+      <div class="cta-box">
+        <h3>想把美國退休與稅務規劃弄得更清楚？</h3>
+        <p>到<strong>茹意算盤</strong>看更多白話圖文解析，或預約聊聊你的專屬資產配置！</p>
+        <a href="https://ruyi-suanpan.pages.dev/" target="_blank" rel="noopener" class="primary-btn cta-gold-btn">
+          前往「茹意算盤」看更多攻略 →
+        </a>
+        <button class="secondary-btn" onclick="copyShareText()">📋 複製我的通關稱號（貼到臉書留言）</button>
+        <div id="copy-toast" class="copy-toast"></div>
+      </div>
+
+      <button class="secondary-btn" style="border-color: #CCC; color: #666; margin-top: 14px;" onclick="restartGame()">🔄 再玩一次</button>
+    </section>
+
+    <footer class="footer-note">
+      本互動遊戲僅供財務與稅務觀念教育參考，不構成個別投資、稅務或法律建議；實際規定請依 IRS 最新公告與個人狀況為準。
+    </footer>
+  </div>
+
+  <script>
+    const stages = [
+      {
+        character: "👨‍💻 關卡 1｜工程師阿哲的最後一張薪資單",
+        title: "離職前還有兩次發薪，公司有「放 5% 送 4%」Match",
+        scenario: "阿哲剛拿到新公司 Offer，打算下個月離職。這兩個月他想多留一點搬家現金在身邊，考慮把 401(k) 自提比例暫時調成 0%。如果是你，會怎麼選？",
+        options: [
+          {
+            letter: "A",
+            text: "先調成 0%，把現金留在口袋比較安心",
+            type: "danger",
+            points: 0,
+            headline: "⚠️ 小心！你把「免費加薪」推出門外了！",
+            detail: "只要公司還有發這幾期薪水並提供 Match，放滿 5% 就等於立刻賺到公司額外給的 4%。為了留一點短期現金而放棄公司配對金，其實非常可惜。",
+            tip: "💡 最佳做法：只要符合公司的 Vesting（歸屬年限）條件，離職前幾期照樣把 Match 拿滿最划算！"
+          },
+          {
+            letter: "B",
+            text: "維持 5% 提撥，把最後幾次公司 Match 拿滿再走",
+            type: "best",
+            points: 1,
+            headline: "🎉 神操作！一毛免費加薪都沒漏接！",
+            detail: "公司 Match 是報酬率最直接的福利，哪怕只剩一兩個月，拿滿再走都比白白放棄划算（記得順便確認一下公司 Match 的 Vesting 歸屬比例喔）。",
+            tip: ""
+          },
+          {
+            letter: "C",
+            text: "一次把今年剩下的 401(k) 額度全部塞滿",
+            type: "warn",
+            points: 0,
+            headline: "💡 衝刺精神可嘉，但先看兩個數字！",
+            detail: "2026 年個人自提上限是 $24,500（跨所有雇主全年度合併計算）。若在舊公司一次塞滿，到新公司就沒額度可放，可能反而吃不到新公司的每期 Match！",
+            tip: "💡 最佳做法：保留年度額度空間給新公司，才能兩邊的 Match 都穩穩賺到。"
+          }
+        ]
+      },
+      {
+        character: "🎨 關卡 2｜設計師小雅的 $60,000 舊帳戶",
+        title: "離開舊公司後，401(k) 裡累積的 $60,000 怎麼辦？",
+        scenario: "35 歲的小雅正式離職了，舊公司 401(k) 帳戶裡有 $60,000。她正在思考這筆錢的下一步去向：",
+        options: [
+          {
+            letter: "A",
+            text: "直接全部領出來，當作轉職旅遊與換車基金",
+            type: "danger",
+            points: 0,
+            headline: "🚨 警報大響！退休金瞬間大縮水！",
+            detail: "未滿 59.5 歲直接領現（Cash out），這 $60,000 除了要併入當年所得課稅，通常還得再繳 10% 提前領取罰金（光罰金就少掉 $6,000），未來幾十年的複利也歸零了。",
+            tip: "💡 最佳做法：辦理 Direct Rollover 轉進新公司 401(k) 或個人 IRA，免扣稅又讓複利繼續滾。"
+          },
+          {
+            letter: "B",
+            text: "辦理 Direct Rollover 轉進新公司 401(k) 或 IRA",
+            type: "best",
+            points: 1,
+            headline: "🌟 標準穩健派！零稅務摩擦、複利繼續滾！",
+            detail: "透過機構對機構的 Direct Rollover，資金不經過個人帳戶，不會觸發 20% 強制預扣稅或提前領取罰金，退休金無縫接軌繼續長大。",
+            tip: ""
+          },
+          {
+            letter: "C",
+            text: "先放著完全不管，等退休再想起來處理",
+            type: "warn",
+            points: 0,
+            headline: "🤔 暫時安全，但別變成「失聯帳戶」！",
+            detail: "餘額超過 $7,000 通常可以留在原計畫，但舊計畫的管理費可能較高、投資標的受限，搬家或換 Email 時也容易忘記更新聯絡資訊。",
+            tip: "💡 最佳做法：即使暫時留著，也要定期檢視費用與投資配置，並更新個人聯絡信箱。"
+          }
+        ]
+      },
+      {
+        character: "📦 關卡 3｜剛工作兩年的大偉與 $3,500 小額帳戶",
+        title: "舊 401(k) 只有 $3,500，離職後一直沒理它會怎樣？",
+        scenario: "大偉換工作時，舊公司 401(k) 裡只有 $3,500，他覺得金額不大就沒去管它。半年後這筆錢最可能發生什麼事？",
+        options: [
+          {
+            letter: "A",
+            text: "沒事，舊公司會永遠幫你免費保管到 65 歲",
+            type: "danger",
+            points: 0,
+            headline: "❌ 猜錯囉！小額帳戶可能會被「強制請出門」！",
+            detail: "依現行規定，離職後帳戶餘額若在 $1,000～$7,000 之間，前雇主有權將這筆錢自動轉入指定的 Safe Harbor IRA（預設 IRA），裡面的投資標的通常偏保守，還可能被扣年費。",
+            tip: "💡 最佳做法：小額帳戶更要主動做 Direct Rollover 轉走，別讓通膨跟管理費慢慢吃掉。"
+          },
+          {
+            letter: "B",
+            text: "可能被自動轉進預設 IRA，若低於 $1,000 甚至直接寄支票",
+            type: "best",
+            points: 1,
+            headline: "👏 內行人！小額帳戶最容易踩到這個盲點！",
+            detail: "餘額在 $1,000 以下甚至可能直接寄支票給你（若沒在 60 天內存回合格退休帳戶會被當成提領課稅＋罰款）；$1,000～$7,000 則常被自動轉入預設 IRA。主動轉走最安心！",
+            tip: ""
+          },
+          {
+            letter: "C",
+            text: "離職超過半年沒領，錢會自動充公還給前老闆",
+            type: "warn",
+            points: 0,
+            headline: "😅 放心，你自己存的錢不會充公！",
+            detail: "員工自己提撥的錢（以及已符合 Vesting 條件的公司 Match）永遠屬於你，只是放著不管容易被轉去低效率的預設帳戶，白白浪費複利時間。",
+            tip: "💡 最佳做法：花 15 分鐘申請 Direct Rollover，把錢集中管理最省心。"
+          }
+        ]
+      },
+      {
+        character: "🚀 關卡 4｜高收入主管林先生的隱藏大魔王",
+        title: "想把舊 401(k) 轉進 Traditional IRA，明年還要做 Backdoor Roth？",
+        scenario: "林先生年薪超過直接存 Roth IRA 的收入上限，他打算把舊公司 $80,000 的 Traditional 401(k) 轉進 Traditional IRA，明年再繼續做 Backdoor Roth。這一步有地雷嗎？",
+        options: [
+          {
+            letter: "A",
+            text: "完全沒問題！轉進 IRA 選擇多，隨時都能做 Backdoor Roth",
+            type: "danger",
+            points: 0,
+            headline: "💣 踩到隱藏大魔王：Pro-Rata Rule（比例原則）！",
+            detail: "一旦名下有任何稅前 Traditional / SEP / SIMPLE IRA 餘額，年底做 Backdoor Roth 轉換時，IRS 會把所有 IRA 餘額混在一起按比例算稅，導致原本免稅的轉換變成要繳一筆額外所得稅！",
+            tip: "💡 最佳做法：有做 Backdoor Roth 需求的人，優先考慮把舊 401(k) 轉進「新公司 401(k)」，它不會計入 Pro-Rata Rule！"
+          },
+          {
+            letter: "B",
+            text: "先停一下！轉進「新公司 401(k)」通常比轉進 Traditional IRA 更安全",
+            type: "best",
+            points: 1,
+            headline: "🏆 滿分通關！這題連很多老手都會卡關！",
+            detail: "新公司的 401(k) 不會計入 IRA 的 Pro-Rata Rule 計算。所以有在做 Backdoor Roth 的高收入族群，換工作時把舊 401(k) 轉進新公司 401(k)，能幫你保留乾淨的 IRA 空間！",
+            tip: ""
+          },
+          {
+            letter: "C",
+            text: "只要在不同券商開兩個分開的 IRA 帳戶就不會互相影響",
+            type: "warn",
+            points: 0,
+            headline: "⚠️ IRS 可不吃「分開開戶」這一套喔！",
+            detail: "IRS 計算 Pro-Rata Rule 時，是把你名下所有金融機構的 Traditional / SEP / SIMPLE IRA 餘額全部加總計算，開在不同券商也沒有用。",
+            tip: "💡 最佳做法：確認新公司 401(k) 是否接受 Roll-in（轉入），是保留 Backdoor Roth 空間的常見解法。"
+          }
+        ]
+      }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+    let userHistory = [];
+    let currentRankTitle = "";
+
+    const startScreen = document.getElementById("start-screen");
+    const quizScreen = document.getElementById("quiz-screen");
+    const resultScreen = document.getElementById("result-screen");
+
+    function startGame() {
+      currentIdx = 0;
+      score = 0;
+      userHistory = [];
+      startScreen.classList.add("hidden");
+      resultScreen.classList.add("hidden");
+      quizScreen.classList.remove("hidden");
+      renderStage();
+    }
+
+    function renderStage() {
+      const stage = stages[currentIdx];
+      document.getElementById("stage-label").textContent = `第 ${currentIdx + 1} 關 / 共 ${stages.length} 關`;
+      document.getElementById("score-live").textContent = `目前得分：${score}`;
+      document.getElementById("progress-fill").style.width = `${((currentIdx + 1) / stages.length) * 100}%`;
+
+      document.getElementById("character-chip").textContent = stage.character;
+      document.getElementById("question-title").textContent = stage.title;
+      document.getElementById("scenario-box").textContent = stage.scenario;
+
+      const optionsGroup = document.getElementById("options-group");
+      optionsGroup.innerHTML = "";
+
+      stage.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `
+          <span class="option-letter">${opt.letter}</span>
+          <span>${opt.text}</span>
+        `;
+        btn.onclick = () => selectOption(idx);
+        optionsGroup.appendChild(btn);
+      });
+
+      const feedbackPanel = document.getElementById("feedback-panel");
+      feedbackPanel.className = "feedback-panel hidden";
+      document.getElementById("next-btn").classList.add("hidden");
+    }
+
+    function selectOption(selectedIdx) {
+      const stage = stages[currentIdx];
+      const chosen = stage.options[selectedIdx];
+      const buttons = document.querySelectorAll(".option-btn");
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === selectedIdx) {
+          btn.classList.add(`selected-${chosen.type}`);
+        } else {
+          btn.classList.add("dimmed");
+        }
+      });
+
+      score += chosen.points;
+      document.getElementById("score-live").textContent = `目前得分：${score}`;
+
+      userHistory.push({
+        stageNum: currentIdx + 1,
+        choice: chosen.letter,
+        isBest: chosen.type === "best"
+      });
+
+      const feedbackPanel = document.getElementById("feedback-panel");
+      feedbackPanel.className = `feedback-panel ${chosen.type}`;
+      document.getElementById("feedback-headline").textContent = chosen.headline;
+      document.getElementById("feedback-detail").textContent = chosen.detail;
+
+      const bestHint = document.getElementById("best-hint");
+      if (chosen.tip) {
+        bestHint.textContent = chosen.tip;
+        bestHint.classList.remove("hidden");
+      } else {
+        bestHint.classList.add("hidden");
+      }
+
+      const nextBtn = document.getElementById("next-btn");
+      nextBtn.textContent = currentIdx < stages.length - 1 ? "下一關 →" : "查看我的通關稱號 🏆";
+      nextBtn.classList.remove("hidden");
+
+      // 手機版自動微幅捲動讓回饋卡片完整呈現
+      setTimeout(() => {
+        feedbackPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 80);
+    }
+
+    function nextQuestion() {
+      if (currentIdx < stages.length - 1) {
+        currentIdx++;
+        renderStage();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      quizScreen.classList.add("hidden");
+      resultScreen.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      document.getElementById("final-score").textContent = `${score} / ${stages.length}`;
+
+      let rankDesc = "";
+      if (score === 4) {
+        currentRankTitle = "🏆 401(k) 轉職神隊友";
+        rankDesc = "太強了！從公司 Match、小額帳戶到 Pro-Rata Rule 隱藏地雷全部避開，你的退休金一毛冤枉稅都不會多繳！";
+      } else if (score >= 2) {
+        currentRankTitle = "🌿 穩健理財實踐家";
+        rankDesc = "大方向非常穩健！只要再留意一兩個轉職細節，就能把退休帳戶的複利效益發揮到最大。";
+      } else {
+        currentRankTitle = "🌱 潛力無限新手村";
+        rankDesc = "還好你先來玩了這趟冒險！現在搞懂 401(k) 轉移規則，未來換工作時就能幫自己省下好幾千塊稅金與罰款。";
+      }
+
+      document.getElementById("rank-title").textContent = currentRankTitle;
+      document.getElementById("rank-desc").textContent = rankDesc;
+
+      const stageNames = [
+        "第 1 關：離職前最後幾期 Match",
+        "第 2 關：$60,000 舊帳戶去向",
+        "第 3 關：$3,500 小額帳戶處理",
+        "第 4 關：Backdoor Roth 隱藏地雷"
+      ];
+
+      const recapList = document.getElementById("recap-list");
+      recapList.innerHTML = userHistory.map((item, idx) => `
+        <div class="recap-row">
+          <span>${stageNames[idx]}</span>
+          <strong>選 ${item.choice} ${item.isBest ? "✅" : "💡"}</strong>
+        </div>
+      `).join("");
+
+      document.getElementById("copy-toast").textContent = "";
+    }
+
+    function copyShareText() {
+      const choicesSummary = userHistory.map(h => `Q${h.stageNum}:${h.choice}`).join(" / ");
+      const shareStr = `我剛玩完茹意算盤的《401(k) 換工作大冒險》，拿到「${currentRankTitle}」（${score}/4 題最佳決策，我的選擇：${choicesSummary}）！你也來測測看換工作時會不會踩到退休金地雷 👉 https://ruyi-suanpan.pages.dev/`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareStr).then(() => {
+          document.getElementById("copy-toast").textContent = "✅ 已複製！可以直接回到臉書貼文底下貼上留言囉～";
+        }).catch(() => {
+          fallbackCopy(shareStr);
+        });
+      } else {
+        fallbackCopy(shareStr);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      document.getElementById("copy-toast").textContent = "✅ 已複製！可以直接回到臉書貼文底下貼上留言囉～";
+    }
+
+    function restartGame() {
+      startGame();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
