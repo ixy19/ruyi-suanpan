@@ -234,11 +234,18 @@
     cursor: not-allowed;
   }
 
+  .games-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
   @media(max-width: 768px) {
     .vision-grid { grid-template-columns: 1fr; gap: 24px; }
     .vision-section { padding: 24px; }
     .vision-point-item { grid-template-columns: 1fr; gap: 6px; }
     .article-modal-content { padding: 24px; }
+    .games-grid-4 { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -363,28 +370,34 @@
 <!-- 茹意理財遊戲中心 -->
 <section class="section game-section" id="games">
 <div class="section-heading">
-  <div><div class="eyebrow">LEARN BY PLAYING · 3 FEATURED TOOLS &amp; GAMES</div><h2>茹意理財遊戲中心</h2></div>
+  <div><div class="eyebrow">LEARN BY PLAYING · 4 FEATURED TOOLS &amp; GAMES</div><h2>茹意理財遊戲中心</h2></div>
   <p>點擊下方任一工具或遊戲，先了解核心觀念與玩法，再馬上開始體驗！</p>
 </div>
 
-<div class="game-center-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+<div class="game-center-grid games-grid-4">
   <div class="game-item-card" data-game="island">
     <span class="game-tag">旗艦主打 · 互動導覽</span>
     <h3>台美財富探索島</h3>
     <p>3D 浮島導覽與跨國理財情境探索，體驗資產配置與退休規劃的決策樂趣。</p>
     <button class="btn primary open-rule-btn" data-target="island">查看玩法並開始</button>
   </div>
-  <div class="game-item-card" data-game="baobei">
-    <span class="game-tag">趣味互動 · 保障求籤</span>
-    <h3>保庇宮 · 線上求籤問保障</h3>
-    <p>Q版線上求籤與保障體質分析，輕鬆了解自身財務防護缺口與人生隱憂。</p>
-    <button class="btn primary open-rule-btn" data-target="baobei">查看玩法並開始</button>
-  </div>
   <div class="game-item-card" data-game="roth2026">
     <span class="game-tag">稅務試算 · 中英雙語</span>
     <h3>2026 全美 Roth 轉換稅額試算器</h3>
-    <p>支援單身與夫妻合併申報、全美 50 州稅率估算與白話名詞解說，快速抓出轉換稅差。</p>
+    <p>切換單身或夫妻合併申報與居住州別，試算將傳統退休金轉入 Roth 可能增加的聯邦與州稅，並附白話名詞解說與中英切換。</p>
     <button class="btn primary open-rule-btn" data-target="roth2026">查看說明並開始</button>
+  </div>
+  <div class="game-item-card" data-game="f401k">
+    <span class="game-tag">轉職闖關 · 4 關情境</span>
+    <h3>401(k) 換工作大冒險</h3>
+    <p>離職前公司 Match、$60k 轉移、$3,500 小額帳戶與 Backdoor Roth 地雷，選完立刻看專屬結果解析。</p>
+    <button class="btn primary open-rule-btn" data-target="f401k">查看玩法並開始</button>
+  </div>
+  <div class="game-item-card" data-game="fbarFatca">
+    <span class="game-tag">跨境避雷 · 4 題反轉</span>
+    <h3>FBAR 與 FATCA 避雷大考驗</h3>
+    <p>用生活反轉題搞懂海外帳戶合計 $10,000 門檻、年中單日最高峰、申報不等於課稅與雙表差異。</p>
+    <button class="btn primary open-rule-btn" data-target="fbarFatca">查看玩法並開始</button>
   </div>
 </div>
 
@@ -584,21 +597,27 @@
   const gameDataConfig = {
     island: {
       title: "I-Ju Yeh 台美財富探索島",
-      desc: "This is an interactive scenario tour designed for Taiwanese-American families...",
+      desc: "這是一款為台美家庭設計的互動情境導覽，透過 3D 浮島與生活決策關卡，帶你體驗資產配置與退休規劃的關鍵選擇。",
       actionType: "link",
-      url: "台美財富探索島-.html"
-    },
-    baobei: {
-      title: "保庇宮 · 線上求籤問保障",
-      desc: "Draw a lot online to check your personal protection profile...",
-      actionType: "embed",
-      url: "保庇宮.html"
+      url: "game/台美財富探索島-.html"
     },
     roth2026: {
       title: "2026 全美 Roth 轉換稅額試算器",
       desc: "切換單身或夫妻合併申報與居住州別，試算將傳統退休金轉入 Roth 可能增加的聯邦與州稅，並附白話名詞解說與中英切換。",
       actionType: "embed",
-      url: "roth-conversion-2026.html"
+      url: "game/roth-conversion-2026.html"
+    },
+    f401k: {
+      title: "401(k) 換工作大冒險",
+      desc: "跟著不同職場情境做選擇，從離職前最後幾期公司 Match、$60,000 轉移、$3,500 小額帳戶，到 Backdoor Roth 的 Pro-Rata Rule 地雷，每一步都立刻看到白話解析。",
+      actionType: "embed",
+      url: "game/401k.html"
+    },
+    fbarFatca: {
+      title: "FBAR 與 FATCA 避雷大考驗",
+      desc: "用 4 道美台家庭常見反轉題，快速搞懂海外帳戶合計 $10,000 門檻、年中單日最高峰、申報不等於本金課稅，以及 FBAR 與 FATCA 的差異。",
+      actionType: "embed",
+      url: "game/fbar-fatca-quiz.html"
     }
   };
 
