@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>王家 $24M 資產傳承互動推演｜茹意算盤</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --primary: #1d4e89;
+      --primary-light: #e8f0fa;
+      --accent: #d97706;
+      --accent-light: #fef3c7;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --good: #0f766e;
+      --mid: #b45309;
+      --low: #b91c1c;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .brand-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 6px;
+      color: #111827;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* 案例背景列 */
+    .case-banner {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--primary);
+    }
+    .case-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .chip {
+      font-size: 13px;
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: #334155;
+    }
+    .case-detail {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      font-size: 14px;
+      color: #374151;
+      display: none;
+    }
+    .case-detail.open { display: block; }
+
+    /* 增值率互動滑桿面板 */
+    .sim-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .sim-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .sim-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .sim-value-pill {
+      background: var(--accent-light);
+      color: #92400e;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+      margin: 4px 0 10px;
+    }
+    .sim-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 600px) {
+      .sim-stats { grid-template-columns: 1fr; }
+    }
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+    }
+    .stat-num {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    /* 15M 免稅額對照長條 */
+    .bar-compare {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+    }
+    .bar-row {
+      margin-bottom: 8px;
+    }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-label-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      font-weight: 600;
+      color: #334155;
+    }
+    .bar-track {
+      position: relative;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: visible;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--primary);
+      transition: width 0.15s ease, background 0.15s ease;
+      max-width: 100%;
+    }
+    .bar-fill.over { background: #dc2626; }
+    .bar-fill.shielded { background: var(--good); }
+    .exempt-marker {
+      position: absolute;
+      top: -3px;
+      bottom: -3px;
+      width: 2px;
+      background: #111827;
+      z-index: 2;
+    }
+    .sim-note {
+      margin-top: 8px;
+      font-size: 12.5px;
+      color: #4b5563;
+    }
+
+    /* 步驟進度 */
+    .steps-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .step-pill {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      padding: 8px 6px;
+      border-radius: 10px;
+      background: #e5e7eb;
+      color: #4b5563;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: 0.2s;
+    }
+    .step-pill.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .step-pill.done {
+      background: #dbeafe;
+      color: var(--primary);
+    }
+
+    /* 主卡片 */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      margin-bottom: 16px;
+    }
+    .step-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .question-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      color: #111827;
+    }
+    .question-desc {
+      font-size: 15px;
+      color: #374151;
+      margin: 0 0 16px;
+    }
+
+    /* 選項按鈕 */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 600px) {
+      .options-grid { grid-template-columns: 1fr; }
+    }
+    .opt-btn {
+      text-align: left;
+      background: #f9fafb;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .opt-btn:hover {
+      border-color: var(--primary);
+      background: #f0f6ff;
+    }
+    .opt-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(29, 78, 137, 0.12);
+    }
+    .opt-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .opt-sub {
+      font-size: 13px;
+      color: var(--muted);
+      display: block;
+    }
+
+    /* 結果解析區 */
+    .result-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+    .result-box.show { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .result-headline {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0 0 8px;
+    }
+    .result-summary {
+      font-size: 14.5px;
+      margin: 0 0 12px;
+    }
+
+    /* 五維度小標籤 */
+    .metrics-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .metric-badge {
+      font-size: 12.5px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      background: #fff;
+      border: 1px solid var(--border);
+    }
+    .m-high { color: var(--good); border-color: #99f6e4; background: #f0fdfa; }
+    .m-mid { color: var(--mid); border-color: #fde68a; background: #fffbeb; }
+    .m-low { color: var(--low); border-color: #fecaca; background: #fef2f2; }
+
+    /* 行內可點擊名詞 */
+    .term {
+      color: var(--primary);
+      font-weight: 600;
+      border-bottom: 1.5px dashed var(--primary);
+      cursor: pointer;
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+    .term:hover {
+      background: var(--primary-light);
+    }
+
+    /* 行內彈出名詞卡片（不佔常駐空間） */
+    .term-popover {
+      margin: 8px 0 12px;
+      padding: 10px 12px;
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      font-size: 13.5px;
+      color: #78350f;
+      display: none;
+    }
+    .term-popover.show { display: block; }
+    .term-popover-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .term-close {
+      cursor: pointer;
+      font-size: 12px;
+      color: #92400e;
+    }
+
+    /* 折疊深度細節 */
+    .accordion-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 4px 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: inherit;
+    }
+    .accordion-content {
+      display: none;
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 13.5px;
+      color: #374151;
+    }
+    .accordion-content.open { display: block; }
+
+    /* 底部操作列 */
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      gap: 10px;
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover { background: #163d6b; }
+
+    /* 四方案總表彈窗區 */
+    .compare-table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+      display: none;
+    }
+    .compare-table-wrap.open { display: block; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    th { background: #f1f5f9; color: #1e293b; }
+    td:first-child, th:first-child { text-align: left; font-weight: 600; }
+
+    .cta-box {
+      background: linear-gradient(135deg, #1d4e89, #2563eb);
+      color: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .cta-box h3 { margin: 0 0 6px; font-size: 18px; }
+    .cta-box p { margin: 0 0 14px; font-size: 14px; opacity: 0.92; }
+    .cta-btn {
+      display: inline-block;
+      background: #fff;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand-tag">茹意算盤｜互動情境推演</div>
+      <h1>王家的 $24M 資產傳承抉擇</h1>
+      <p class="subtitle">點選不同信託設計與增值幅度，看看會發生什麼後果（點擊<span class="term" onclick="toggleGlobalTip()">虛線名詞</span>可隨時展開白話解釋）</p>
+    </div>
+
+    <!-- 頂部濃縮案例卡 -->
+    <div class="case-banner">
+      <div class="case-header" onclick="toggleCaseDetail()">
+        <span>📋 王家案例設定：加州夫妻 $24M 共同財產</span>
+        <span id="caseToggleText" style="font-size:12px; font-weight:500;">展開推演假設 ▾</span>
+      </div>
+      <div class="case-chips">
+        <span class="chip">起點資產：$24M（自住房、出租房、股票）</span>
+        <span class="chip">受益人：兩名成年子女</span>
+        <span class="chip">聯邦免稅額基準：$15M</span>
+      </div>
+      <div class="case-detail" id="caseDetail">
+        • <strong>分析推演假設</strong>：兩次過世之間資產增值預設 <strong>50%</strong>；聯邦免稅額以 <strong>$15M</strong> 計算（未計未來通膨調整）。<br>
+        • <strong>起點狀態</strong>：今天夫妻將總資產 $24M 放在「夫妻共同可撤銷信託」名下，隨時可修改。王先生先過世時計其份額 $12M，王太太生存配偶份額 $12M。
+      </div>
+    </div>
+
+    <!-- 增值率互動滑桿 ＋ $15M 免稅額對照 -->
+    <div class="sim-panel">
+      <div class="sim-top">
+        <span class="sim-title">🎚️ 兩次過世之間資產增值率推演（案例預設 50%）</span>
+        <span class="sim-value-pill" id="growthBadge">增值 +50%</span>
+      </div>
+      <input type="range" id="growthSlider" min="0" max="80" step="5" value="50" oninput="updateGrowthSim()" />
+
+      <div class="sim-stats">
+        <div class="stat-box">
+          <span class="stat-label">推演總資產（起點 $24M）</span>
+          <span class="stat-num" id="totalGrownVal">$36.0M</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">單一半額成長後（起點 $12M）</span>
+          <span class="stat-num" id="halfGrownVal">$18.0M</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">對照聯邦免稅額 $15M</span>
+          <span class="stat-num" id="exemptDiffVal">高出 $3.0M</span>
+        </div>
+      </div>
+
+      <div class="bar-compare">
+        <div class="bar-row">
+          <div class="bar-label-line">
+            <span>若單一半額（$12M）未隔離、直接隨增值長大</span>
+            <span id="unshieldedText">$18.0M vs. $15M 免稅線</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" id="unshieldedBar" style="width: 75%;"></div>
+            <div class="exempt-marker" style="left: 62.5%;" title="$15M 免稅額基準線（以 $24M 為滿刻度）"></div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label-line">
+            <span>若走 AB 信託，B 信託後續增值不計入王太太個人遺產</span>
+            <span id="shieldedText">B 信託增值隔離（$12M 本金鎖定）</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill shielded" id="shieldedBar" style="width: 50%;"></div>
+            <div class="exempt-marker" style="left: 62.5%;" title="$15M 免稅額基準線"></div>
+          </div>
+        </div>
+        <div class="sim-note" id="simNoteText">
+          黑線代表 <strong>$15M 免稅額基準線</strong>。當增值率拉到 50% 時，$12M 份額長成 $18.0M，已超過 $15M；這也是為什麼實務上會權衡「隔離增值」與「行政／Step-up 代價」。
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 階段問答導覽 -->
+    <div class="steps-nav">
+      <button class="step-pill active" id="pill-1" onclick="goStep(1)">第 1 關：第一位過世</button>
+      <button class="step-pill" id="pill-2" onclick="goStep(2)">第 2 關：B 信託動用</button>
+      <button class="step-pill" id="pill-3" onclick="goStep(3)">第 3 關：最終交棒與權衡</button>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="card" id="step-1">
+      <div class="step-label">情境一｜第一次過世（王先生先走一步，份額 $12M）</div>
+      <h2 class="question-title">王先生過世了，你建議王家啟動哪一種設計？</h2>
+      <p class="question-desc">四種設計都是實務常見作法，但選了之後在「彈性、Step-up、保護子女與行政成本」上會走向完全不同的路。點一個方案看看後果：</p>
+
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectStep1('portability', this)">
+          <span class="opt-title">1. 可攜性（Portability）</span>
+          <span class="opt-sub">先全留給王太太，申報移轉免稅額</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep1('ab', this)">
+          <span class="opt-title">2. 傳統 AB 信託</span>
+          <span class="opt-sub">強制拆成 A / B 兩信託，B 鎖為不可撤銷</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep1('disclaimer', this)">
+          <span class="opt-title">3. Disclaimer 信託</span>
+          <span class="opt-sub">先給王太太，9 個月內決定放棄多少進 B</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep1('qtip', this)">
+          <span class="opt-title">4. Clayton QTIP</span>
+          <span class="opt-sub">進入 QTIP 信託，由執行人彈性選比例</span>
+        </button>
+      </div>
+
+      <!-- 行內名詞小卡容器（預設隱藏） -->
+      <div class="term-popover" id="popover-1">
+        <div class="term-popover-header">
+          <span id="popTitle-1">名詞解釋</span>
+          <span class="term-close" onclick="closePopover(1)">✕ 收合</span>
+        </div>
+        <div id="popBody-1"></div>
+      </div>
+
+      <!-- 動態後果顯示區 -->
+      <div class="result-box" id="result-1"></div>
+
+      <div style="margin-top:12px;">
+        <button class="accordion-toggle" onclick="toggleCompareTable()">📊 點此展開／收合：四種設計五維度總比較表 ▾</button>
+        <div class="compare-table-wrap" id="compareTableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th>設計方案</th>
+                <th>彈性</th>
+                <th>Step-up</th>
+                <th>保護子女</th>
+                <th>州遺產稅</th>
+                <th>行政簡便</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1. 可攜性 (Portability)</td>
+                <td>中等</td>
+                <td>高</td>
+                <td>中低</td>
+                <td>中低</td>
+                <td>高</td>
+              </tr>
+              <tr>
+                <td>2. AB 信託</td>
+                <td>低</td>
+                <td>中低</td>
+                <td>高</td>
+                <td>高</td>
+                <td>中低</td>
+              </tr>
+              <tr>
+                <td>3. Disclaimer 信託</td>
+                <td>高</td>
+                <td>高</td>
+                <td>高</td>
+                <td>高</td>
+                <td>中等</td>
+              </tr>
+              <tr>
+                <td>4. Clayton QTIP</td>
+                <td>高</td>
+                <td>高</td>
+                <td>高</td>
+                <td>高</td>
+                <td>中等</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goStep(2)">下一關：看看 AB 信託分家後怎麼運作 →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="card" id="step-2" style="display:none;">
+      <div class="step-label">情境二｜王太太餘生（AB 信託分家後的照顧機制）</div>
+      <h2 class="question-title">假設王家走了 AB 信託，B 信託已轉為不可撤銷。王太太餘生想從 B 信託拿一筆本金去環遊世界或買豪車，可以嗎？</h2>
+      <p class="question-desc">B 信託成立後，王太太與兩名成年子女的權益邊界會立刻改變：</p>
+
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectStep2('free', this)">
+          <span class="opt-title">A. 隨時隨便拿</span>
+          <span class="opt-sub">反正是夫妻原本共同打拚的錢</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep2('hems', this)">
+          <span class="opt-title">B. 收益可領，本金受 HEMS 限制</span>
+          <span class="opt-sub">必須符合健康、教育、維護、生活標準</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep2('locked', this)">
+          <span class="opt-title">C. 完全凍結一毛不能動</span>
+          <span class="opt-sub">必須全部留到王太太過世後才能開</span>
+        </button>
+      </div>
+
+      <div class="term-popover" id="popover-2">
+        <div class="term-popover-header">
+          <span id="popTitle-2">名詞解釋</span>
+          <span class="term-close" onclick="closePopover(2)">✕ 收合</span>
+        </div>
+        <div id="popBody-2"></div>
+      </div>
+
+      <div class="result-box" id="result-2"></div>
+
+      <div class="nav-actions">
+        <button class="btn" onclick="goStep(1)">← 回上一關</button>
+        <button class="btn btn-primary" onclick="goStep(3)">最後一關：最終交棒與稅務權衡 →</button>
+      </div>
+    </div>
+
+    <!-- Step 3（含第九部分「AB 信託的稅務權衡與代價」收尾） -->
+    <div class="card" id="step-3" style="display:none;">
+      <div class="step-label">情境三｜第二次過世與第九部分：稅務權衡與代價</div>
+      <h2 class="question-title">幾年後王太太也過世了，兩名成年子女繼承 A 信託與 B 信託時，稅務待遇有什麼關鍵差別？</h2>
+      <p class="question-desc">走到這裡，我們也把第八部分終局分配與第九部分「AB 信託的稅務權衡與代價」一起收束：</p>
+
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectStep3('both', this)">
+          <span class="opt-title">A. 兩邊都有第二次 Step-up</span>
+          <span class="opt-sub">A 與 B 信託都按第二次過世市值重算成本</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep3('split', this)">
+          <span class="opt-title">B. 只有 A 信託有第二次 Step-up</span>
+          <span class="opt-sub">B 信託直接分配給子女，無第二次 Step-up</span>
+        </button>
+        <button class="opt-btn" onclick="selectStep3('none', this)">
+          <span class="opt-title">C. 兩邊都沒有第二次 Step-up</span>
+          <span class="opt-sub">全部沿用王先生過世時的成本基礎</span>
+        </button>
+      </div>
+
+      <div class="term-popover" id="popover-3">
+        <div class="term-popover-header">
+          <span id="popTitle-3">名詞解釋</span>
+          <span class="term-close" onclick="closePopover(3)">✕ 收合</span>
+        </div>
+        <div id="popBody-3"></div>
+      </div>
+
+      <div class="result-box" id="result-3"></div>
+
+      <div class="nav-actions">
+        <button class="btn" onclick="goStep(2)">← 回上一關</button>
+        <button class="btn btn-primary" onclick="goStep(1)">重新推演一次 ↺</button>
+      </div>
+    </div>
+
+    <!-- 底部第九部分收尾與諮詢引導 -->
+    <div class="cta-box">
+      <h3>第九部分收尾：沒有「全贏」的信託，只有適合你家的權衡</h3>
+      <p>AB 信託用不可撤銷、EIN / Form 1041、HEMS 與無第二次 Step-up 換取保護與增值隔離；而 Portability、Disclaimer 與 Clayton QTIP 各有不同取捨。想替自家資產找出平衡點？</p>
+      <a href="https://ruyi-suanpan.pages.dev/" target="_blank" class="cta-btn">回到《茹意算盤》預約交流</a>
+    </div>
+  </div>
+
+  <script>
+    const GLOSSARY = {
+      "Step-up": "<strong>Step-up（成本基礎調整）</strong>：在特定過世時間點，將資產的「取得成本」重新調整為當時市值。未來子女賣出資產時，只需就超過新成本的增值部分計算資本利得。",
+      "Form 706": "<strong>Form 706（美國聯邦遺產與贈與稅申報表）</strong>：第一位配偶過世後，若要申請「可攜性（Portability）」移轉未用完的免稅額，就必須在期限內申報這份表格。",
+      "DSUE": "<strong>DSUE（已故配偶未使用免稅額）</strong>：Deceased Spousal Unused Exclusion。指先走的那位配偶沒用完的聯邦免稅額度，透過申報移轉給在世配偶保留使用。",
+      "EIN": "<strong>EIN（雇主識別碼／信託獨立稅號）</strong>：B 信託轉為不可撤銷後成為獨立納稅主體，需申請專屬 EIN，不能再只用夫妻個人 SSN。",
+      "Form 1041": "<strong>Form 1041（遺產與信託所得稅申報表）</strong>：不可撤銷信託每年若有收益，需以專屬 EIN 獨立申報 Form 1041，會增加行政與會計維護成本。",
+      "HEMS": "<strong>HEMS 動用標準</strong>：Health（健康）、Education（教育）、Maintenance（維護）、Support（生活）。在世配偶動用 B 信託本金須符合這四類合理標準，有助避免資產被算進個人遺產。",
+      "QTIP": "<strong>QTIP 信託（適格終身權益財產信託）</strong>：Qualified Terminable Interest Property。在世配偶享有信託收益權，最終資產去向仍由先過世配偶事先鎖定。"
+    };
+
+    function updateGrowthSim() {
+      const rate = Number(document.getElementById("growthSlider").value);
+      const factor = 1 + rate / 100;
+      const total = 24 * factor;
+      const half = 12 * factor;
+      const exempt = 15;
+      const diff = half - exempt;
+
+      document.getElementById("growthBadge").textContent = `增值 +${rate}%`;
+      document.getElementById("totalGrownVal").textContent = `$${total.toFixed(1)}M`;
+      document.getElementById("halfGrownVal").textContent = `$${half.toFixed(1)}M`;
+
+      const diffEl = document.getElementById("exemptDiffVal");
+      if (diff > 0.01) {
+        diffEl.textContent = `高出 $${diff.toFixed(1)}M`;
+        diffEl.style.color = "#dc2626";
+      } else if (Math.abs(diff) <= 0.01) {
+        diffEl.textContent = `剛好達 $15.0M`;
+        diffEl.style.color = "#b45309";
+      } else {
+        diffEl.textContent = `低於 $${Math.abs(diff).toFixed(1)}M`;
+        diffEl.style.color = "#0f766e";
+      }
+
+      // 以 $24M 為長條滿刻度（$15M 在 62.5% 處）
+      const unshieldedPct = Math.min(100, (half / 24) * 100);
+      const barEl = document.getElementById("unshieldedBar");
+      barEl.style.width = `${unshieldedPct}%`;
+      barEl.classList.toggle("over", half > exempt);
+
+      document.getElementById("unshieldedText").textContent = `$${half.toFixed(1)}M vs. $15M 免稅線`;
+
+      const noteEl = document.getElementById("simNoteText");
+      if (rate === 50) {
+        noteEl.innerHTML = `案例預設 <strong>+50%</strong>：$12M 份額長成 <strong>$18.0M</strong>（總資產 $36.0M），單一半額已超過 <strong>$15M</strong> 基準線；走 AB 信託可將 B 信託後續增值隔離在王太太個人遺產之外，但須承擔行政與無第二次 Step-up 等代價。`;
+      } else if (half > exempt) {
+        noteEl.innerHTML = `在 <strong>+${rate}%</strong> 增值下，單一半額達 <strong>$${half.toFixed(1)}M</strong>，已超過 <strong>$15M</strong> 基準線（高出 $${diff.toFixed(1)}M）；這時「增值是否隔離」與「各方案的稅務／行政代價」會更有感。`;
+      } else {
+        noteEl.innerHTML = `在 <strong>+${rate}%</strong> 增值下，單一半額為 <strong>$${half.toFixed(1)}M</strong>，仍在 <strong>$15M</strong> 基準線以下；此時許多家庭會更重視行政簡便度、彈性與 Step-up 的整體權衡。`;
+      }
+    }
+
+    function showTerm(stepNum, termKey) {
+      const pop = document.getElementById(`popover-${stepNum}`);
+      const title = document.getElementById(`popTitle-${stepNum}`);
+      const body = document.getElementById(`popBody-${stepNum}`);
+
+      if (pop.classList.contains("show") && title.dataset.current === termKey) {
+        pop.classList.remove("show");
+        return;
+      }
+      title.textContent = `💡 白話名詞小卡：${termKey}`;
+      title.dataset.current = termKey;
+      body.innerHTML = GLOSSARY[termKey] || "暫無說明";
+      pop.classList.add("show");
+    }
+
+    function closePopover(stepNum) {
+      document.getElementById(`popover-${stepNum}`).classList.remove("show");
+    }
+
+    function toggleGlobalTip() {
+      alert("只要看到「藍色虛線底線」的英文專有名詞（如 Step-up、DSUE、Form 706、HEMS），直接點一下就會在原地展開白話解釋！");
+    }
+
+    function toggleCaseDetail() {
+      const el = document.getElementById("caseDetail");
+      const txt = document.getElementById("caseToggleText");
+      el.classList.toggle("open");
+      txt.textContent = el.classList.contains("open") ? "收合推演假設 ▴" : "展開推演假設 ▾";
+    }
+
+    function toggleCompareTable() {
+      document.getElementById("compareTableWrap").classList.toggle("open");
+    }
+
+    function goStep(step) {
+      [1, 2, 3].forEach(n => {
+        document.getElementById(`step-${n}`).style.display = (n === step) ? "block" : "none";
+        const pill = document.getElementById(`pill-${n}`);
+        pill.classList.toggle("active", n === step);
+      });
+    }
+
+    const STEP1_DATA = {
+      portability: {
+        headline: "選擇 1：可攜性（Portability）—— 最省事，但子女保護較弱",
+        summary: `王先生過世時，$12M 份額先全部留給王太太，並透過申報 <span class="term" onclick="showTerm(1,'Form 706')">Form 706</span> 把王先生未用完的 <span class="term" onclick="showTerm(1,'DSUE')">DSUE</span> 移轉給王太太。行政最簡便，未來也享有高 <span class="term" onclick="showTerm(1,'Step-up')">Step-up</span>；但資產全在王太太名下，對保護兩名成年子女的約束力較低。`,
+        badges: [
+          { text: "彈性：中等", cls: "m-mid" },
+          { text: "Step-up：高", cls: "m-high" },
+          { text: "保護子女：中低", cls: "m-low" },
+          { text: "州遺產稅：中低", cls: "m-low" },
+          { text: "行政簡便：高", cls: "m-high" }
+        ],
+        detail: "適合希望行政簡單、夫妻高度互信且無複雜家庭變數的家庭；代價是沒有透過不可撤銷信託把資產提前鎖定給子女，且未來增值全留在王太太名下。"
+      },
+      ab: {
+        headline: "選擇 2：傳統 AB 信託 —— 保護子女最嚴密，但代價是鎖死與維護成本",
+        summary: `王先生過世時強制將 $24M 拆分為 A、B 兩信託，其中 <strong>B 信託立刻轉為不可撤銷</strong>，享有一次 <span class="term" onclick="showTerm(1,'Step-up')">Step-up</span>，並開始在王太太餘生保護資產給子女；代價是彈性低，且未來 B 信託沒有第二次 Step-up。`,
+        badges: [
+          { text: "彈性：低", cls: "m-low" },
+          { text: "Step-up：中低", cls: "m-low" },
+          { text: "保護子女：高", cls: "m-high" },
+          { text: "州遺產稅：高", cls: "m-high" },
+          { text: "行政簡便：中低", cls: "m-low" }
+        ],
+        detail: `一旦啟動 AB 信託，B 信託必須申請專屬 <span class="term" onclick="showTerm(1,'EIN')">EIN</span> 並每年申報 <span class="term" onclick="showTerm(1,'Form 1041')">Form 1041</span>，王太太動用本金也受限於 <span class="term" onclick="showTerm(1,'HEMS')">HEMS</span> 標準。`
+      },
+      disclaimer: {
+        headline: "選擇 3：Disclaimer 信託 —— 留給配偶 9 個月看清楚再決定",
+        summary: `王先生過世時先全部給王太太，由王太太在 <strong>9 個月內</strong>視當時資產漲跌與狀況，決定要「放棄」多少資產轉入 B 信託。兼具高彈性、高 <span class="term" onclick="showTerm(1,'Step-up')">Step-up</span> 與高子女保護。`,
+        badges: [
+          { text: "彈性：高", cls: "m-high" },
+          { text: "Step-up：高", cls: "m-high" },
+          { text: "保護子女：高", cls: "m-high" },
+          { text: "州遺產稅：高", cls: "m-high" },
+          { text: "行政簡便：中等", cls: "m-mid" }
+        ],
+        detail: "最大優點是「事後保留選擇權」，不用在生前就把分家比例寫死；但必須嚴格守住 9 個月法定期限，且在放棄前王太太不能先動用或享受該部分資產權益。"
+      },
+      qtip: {
+        headline: "選擇 4：Clayton QTIP —— 由執行人彈性決定分流比例",
+        summary: `王先生過世時資產先進入 <span class="term" onclick="showTerm(1,'QTIP')">QTIP</span> 適格信託，由<strong>執行人</strong>彈性選擇 QTIP 比例。在彈性、高 <span class="term" onclick="showTerm(1,'Step-up')">Step-up</span> 與保護子女上都拿到高分，行政簡便度為中等。`,
+        badges: [
+          { text: "彈性：高", cls: "m-high" },
+          { text: "Step-up：高", cls: "m-high" },
+          { text: "保護子女：高", cls: "m-high" },
+          { text: "州遺產稅：高", cls: "m-high" },
+          { text: "行政簡便：中等", cls: "m-mid" }
+        ],
+        detail: "與 Disclaimer 信託同樣靈活，但決定權交在「執行人」手上而非全由在世配偶個人決定，更能防止在世配偶因情緒或外力壓力放棄保護機制。"
+      }
+    };
+
+    function selectStep1(key, btn) {
+      document.querySelectorAll("#step-1 .opt-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      closePopover(1);
+
+      const d = STEP1_DATA[key];
+      const box = document.getElementById("result-1");
+      const badgesHtml = d.badges.map(b => `<span class="metric-badge ${b.cls}">${b.text}</span>`).join("");
+
+      box.innerHTML = `
+        <div class="result-headline">${d.headline}</div>
+        <div class="metrics-row">${badgesHtml}</div>
+        <p class="result-summary">${d.summary}</p>
+        <button class="accordion-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▸ 點開實務細節與代價拆解</button>
+        <div class="accordion-content">${d.detail}</div>
+      `;
+      box.classList.add("show");
+      document.getElementById("pill-1").classList.add("done");
+    }
+
+    function selectStep2(ans, btn) {
+      document.querySelectorAll("#step-2 .opt-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      closePopover(2);
+
+      const box = document.getElementById("result-2");
+      const isRight = (ans === "hems");
+      box.innerHTML = `
+        <div class="result-headline">${isRight ? "✅ 正確！收益可領，本金必須符合 HEMS 標準" : "💡 差一點！正確答案是 B（收益可領，本金受 HEMS 限制）"}</div>
+        <p class="result-summary">
+          在 AB 信託分家後，王太太餘生可以領取 B 信託的收益；但若要動用本金，必須符合 <span class="term" onclick="showTerm(2,'HEMS')">HEMS</span>（健康、教育、維護、生活）標準，不能隨意拿去買奢侈品或轉贈他人。
+        </p>
+        <button class="accordion-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▸ 為什麼要這樣限制？背後有什麼好處與代價？</button>
+        <div class="accordion-content">
+          1. <strong>隔離效果</strong>：正因為動用本金受 HEMS 限制，<strong>B 信託之後的增值不計入王太太的個人遺產</strong>。<br>
+          2. <strong>行政代價</strong>：B 信託已轉為不可撤銷，必須取得專屬 <span class="term" onclick="showTerm(2,'EIN')">EIN</span> 並每年獨立申報 <span class="term" onclick="showTerm(2,'Form 1041')">Form 1041</span>。
+        </div>
+      `;
+      box.classList.add("show");
+      document.getElementById("pill-2").classList.add("done");
+    }
+
+    function selectStep3(ans, btn) {
+      document.querySelectorAll("#step-3 .opt-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      closePopover(3);
+
+      const box = document.getElementById("result-3");
+      const isRight = (ans === "split");
+      box.innerHTML = `
+        <div class="result-headline">${isRight ? "✅ 完全命中核心！只有 A 信託享有第二次 Step-up" : "💡 關鍵差異在這裡！正確答案是 B"}</div>
+        <p class="result-summary">
+          第二次過世（資產最終分配給兩名成年子女）時：<br>
+          • <strong>A 信託資產</strong>：享有第二次 <span class="term" onclick="showTerm(3,'Step-up')">Step-up</span> 後再分配給子女。<br>
+          • <strong>B 信託資產</strong>：直接分配給子女，<strong>沒有第二次 Step-up</strong>。
+        </p>
+        <button class="accordion-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▸ 第九部分核心：AB 信託與其他設計的權衡重點</button>
+        <div class="accordion-content">
+          • <strong>AB 信託的代價</strong>：換得保護子女與 B 信託後續增值不計入王太太個人遺產，但要承擔不可撤銷限制、獨立申報（<span class="term" onclick="showTerm(3,'EIN')">EIN</span> / <span class="term" onclick="showTerm(3,'Form 1041')">Form 1041</span>），以及 B 信託少了第二次 Step-up。<br>
+          • <strong>其他路線的取捨</strong>：<span class="term" onclick="showTerm(3,'DSUE')">Portability</span> 行政最簡便，但對子女保護與州遺產稅較弱；Disclaimer 信託（9 個月內選擇）與 <span class="term" onclick="showTerm(3,'QTIP')">Clayton QTIP</span> 則把彈性與子女保護拉高。
+        </div>
+      `;
+      box.classList.add("show");
+      document.getElementById("pill-3").classList.add("done");
+    }
+
+    // 初始化預設 50% 滑桿數值
+    updateGrowthSim();
+  </script>
+</body>
+</html>
