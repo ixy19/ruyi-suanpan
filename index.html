@@ -161,6 +161,43 @@
     border-radius: 8px;
   }
 
+  /* PDF 指南預覽與下載區塊 */
+  .guide-card-box {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 36px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  .guide-preview-frame {
+    margin: 20px 0 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+  .guide-preview-frame iframe {
+    width: 100%;
+    height: 480px;
+    border: none;
+    display: block;
+  }
+  .guide-action-bar {
+    text-align: center;
+  }
+  .guide-follow-hint {
+    margin-top: 14px;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .guide-follow-hint a {
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
   .article-modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -244,6 +281,8 @@
     .vision-grid { grid-template-columns: 1fr; gap: 24px; }
     .vision-section { padding: 24px; }
     .vision-point-item { grid-template-columns: 1fr; gap: 6px; }
+    .guide-card-box { padding: 24px; }
+    .guide-preview-frame iframe { height: 360px; }
     .article-modal-content { padding: 24px; }
     .games-grid-4 { grid-template-columns: 1fr; }
   }
@@ -256,6 +295,7 @@
   <a href="#vision">專欄理念</a>
   <a href="#library">文章庫</a>
   <a href="#qa">財務問答</a>
+  <a href="#guide">指南下載</a>
   <a href="#games">理財遊戲中心</a>
   <a href="#about">關於創辦人</a>
 </nav>
@@ -362,6 +402,35 @@
     </div>
     <p style="font-size: 12px; color: var(--muted); line-height: 1.6;">
       茹意算盤以財務教育為核心，提供一般性教育資訊，不構成個人化投資、稅務或法律建議。
+    </p>
+  </div>
+</div>
+</section>
+
+<!-- 免費生活指南預覽與下載 -->
+<section class="section" id="guide">
+<div class="section-heading">
+  <div><div class="eyebrow">FREE GUIDE · PREVIEW &amp; DOWNLOAD</div><h2>《美國稅務與退休理財生活指南》</h2></div>
+  <p>先在下方直接翻閱預覽，喜歡再一鍵下載完整 PDF 指南隨身收藏。</p>
+</div>
+<div class="guide-card-box">
+  <div class="guide-preview-frame">
+    <iframe
+      src="guides/us-tax-retirement-guide.pdf#view=FitH"
+      title="美國稅務與退休理財生活指南線上預覽">
+    </iframe>
+  </div>
+  <div class="guide-action-bar">
+    <a
+      href="guides/us-tax-retirement-guide.pdf"
+      download="茹意算盤_美國稅務與退休理財生活指南.pdf"
+      class="btn primary">
+      下載完整 PDF 指南
+    </a>
+    <p class="guide-follow-hint">
+      看完指南如果有想對照自身狀況，可以玩網站上的
+      <a href="#games">互動小遊戲</a>，或填寫
+      <a href="你的Google表單連結" target="_blank" rel="noopener noreferrer">《15分鐘美國生活與退休配置需求評估預約》</a>。
     </p>
   </div>
 </div>
